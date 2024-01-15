@@ -1,2 +1,5 @@
-﻿D:\VS22\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(1116,5): warning MSB8027: Two or more files with the name of imgui_impl_opengl3.cpp will produce outputs to the same location. This can lead to an incorrect build result.  The files involved are ..\Dependancies\include\ImGui\imgui_impl_opengl3.cpp, src\IMgui\imgui_impl_opengl3.cpp.
-  Application_Clean.vcxproj -> D:\3907\StartPoint3907\x64\Debug\Application_Clean.exe
+﻿C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(1116,5): warning MSB8027: Two or more files with the name of imgui_impl_opengl3.cpp will produce outputs to the same location. This can lead to an incorrect build result.  The files involved are ..\Dependancies\include\ImGui\imgui_impl_opengl3.cpp, src\IMgui\imgui_impl_opengl3.cpp.
+  TestScene.cpp
+H:\Desktop\Lab_Work\Year 3\Term 2\Shader Programming\Application_Clean\include\InputHandler.h(67,30): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+H:\Desktop\Lab_Work\Year 3\Term 2\Shader Programming\Application_Clean\include\InputHandler.h(68,31): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+  Application_Clean.vcxproj -> H:\Desktop\Lab_Work\Year 3\Term 2\Shader Programming\x64\Debug\Application_Clean.exe

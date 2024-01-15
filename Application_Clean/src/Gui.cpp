@@ -31,11 +31,15 @@ void Gui::newGuiFrame()
 void Gui::drawGui()
 {
     float ms = 1000.0f / ImGui::GetIO().Framerate; ;  //milisecconds
-    ImGui::Begin("IMAT3907");
-    ImGui::Text("FPS %.3f ms/frame (%.1f FPS)", ms, ImGui::GetIO().Framerate);  // display FPS and ms
-    ImGui::SliderFloat3("Light Dir", (float*)&guiVals.lightDir, -1.0, 1.0);
-    //ImGui::ShowDemoWindow();
-    ImGui::End();
+    if (isActive)
+    {
+        ImGui::Begin("IMAT3907");
+        ImGui::Text("FPS %.3f ms/frame (%.1f FPS)", ms, ImGui::GetIO().Framerate);  // display FPS and ms
+        ImGui::SliderFloat3("Light Dir", (float*)&guiVals.lightDir, -1.0, 1.0);
+        ImGui::Checkbox("Enable Wireframe", &guiVals.isWireframe);
+        //ImGui::ShowDemoWindow();
+        ImGui::End();
+    }
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }

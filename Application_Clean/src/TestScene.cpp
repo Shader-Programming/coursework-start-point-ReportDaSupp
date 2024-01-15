@@ -16,8 +16,6 @@ TestScene::TestScene(GLFWwindow* window, std::shared_ptr<InputHandler> H): Scene
 
 TestScene::~TestScene()
 {
-	
-	
 }
 
 void TestScene::update(float dt)
@@ -33,13 +31,15 @@ void TestScene::processInput(float dt)
 {
 	
 	if (m_handler->isKeyPressed(GLFW_KEY_ESCAPE)) { glfwSetWindowShouldClose(m_window, GLFW_TRUE); }  // ESC to close
-	if (m_handler->isKeyPressed(GLFW_KEY_TAB)) {  // TAB To use IMGui  
-		m_gui->isActive = !m_gui->isActive; // gui active if tab pressed
-		m_handler->gui = !m_handler->gui;
+	if (m_handler->isKeyPressed(GLFW_KEY_TAB)) {  // TAB To Enable IMGui  
+		m_gui->isActive = true; // gui active if Tab pressed
+		m_handler->gui = true;
 	}
-	else {
-		m_camera->update(dt); // only update if GUI not active
+	if (m_handler->isKeyPressed(GLFW_KEY_LEFT_ALT)) {  // ALT to Disable IMGui  
+		m_gui->isActive = false; // gui disabled if Alt pressed
+		m_handler->gui = false;
 	}
+	if (!m_gui->isActive) m_camera->update(dt); // only update if GUI not active
 	guiVals = m_gui->getVals(); // get the gui values
 }
 
@@ -60,7 +60,8 @@ void TestScene::render()
 
 	//draw
 	glBindVertexArray(m_terrain->getVAO());
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	if (guiVals.isWireframe) glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	else glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	glDrawArrays(GL_TRIANGLES, 0, m_terrain->getSize());
 }
 
