@@ -81,6 +81,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <ExecutablePath>H:\Desktop\Lab_Work\Year 3\Term 1\Shader Programming\Important DLL For Install;$(ExecutablePath)</ExecutablePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -145,53 +146,66 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\Dependancies\include\ImGui\imgui_impl_opengl3.cpp" />
-    <ClCompile Include="src\EntryPoint.cpp" />
-    <ClCompile Include="src\FPSCamera.cpp" />
     <ClCompile Include="src\glad.c" />
-    <ClCompile Include="src\Gui.cpp" />
     <ClCompile Include="src\IMgui\imgui.cpp" />
     <ClCompile Include="src\IMgui\imgui_demo.cpp" />
     <ClCompile Include="src\IMgui\imgui_draw.cpp" />
     <ClCompile Include="src\IMgui\imgui_impl_glfw.cpp" />
     <ClCompile Include="src\IMgui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="include\IMGUI\imgui_stdlib.cpp" />
     <ClCompile Include="src\IMgui\imgui_tables.cpp" />
     <ClCompile Include="src\IMgui\imgui_widgets.cpp" />
-    <ClCompile Include="src\InputHandler.cpp" />
-    <ClCompile Include="src\Mesh.cpp" />
-    <ClCompile Include="src\Model.cpp" />
-    <ClCompile Include="src\Shader.cpp" />
-    <ClCompile Include="src\stb_image.cpp" />
-    <ClCompile Include="src\Terrain.cpp" />
-    <ClCompile Include="src\TestScene.cpp" />
-    <ClCompile Include="src\Texture.cpp" />
-    <ClCompile Include="src\WindowManager.cpp" />
+    <ClCompile Include="src\Inputs&amp;Cameras\Gui.cpp" />
+    <ClCompile Include="src\Scene_Data\Framebuffers\Framebuffer.cpp" />
+    <ClCompile Include="src\Scene_Data\Objects\AssimpObj.cpp" />
+    <ClCompile Include="src\Scene_Data\Objects\Cube.cpp" />
+    <ClCompile Include="src\Scene_Data\Objects\Plane.cpp" />
+    <ClCompile Include="src\Scene_Data\Objects\SkyBox.cpp" />
+    <ClCompile Include="src\Scene_Data\Objects\Terrain.cpp" />
+    <ClCompile Include="src\Scene_Data\Resources\ResourceManager.cpp" />
+    <ClCompile Include="src\Scene_Data\Textures\stb_image.cpp" />
+    <ClCompile Include="src\Scene_Data\Textures\TextureManager.cpp" />
+    <ClCompile Include="src\Scene_Handling\ObjectViewer.cpp" />
+    <ClCompile Include="src\EntryPoint.cpp" />
+    <ClCompile Include="src\Inputs&amp;Cameras\FPSCamera.cpp" />
+    <ClCompile Include="src\Globals\glad.c" />
+    <ClCompile Include="src\Inputs&amp;Cameras\InputHandler.cpp" />
+    <ClCompile Include="src\Shaders\Shader.cpp" />
+    <ClCompile Include="src\Windows\WindowManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\Camera.h" />
-    <ClInclude Include="include\FPSCamera.h" />
-    <ClInclude Include="include\GLFWinputCodes.h" />
-    <ClInclude Include="include\Gui.h" />
+    <ClInclude Include="..\..\..\..\Downloads\stbImage\stbImage\stb_image.h" />
     <ClInclude Include="include\IMGUI\imconfig.h" />
     <ClInclude Include="include\IMGUI\imgui.h" />
     <ClInclude Include="include\IMGUI\imgui_impl_glfw.h" />
     <ClInclude Include="include\IMGUI\imgui_impl_opengl3.h" />
     <ClInclude Include="include\IMGUI\imgui_impl_opengl3_loader.h" />
     <ClInclude Include="include\IMGUI\imgui_internal.h" />
+    <ClInclude Include="include\IMGUI\imgui_stdlib.h" />
     <ClInclude Include="include\IMGUI\imstb_rectpack.h" />
     <ClInclude Include="include\IMGUI\imstb_textedit.h" />
     <ClInclude Include="include\IMGUI\imstb_truetype.h" />
-    <ClInclude Include="include\InputHandler.h" />
-    <ClInclude Include="include\Mesh.h" />
-    <ClInclude Include="include\Model.h" />
-    <ClInclude Include="include\Properties.h" />
-    <ClInclude Include="include\Scene.h" />
-    <ClInclude Include="include\Shader.h" />
-    <ClInclude Include="include\stb_image.h" />
-    <ClInclude Include="include\Terrain.h" />
-    <ClInclude Include="include\TestScene.h" />
-    <ClInclude Include="include\Texture.h" />
-    <ClInclude Include="include\WindowManager.h" />
+    <ClInclude Include="include\Inputs&amp;Cameras\Camera.h" />
+    <ClInclude Include="include\Inputs&amp;Cameras\FPSCamera.h" />
+    <ClInclude Include="include\Globals\GLFWinputCodes.h" />
+    <ClInclude Include="include\Inputs&amp;Cameras\Gui.h" />
+    <ClInclude Include="include\Inputs&amp;Cameras\InputHandler.h" />
+    <ClInclude Include="include\Globals\Properties.h" />
+    <ClInclude Include="include\Scene_Data\Framebuffers\Framebuffer.h" />
+    <ClInclude Include="include\Scene_Data\Lights\LightsBase.h" />
+    <ClInclude Include="include\Scene_Data\Objects\AssimpObj.h" />
+    <ClInclude Include="include\Scene_Data\Objects\BaseObject.h" />
+    <ClInclude Include="include\Scene_Data\Objects\Cube.h" />
+    <ClInclude Include="include\Scene_Data\Objects\Plane.h" />
+    <ClInclude Include="include\Scene_Data\Objects\Skybox.h" />
+    <ClInclude Include="include\Scene_Data\Objects\Terrain.h" />
+    <ClInclude Include="include\Scene_Data\Resources\ResourceManager.h" />
+    <ClInclude Include="include\Scene_Data\Textures\stb_image.h" />
+    <ClInclude Include="include\Scene_Data\Textures\TextureManager.h" />
+    <ClInclude Include="include\Scene_Handling\ObjectViewer.h" />
+    <ClInclude Include="include\Scene_Handling\Scene.h" />
+    <ClInclude Include="include\Shaders\Shader.h" />
+    <ClInclude Include="include\Windows\WindowManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

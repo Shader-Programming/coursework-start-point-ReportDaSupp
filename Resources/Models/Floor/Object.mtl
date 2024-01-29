@@ -10,9 +10,9 @@ Tf 1 1 1
 d 1
 Ni 1
 illum 1
-map_Kd	xxxxDiffuse.jpg
-map_Bump	xxxxNormal.jpg
-map_Ks	xxxxSpecular.jpg
+map_Kd	xxxxTextures/Diffuse.jpg
+map_Bump	xxxxTextures/Normal.jpg
+map_Ks	xxxxTextures/Specular.jpg
 
 newmtl Cube
 Kd 0.60000002 0.60000002 0.60000002
@@ -23,7 +23,7 @@ Tf 1 1 1
 d 1
 Ni 1
 illum 1
-map_Kd	xxxxDiffuse.jpg
-map_Bump	xxxxNormal.jpg
-map_Ks	xxxxSpecular.jpg
+map_Kd	xxxxTextures/Diffuse.jpg
+map_Bump	xxxxTextures/Normal.jpg
+map_Ks	xxxxTextures/Specular.jpg
 

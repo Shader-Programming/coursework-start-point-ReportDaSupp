@@ -127,7 +127,7 @@ unsigned int TextureFromFile(std::string path, const std::string& directory, boo
     return textureID;
 }
 
-Model::Model(std::string path, bool flip, bool gamma) : gammaCorrection(gamma)
+Model::Model(std::string path, bool flip, bool isstatic, bool gamma) : gammaCorrection(gamma), isStatic(isstatic)
 {
     loadModel(path, flip);
     setTransform(glm::mat4(1.0f), glm::vec3(0.0f), glm::vec3(0.f, 90.0f, 0.f));

@@ -63,7 +63,7 @@ void FirstPersonCamera::update(float dt)
 		if (m_handler->isKeyPressed(GLFW_KEY_ESCAPE)) {
 			glfwSetWindowShouldClose(m_window, GL_TRUE);
 		}
-		if (m_handler->isKeyPressed(GLFW_KEY_1)) {
+		/*if (m_handler->isKeyPressed(GLFW_KEY_1)) {
 			eBloom = true;
 			eTone = true;
 			eInverse = false;
@@ -108,7 +108,7 @@ void FirstPersonCamera::update(float dt)
 		}
 		if (m_handler->isKeyPressed(GLFW_KEY_CAPS_LOCK)) {
 			eDirectionalSM = false;
-		}
+		}*/
 		
 	}
 	if (m_handler->isLeftClicked())

@@ -57,6 +57,7 @@ public:
     bool& isKeyPressed(int keyCode) { return m_keysPressed[keyCode]; }
     void processedKey(int keyCode)  { m_keysPressed[keyCode] = false; } // after processing a key event
 
+    bool gui = true;
 
 private:
     // mouse vars
@@ -74,6 +75,7 @@ private:
     // key vars
     bool m_keysPressed[numKeys] = { 0 }; // array of all keys, look at GLFWinputCodes.h , index in array corresponds to key value. Example, C is 67, D is 68, and so on..
 
+    
 
 
 

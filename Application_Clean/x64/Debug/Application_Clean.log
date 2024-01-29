@@ -1,19 +1,152 @@
 ﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(1119,5): warning MSB8027: Two or more files with the name of imgui_impl_opengl3.cpp will produce outputs to the same location. This can lead to an incorrect build result.  The files involved are ..\Dependancies\include\ImGui\imgui_impl_opengl3.cpp, src\IMgui\imgui_impl_opengl3.cpp.
-  imgui_tables.cpp
-  WindowManager.cpp
-C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\include\InputHandler.h(67,30): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-  (compiling source file 'src/WindowManager.cpp')
+C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(1119,5): warning MSB8027: Two or more files with the name of FPSCamera.cpp will produce outputs to the same location. This can lead to an incorrect build result.  The files involved are src\FPSCamera.cpp, src\Inputs&Cameras\FPSCamera.cpp.
+C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(1119,5): warning MSB8027: Two or more files with the name of glad.c will produce outputs to the same location. This can lead to an incorrect build result.  The files involved are src\glad.c, src\Globals\glad.c.
+C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(1119,5): warning MSB8027: Two or more files with the name of Gui.cpp will produce outputs to the same location. This can lead to an incorrect build result.  The files involved are src\Gui.cpp, src\Inputs&Cameras\Gui.cpp.
+C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(1119,5): warning MSB8027: Two or more files with the name of InputHandler.cpp will produce outputs to the same location. This can lead to an incorrect build result.  The files involved are src\InputHandler.cpp, src\Inputs&Cameras\InputHandler.cpp.
+C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(1119,5): warning MSB8027: Two or more files with the name of Terrain.cpp will produce outputs to the same location. This can lead to an incorrect build result.  The files involved are src\Scene_Data\Objects\Terrain.cpp, src\Terrain.cpp.
+C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(1119,5): warning MSB8027: Two or more files with the name of stb_image.cpp will produce outputs to the same location. This can lead to an incorrect build result.  The files involved are src\Scene_Data\Textures\stb_image.cpp, src\stb_image.cpp.
+C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(1119,5): warning MSB8027: Two or more files with the name of Shader.cpp will produce outputs to the same location. This can lead to an incorrect build result.  The files involved are src\Shader.cpp, src\Shaders\Shader.cpp.
+C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(1119,5): warning MSB8027: Two or more files with the name of WindowManager.cpp will produce outputs to the same location. This can lead to an incorrect build result.  The files involved are src\WindowManager.cpp, src\Windows\WindowManager.cpp.
+  FPSCamera.cpp
+/src/FPSCamera.cpp(1,1): error C1083: Cannot open source file: 'src\FPSCamera.cpp': No such file or directory
+  (compiling source file '/src/FPSCamera.cpp')
   
-C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\include\InputHandler.h(68,31): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-  (compiling source file 'src/WindowManager.cpp')
+  Gui.cpp
+/src/Gui.cpp(1,1): error C1083: Cannot open source file: 'src\Gui.cpp': No such file or directory
+  (compiling source file '/src/Gui.cpp')
   
-C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\WindowManager.cpp(36,37): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\WindowManager.cpp(36,31): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\WindowManager.cpp(42,42): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\WindowManager.cpp(42,33): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\WindowManager.cpp(105,33): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  InputHandler.cpp
+/src/InputHandler.cpp(1,1): error C1083: Cannot open source file: 'src\InputHandler.cpp': No such file or directory
+  (compiling source file '/src/InputHandler.cpp')
+  
+  FPSCamera.cpp
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\include\Inputs&Cameras\InputHandler.h(65,30): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+  (compiling source file 'src/Inputs&Cameras/FPSCamera.cpp')
+  
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\include\Inputs&Cameras\InputHandler.h(66,31): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+  (compiling source file 'src/Inputs&Cameras/FPSCamera.cpp')
+  
+  Gui.cpp
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\Inputs&Cameras\Gui.cpp(1,10): error C1083: Cannot open include file: 'Gui.h': No such file or directory
+  InputHandler.cpp
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\include\Inputs&Cameras\InputHandler.h(65,30): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+  (compiling source file 'src/Inputs&Cameras/InputHandler.cpp')
+  
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\include\Inputs&Cameras\InputHandler.h(66,31): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+  (compiling source file 'src/Inputs&Cameras/InputHandler.cpp')
+  
+  Mesh.cpp
+/src/Mesh.cpp(1,1): error C1083: Cannot open source file: 'src\Mesh.cpp': No such file or directory
+  (compiling source file '/src/Mesh.cpp')
+  
+  Model.cpp
+/src/Model.cpp(1,1): error C1083: Cannot open source file: 'src\Model.cpp': No such file or directory
+  (compiling source file '/src/Model.cpp')
+  
+  Framebuffer.cpp
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\Scene_Data\Framebuffers\Framebuffer.cpp(82,66): warning C4244: 'argument': conversion from 'T' to 'GLsizei', possible loss of data
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\Scene_Data\Framebuffers\Framebuffer.cpp(82,66): warning C4244:         with
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\Scene_Data\Framebuffers\Framebuffer.cpp(82,66): warning C4244:         [
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\Scene_Data\Framebuffers\Framebuffer.cpp(82,66): warning C4244:             T=float
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\Scene_Data\Framebuffers\Framebuffer.cpp(82,66): warning C4244:         ]
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\Scene_Data\Framebuffers\Framebuffer.cpp(82,41): warning C4244: 'argument': conversion from 'T' to 'GLsizei', possible loss of data
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\Scene_Data\Framebuffers\Framebuffer.cpp(82,41): warning C4244:         with
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\Scene_Data\Framebuffers\Framebuffer.cpp(82,41): warning C4244:         [
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\Scene_Data\Framebuffers\Framebuffer.cpp(82,41): warning C4244:             T=float
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\Scene_Data\Framebuffers\Framebuffer.cpp(82,41): warning C4244:         ]
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\Scene_Data\Framebuffers\Framebuffer.cpp(113,51): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\Scene_Data\Framebuffers\Framebuffer.cpp(116,62): warning C4244: 'argument': conversion from 'T' to 'GLsizei', possible loss of data
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\Scene_Data\Framebuffers\Framebuffer.cpp(116,62): warning C4244:         with
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\Scene_Data\Framebuffers\Framebuffer.cpp(116,62): warning C4244:         [
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\Scene_Data\Framebuffers\Framebuffer.cpp(116,62): warning C4244:             T=float
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\Scene_Data\Framebuffers\Framebuffer.cpp(116,62): warning C4244:         ]
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\Scene_Data\Framebuffers\Framebuffer.cpp(116,39): warning C4244: 'argument': conversion from 'T' to 'GLsizei', possible loss of data
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\Scene_Data\Framebuffers\Framebuffer.cpp(116,39): warning C4244:         with
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\Scene_Data\Framebuffers\Framebuffer.cpp(116,39): warning C4244:         [
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\Scene_Data\Framebuffers\Framebuffer.cpp(116,39): warning C4244:             T=float
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\Scene_Data\Framebuffers\Framebuffer.cpp(116,39): warning C4244:         ]
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\Scene_Data\Framebuffers\Framebuffer.cpp(267,92): warning C4244: 'argument': conversion from 'T' to 'GLsizei', possible loss of data
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\Scene_Data\Framebuffers\Framebuffer.cpp(267,92): warning C4244:         with
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\Scene_Data\Framebuffers\Framebuffer.cpp(267,92): warning C4244:         [
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\Scene_Data\Framebuffers\Framebuffer.cpp(267,92): warning C4244:             T=float
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\Scene_Data\Framebuffers\Framebuffer.cpp(267,92): warning C4244:         ]
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\Scene_Data\Framebuffers\Framebuffer.cpp(267,67): warning C4244: 'argument': conversion from 'T' to 'GLsizei', possible loss of data
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\Scene_Data\Framebuffers\Framebuffer.cpp(267,67): warning C4244:         with
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\Scene_Data\Framebuffers\Framebuffer.cpp(267,67): warning C4244:         [
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\Scene_Data\Framebuffers\Framebuffer.cpp(267,67): warning C4244:             T=float
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\Scene_Data\Framebuffers\Framebuffer.cpp(267,67): warning C4244:         ]
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\Scene_Data\Framebuffers\Framebuffer.cpp(289,88): warning C4244: 'argument': conversion from 'T' to 'GLsizei', possible loss of data
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\Scene_Data\Framebuffers\Framebuffer.cpp(289,88): warning C4244:         with
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\Scene_Data\Framebuffers\Framebuffer.cpp(289,88): warning C4244:         [
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\Scene_Data\Framebuffers\Framebuffer.cpp(289,88): warning C4244:             T=float
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\Scene_Data\Framebuffers\Framebuffer.cpp(289,88): warning C4244:         ]
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\Scene_Data\Framebuffers\Framebuffer.cpp(289,65): warning C4244: 'argument': conversion from 'T' to 'GLsizei', possible loss of data
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\Scene_Data\Framebuffers\Framebuffer.cpp(289,65): warning C4244:         with
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\Scene_Data\Framebuffers\Framebuffer.cpp(289,65): warning C4244:         [
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\Scene_Data\Framebuffers\Framebuffer.cpp(289,65): warning C4244:             T=float
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\Scene_Data\Framebuffers\Framebuffer.cpp(289,65): warning C4244:         ]
+  AssimpObj.cpp
+  Cube.cpp
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\Scene_Data\Objects\Cube.cpp(21,46): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+  Plane.cpp
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\Scene_Data\Objects\Plane.cpp(17,45): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+  SkyBox.cpp
+  Terrain.cpp
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\Scene_Data\Objects\Terrain.cpp(1,10): error C1083: Cannot open include file: 'Terrain.h': No such file or directory
+  stb_image.cpp
+  TextureManager.cpp
+  ObjectViewer.cpp
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\include\Inputs&Cameras\InputHandler.h(65,30): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+  (compiling source file 'src/Scene_Handling/ObjectViewer.cpp')
+  
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\include\Inputs&Cameras\InputHandler.h(66,31): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+  (compiling source file 'src/Scene_Handling/ObjectViewer.cpp')
+  
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\Scene_Handling\ObjectViewer.cpp(165,39): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\Scene_Handling\ObjectViewer.cpp(165,39): warning C4244:         with
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\Scene_Handling\ObjectViewer.cpp(165,39): warning C4244:         [
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\Scene_Handling\ObjectViewer.cpp(165,39): warning C4244:             T=float
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\Scene_Handling\ObjectViewer.cpp(165,39): warning C4244:         ]
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\Scene_Handling\ObjectViewer.cpp(205,57): warning C4244: 'argument': conversion from 'unsigned __int64' to 'float', possible loss of data
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\Scene_Handling\ObjectViewer.cpp(224,56): warning C4244: 'argument': conversion from 'unsigned __int64' to 'float', possible loss of data
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\Scene_Handling\ObjectViewer.cpp(262,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  Shader.cpp
+/src/Shader.cpp(1,1): error C1083: Cannot open source file: 'src\Shader.cpp': No such file or directory
+  (compiling source file '/src/Shader.cpp')
+  
+  Shader.cpp
+  stb_image.cpp
+/src/stb_image.cpp(1,1): error C1083: Cannot open source file: 'src\stb_image.cpp': No such file or directory
+  (compiling source file '/src/stb_image.cpp')
+  
   Generating Code...
-  glad.c
-x64\Debug\imgui_impl_opengl3.obj : warning LNK4042: object specified more than once; extras ignored
-LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
-  Application_Clean.vcxproj -> C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\x64\Debug\Application_Clean.exe
+  Compiling...
+  Terrain.cpp
+/src/Terrain.cpp(1,1): error C1083: Cannot open source file: 'src\Terrain.cpp': No such file or directory
+  (compiling source file '/src/Terrain.cpp')
+  
+  TestScene.cpp
+/src/TestScene.cpp(1,1): error C1083: Cannot open source file: 'src\TestScene.cpp': No such file or directory
+  (compiling source file '/src/TestScene.cpp')
+  
+  Texture.cpp
+/src/Texture.cpp(1,1): error C1083: Cannot open source file: 'src\Texture.cpp': No such file or directory
+  (compiling source file '/src/Texture.cpp')
+  
+  WindowManager.cpp
+/src/WindowManager.cpp(1,1): error C1083: Cannot open source file: 'src\WindowManager.cpp': No such file or directory
+  (compiling source file '/src/WindowManager.cpp')
+  
+  WindowManager.cpp
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\include\Inputs&Cameras\InputHandler.h(65,30): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+  (compiling source file 'src/Windows/WindowManager.cpp')
+  
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\include\Inputs&Cameras\InputHandler.h(66,31): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+  (compiling source file 'src/Windows/WindowManager.cpp')
+  
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\Windows\WindowManager.cpp(34,37): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\Windows\WindowManager.cpp(34,31): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\Windows\WindowManager.cpp(40,42): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\Windows\WindowManager.cpp(40,33): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\the2n\Documents\MyDmu Yr3\Term 2\Advanced Shader Programming\Application_Clean\src\Windows\WindowManager.cpp(106,33): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  Generating Code...

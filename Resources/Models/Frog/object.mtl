@@ -10,9 +10,9 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd	xxxxArmorBack_albedo.jpg
-map_Bump	xxxxArmorBack_normal.png
-map_Ks	xxxxArmorBack_roughness.jpg
+map_Kd	xxxxTextures/ArmorBack_albedo.jpg
+map_Bump	xxxxTextures/ArmorBack_normal.png
+map_Ks	xxxxTextures/ArmorBack_roughness.jpg
 
 newmtl Arms2
 Ns 499.999969
@@ -23,9 +23,9 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd	xxxxArms_albedo.jpg
-map_Bump	xxxxArms_normal.png
-map_Ks	xxxxArms_roughness.jpg
+map_Kd	xxxxTextures/Arms_albedo.jpg
+map_Bump	xxxxTextures/Arms_normal.png
+map_Ks	xxxxTextures/Arms_roughness.jpg
 
 newmtl Belt2
 Ns 499.999969
@@ -36,9 +36,9 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd	xxxxBelt_albedo.jpg
-map_Bump	xxxxBelt_normal.png
-map_Ks	xxxxBelt_roughness.jpg
+map_Kd	xxxxTextures/Belt_albedo.jpg
+map_Bump	xxxxTextures/Belt_normal.png
+map_Ks	xxxxTextures/Belt_roughness.jpg
 
 newmtl Body2
 Ns 499.999969
@@ -49,9 +49,9 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd	xxxxBody_albedo.jpg
-map_Bump	xxxxBody_normal.png
-map_Ks	xxxxBody_roughness.jpg
+map_Kd	xxxxTextures/Body_albedo.jpg
+map_Bump	xxxxTextures/Body_normal.png
+map_Ks	xxxxTextures/Body_roughness.jpg
 
 newmtl CapeRivot_low1
 Ns 20.000006
@@ -62,9 +62,9 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd	xxxxCape_albedo.jpg
-map_Bump	xxxxCape_normal.png
-map_Ks	xxxxCape_roughness.jpg
+map_Kd	xxxxTextures/Cape_albedo.jpg
+map_Bump	xxxxTextures/Cape_normal.png
+map_Ks	xxxxTextures/Cape_roughness.jpg
 
 newmtl Cape_low1
 Ns 20.000006
@@ -75,9 +75,9 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd	xxxxCape_albedo.jpg
-map_Bump	xxxxCape_normal.png
-map_Ks	xxxxCape_roughness.jpg
+map_Kd	xxxxTextures/Cape_albedo.jpg
+map_Bump	xxxxTextures/Cape_normal.png
+map_Ks	xxxxTextures/Cape_roughness.jpg
 
 newmtl ChestArmorFront2
 Ns 499.999969
@@ -88,9 +88,9 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd	xxxxChestArmorFront_albedo.jpg
-map_Bump	xxxxChestArmorFront_normal.png
-map_Ks	xxxxChestArmorFront_roughness.jpg
+map_Kd	xxxxTextures/ChestArmorFront_albedo.jpg
+map_Bump	xxxxTextures/ChestArmorFront_normal.png
+map_Ks	xxxxTextures/ChestArmorFront_roughness.jpg
 
 newmtl Extras2
 Ns 499.999969
@@ -101,9 +101,9 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd	xxxxExtras_albedo.jpg
-map_Bump	xxxxExtras_normal.png
-map_Ks	xxxxExtras_roughness.jpg
+map_Kd	xxxxTextures/Extras_albedo.jpg
+map_Bump	xxxxTextures/Extras_normal.png
+map_Ks	xxxxTextures/Extras_roughness.jpg
 
 newmtl Face2
 Ns 499.999969
@@ -114,7 +114,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.550000
 d 1.000000
 illum 2
-map_Ks	xxxxFace_roughness.jpg
+map_Ks	xxxxTextures/Face_roughness.jpg
 
 newmtl Gloves2
 Ns 499.999969
@@ -125,8 +125,8 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd	xxxxGloves_albedo.jpg
-map_Bump	xxxxGloves_normal.png
+map_Kd	xxxxTextures/Gloves_albedo.jpg
+map_Bump	xxxxTextures/Gloves_normal.png
 
 newmtl Legs2
 Ns 499.999969
@@ -137,7 +137,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd	xxxxLegs_albedo.jpg
+map_Kd	xxxxTextures/Legs_albedo.jpg
 
 newmtl MI_EyeRefractive_Inst_L2
 Ns 499.999969
@@ -148,7 +148,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Bump	xxxxMI_EyeRefractive_Inst_L2_normal.png
+map_Bump	xxxxTextures/MI_EyeRefractive_Inst_L2_normal.png
 
 newmtl MI_EyeRefractive_Inst_R2
 Ns 499.999969
@@ -159,7 +159,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Bump	xxxxMI_EyeRefractive_Inst_R2_normal.png
+map_Bump	xxxxTextures/MI_EyeRefractive_Inst_R2_normal.png
 
 newmtl Pants2
 Ns 499.999969
@@ -170,9 +170,9 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd	xxxxPants_albedo.jpg
-map_Bump	xxxxPants_normal.png
-map_Ks	xxxxPants_roughness.jpg
+map_Kd	xxxxTextures/Pants_albedo.jpg
+map_Bump	xxxxTextures/Pants_normal.png
+map_Ks	xxxxTextures/Pants_roughness.jpg
 
 newmtl Sack1
 Ns 200.000000
@@ -183,9 +183,9 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd	xxxxSack_albedo.jpg
-map_Bump	xxxxSack_normal.png
-map_Ks	xxxxSack_roughness.jpg
+map_Kd	xxxxTextures/Sack_albedo.jpg
+map_Bump	xxxxTextures/Sack_normal.png
+map_Ks	xxxxTextures/Sack_roughness.jpg
 
 newmtl Scarf2
 Ns 499.999969
@@ -196,8 +196,8 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd	xxxxScarf_albedo.jpg
-map_Bump	xxxxScarf_normal.png
+map_Kd	xxxxTextures/Scarf_albedo.jpg
+map_Bump	xxxxTextures/Scarf_normal.png
 
 newmtl Sheath1
 Ns 200.000000
@@ -218,8 +218,8 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd	xxxxShield_albedo.jpg
-map_Bump	xxxxShield_normal.png
+map_Kd	xxxxTextures/Shield_albedo.jpg
+map_Bump	xxxxTextures/Shield_normal.png
 
 newmtl Shoes2
 Ns 499.999969
@@ -230,8 +230,8 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Bump	xxxxShoes_normal.png
-map_Ks	xxxxShoes_roughness.jpg
+map_Bump	xxxxTextures/Shoes_normal.png
+map_Ks	xxxxTextures/Shoes_roughness.jpg
 
 newmtl Sword
 Ns 200.000000
@@ -242,8 +242,8 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd	xxxxSword_albedo.jpg
-map_Ks	xxxxSword_roughness.jpg
+map_Kd	xxxxTextures/Sword_albedo.jpg
+map_Ks	xxxxTextures/Sword_roughness.jpg
 
 newmtl lacrima1_lambert20SG6
 Ns 499.999969

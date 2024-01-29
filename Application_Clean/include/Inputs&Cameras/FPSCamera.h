@@ -18,23 +18,14 @@ public:
 	void attachHandler(GLFWwindow* W, std::shared_ptr<InputHandler> H) override;
 
 	bool isTorch = true;
-	bool eBloom = true;
-	bool eTone = true;
-	bool eGrayscale = false;
-	bool eInverse = false;
-	bool eGamma = false;
-	bool eDirectional = true;
-	bool ePointLight = true;
-	bool eSpotLight = true;
-	bool eRimming = false;
-	bool eLightsVisible = true;
-	bool eDirectionalSM = true;
 
 private:
 
 	float m_speed;       // camera speed
 	float m_sensitivity; // mouse sensitivity
 	float m_pitchContrain; // don't allow pitch to go above/below 90 otherwise screen flips
+
+	
 
 	GLFWwindow* m_window;
 	std::shared_ptr<InputHandler> m_handler;

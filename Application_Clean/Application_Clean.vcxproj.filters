@@ -18,22 +18,43 @@
     <ClCompile Include="src\EntryPoint.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\WindowManager.cpp">
+    <ClCompile Include="src\Scene_Handling\ObjectViewer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\InputHandler.cpp">
+    <ClCompile Include="src\Inputs&amp;Cameras\FPSCamera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\glad.c">
+    <ClCompile Include="src\Globals\glad.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\FPSCamera.cpp">
+    <ClCompile Include="src\Inputs&amp;Cameras\InputHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Shader.cpp">
+    <ClCompile Include="src\Shaders\Shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Dependancies\include\ImGui\imgui_impl_opengl3.cpp">
+    <ClCompile Include="src\Windows\WindowManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene_Data\Objects\Cube.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene_Data\Textures\TextureManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene_Data\Textures\stb_image.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene_Data\Framebuffers\Framebuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene_Data\Objects\Plane.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene_Data\Objects\SkyBox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene_Data\Objects\AssimpObj.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\IMgui\imgui.cpp">
@@ -42,10 +63,10 @@
     <ClCompile Include="src\IMgui\imgui_demo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\IMgui\imgui_impl_glfw.cpp">
+    <ClCompile Include="src\IMgui\imgui_draw.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\IMgui\imgui_draw.cpp">
+    <ClCompile Include="src\IMgui\imgui_impl_glfw.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\IMgui\imgui_impl_opengl3.cpp">
@@ -57,51 +78,81 @@
     <ClCompile Include="src\IMgui\imgui_widgets.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\TestScene.cpp">
+    <ClCompile Include="src\glad.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Gui.cpp">
+    <ClCompile Include="src\Inputs&amp;Cameras\Gui.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Texture.cpp">
+    <ClCompile Include="src\Scene_Data\Objects\Terrain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\stb_image.cpp">
+    <ClCompile Include="src\Scene_Data\Resources\ResourceManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Model.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Mesh.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Terrain.cpp">
+    <ClCompile Include="include\IMGUI\imgui_stdlib.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\WindowManager.h">
+    <ClInclude Include="include\Inputs&amp;Cameras\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Shader.h">
+    <ClInclude Include="include\Inputs&amp;Cameras\FPSCamera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Scene.h">
+    <ClInclude Include="include\Globals\GLFWinputCodes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\InputHandler.h">
+    <ClInclude Include="include\Inputs&amp;Cameras\InputHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Camera.h">
+    <ClInclude Include="include\Globals\Properties.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Properties.h">
+    <ClInclude Include="include\Scene_Handling\ObjectViewer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\FPSCamera.h">
+    <ClInclude Include="include\Scene_Handling\Scene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\GLFWinputCodes.h">
+    <ClInclude Include="include\Shaders\Shader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Windows\WindowManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Scene_Data\Lights\LightsBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Scene_Data\Objects\BaseObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Scene_Data\Objects\Cube.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Scene_Data\Textures\TextureManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Downloads\stbImage\stbImage\stb_image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Scene_Data\Textures\stb_image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Scene_Data\Framebuffers\Framebuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Scene_Data\Objects\Plane.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Scene_Data\Objects\Terrain.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Scene_Data\Objects\Skybox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Scene_Data\Objects\AssimpObj.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\IMGUI\imconfig.h">
@@ -116,6 +167,9 @@
     <ClInclude Include="include\IMGUI\imgui_impl_opengl3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\IMGUI\imgui_impl_opengl3_loader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="include\IMGUI\imgui_internal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -128,28 +182,13 @@
     <ClInclude Include="include\IMGUI\imstb_truetype.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\IMGUI\imgui_impl_opengl3_loader.h">
+    <ClInclude Include="include\Inputs&amp;Cameras\Gui.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\TestScene.h">
+    <ClInclude Include="include\Scene_Data\Resources\ResourceManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Gui.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Texture.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\stb_image.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Model.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Mesh.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Terrain.h">
+    <ClInclude Include="include\IMGUI\imgui_stdlib.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

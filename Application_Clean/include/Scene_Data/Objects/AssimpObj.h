@@ -43,8 +43,9 @@ public:
     std::vector<Mesh> meshes;
     std::string directory;
     bool gammaCorrection;
+    bool isStatic;
 
-    Model(std::string path, bool flip = false, bool gamma = false);
+    Model(std::string path, bool flip = false, bool isstatic = false, bool gamma = false);
     void setTransform(glm::mat4 model, glm::vec3 translation, glm::vec3 rotation = glm::vec3(0.0f), float rate = 1.f, glm::vec3 scale = glm::vec3(1.0f));
     glm::mat4 getTransform() { return modelTransform; };
     void Draw(std::shared_ptr<Shader> shader);
