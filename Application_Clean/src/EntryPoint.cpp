@@ -1,6 +1,6 @@
-#include "WindowManager.h"
-#include "Properties.h"
-#include "TestScene.h" 
+#include "Windows/WindowManager.h"
+#include "Globals/Properties.h"
+#include "Scene_Handling/ObjectViewer.h"
 
 /*
 Entry point for App
@@ -11,8 +11,8 @@ Runs game loop
 
 void main() {
 
-	WindowManager windowMan("Application Window", SCR_WIDTH, SCR_HEIGHT, true);  // name, width, height, vSync,
-	TestScene scene(windowMan.getWindow(), windowMan.getHandler()); // pass GLFWwindow and Input Handler to scene
+	WindowManager windowMan("IMAT3906 Assessed Program", SCR_WIDTH, SCR_HEIGHT, true);  // name, width, height, vSync,
+	ObjectViewer scene(windowMan.getWindow(), windowMan.getHandler()); // pass GLFWwindow and Input Handler to scene
 
 	while (!glfwWindowShouldClose(windowMan.getWindow())) {
 
