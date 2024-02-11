@@ -46,7 +46,9 @@ public:
     bool isStatic;
 
     Model(std::string path, bool flip = false, bool isstatic = false, bool gamma = false);
+    Model(std::vector<Mesh> in_meshes, std::vector<Texture> in_textures, std::string in_directory, bool isstatic = false, bool gamma = false);
     void setTransform(glm::mat4 model, glm::vec3 translation, glm::vec3 rotation = glm::vec3(0.0f), float rate = 1.f, glm::vec3 scale = glm::vec3(1.0f));
+    void setTransform(glm::vec3 T, glm::vec3 R, glm::vec3 S);
     glm::mat4 getTransform() { return modelTransform; };
     void Draw(std::shared_ptr<Shader> shader);
 

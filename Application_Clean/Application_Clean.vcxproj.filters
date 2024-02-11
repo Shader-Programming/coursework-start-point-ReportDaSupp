@@ -84,9 +84,6 @@
     <ClCompile Include="src\Inputs&amp;Cameras\Gui.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Scene_Data\Objects\Terrain.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Scene_Data\Resources\ResourceManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -144,9 +141,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Scene_Data\Objects\Plane.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Scene_Data\Objects\Terrain.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Scene_Data\Objects\Skybox.h">

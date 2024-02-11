@@ -12,11 +12,13 @@ struct Resources {
 	std::vector<std::shared_ptr<BaseObject>> m_sceneObjects;
 	std::vector<Cube> m_lights;
 	std::vector<Model> m_models;
+	std::shared_ptr<Model> m_terrain;
 
 	SpotLight m_torch;
 
 	std::unordered_map<std::string, std::shared_ptr<Shader>> m_shaders;
 
+	bool eWireframe = false;
 	bool eBloom = true;
 	bool eTone = true;
 	bool eGrayscale = false;
@@ -38,8 +40,9 @@ public:
 	~ResourceManager() {};
 	std::shared_ptr<Resources> getResourcesPtr() { return resources; }
 
-	void initAssimpModel(const char* fp, bool isFlip, bool isStatic, glm::vec3 trans, glm::vec3 rotate, float rate, glm::vec3 scale);
-	void initSceneObject(std::shared_ptr<BaseObject> obj, glm::vec3 position, glm::vec3 rotation, float rate, glm::vec3 axis, float scale);
+	void initAssimpModel(const char* fp, bool isFlip, bool isStatic, glm::vec3 trans, glm::vec3 rotate, glm::vec3 scale);
+	void initTerrain(const char* fp, bool isFlip, bool isStatic, glm::vec3 trans, glm::vec3 rotate, glm::vec3 scale);
+	void initSceneObject(std::shared_ptr<BaseObject> obj, glm::vec3 position, glm::vec3 rotation, glm::vec3 scale);
 	void initDirectionalLight(glm::vec3 color, glm::vec3 direction, float ambient);
 	void initPointLight(glm::vec3 color, glm::vec3 position, glm::vec3 attenuation);
 	void initSpotLight(glm::vec3 color, glm::vec3 position, glm::vec3 direction, glm::vec3 attenuation, float cutOff, float outerCutoff);

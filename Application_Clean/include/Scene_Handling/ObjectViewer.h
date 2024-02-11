@@ -20,6 +20,7 @@ private:
 	void processInput(float dt);
 	void render(float dt);
 	void renderGeometry(std::shared_ptr<Shader> Shader, float dt);
+	void renderTerrain(std::shared_ptr<Shader> Shader, float dt);
 	void renderLighting(std::shared_ptr<Shader> Shader, float dt);
 	void setMatrixUniforms(std::shared_ptr<Shader> Shader);
 	void setSMUniforms(std::shared_ptr<Shader> Shader);

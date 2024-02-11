@@ -32,10 +32,6 @@ void ObjectViewer::update(float dt)
 	m_ColorFBO.bindDefault();
 	m_ColorFBO.clearScreen();
 
-	for (auto& model : resources->m_models)
-		if (model.isStatic)
-			model.setTransform(model.getTransform(), glm::vec3(0.0f), glm::vec3(0.0f, 1.f, 0.0f), dt*45.f);
-
 	if (m_camera->isTorch)
 	{
 		resources->m_torch.position = m_camera->getPosition();
@@ -67,24 +63,34 @@ void  ObjectViewer::processInput(float dt)
 
 void ObjectViewer::render(float dt)
 {
+	if (resources->eWireframe) glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	else glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
 
-	// Main rendering pass
 	glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
-	resources->m_shaders["GeometryShader"]->use();
+
+	// Terrain Geometry Pass
+	resources->m_shaders["TerrainShader"]->use();
 	m_ColorFBO.bindGBuffer();
 	m_ColorFBO.clearScreen();
+
+	// Geometry Rendering
+	this->setMatrixUniforms(resources->m_shaders["TerrainShader"]);
+	this->renderTerrain(resources->m_shaders["TerrainShader"], dt);
+
+
+	// Core Asset Rendering Pass
+	resources->m_shaders["GeometryShader"]->use();
 
 	// Geometry Rendering
 	this->setMatrixUniforms(resources->m_shaders["GeometryShader"]);
 	this->renderGeometry(resources->m_shaders["GeometryShader"], dt);
 
 	glDisable(GL_CULL_FACE);
-
-	glEnable(GL_DEPTH_TEST);
 	
 	if (resources->eDirectionalSM)
 	{
@@ -96,6 +102,8 @@ void ObjectViewer::render(float dt)
 		this->setSMUniforms(resources->m_shaders["DShadowMapShader"]);
 		this->renderGeometry(resources->m_shaders["DShadowMapShader"], dt);
 	}
+
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 	glDisable(GL_DEPTH_TEST);
 
@@ -141,6 +149,15 @@ void ObjectViewer::renderGeometry(std::shared_ptr<Shader> Shader, float dt)
 
 }
 
+void ObjectViewer::renderTerrain(std::shared_ptr<Shader> Shader, float dt)
+{
+
+	Shader->use();
+	Shader->setMat4("model", resources->m_terrain->getTransform());
+	resources->m_terrain->Draw(Shader);
+
+}
+
 void ObjectViewer::renderLighting(std::shared_ptr<Shader> Shader, float dt)
 {
 	Shader->use();
@@ -154,6 +171,7 @@ void ObjectViewer::renderLighting(std::shared_ptr<Shader> Shader, float dt)
 
 	for (auto& Light : resources->m_sceneObjects)
 	{
+		glm::mat4 temp = Light->getTransform();
 		Light->setMaterialValues(Shader);
 		Light->render();
 	}
@@ -175,15 +193,15 @@ void ObjectViewer::setMatrixUniforms(std::shared_ptr<Shader> Shader)
 
 void ObjectViewer::setSMUniforms(std::shared_ptr<Shader> Shader)
 {
-	glm::vec3 lightPos = glm::vec3((5, 20, 5));
+	glm::vec3 lightPos = glm::vec3((5, 25, 5));
 	glm::vec3 lightDir = resources->m_directionalLight.direction;
 
-	float left = -15.0f;
-	float right = 15.0f;
-	float bottom = -15.0f;
-	float top = 15.0f;
+	float left = -20.0f;
+	float right = 20.0f;
+	float bottom = -20.0f;
+	float top = 20.0f;
 	float near_plane = 0.1f;
-	float far_plane = 30.f;
+	float far_plane = 50.f;
 
 	glm::mat4 lightProjection = glm::ortho(left, right, bottom, top, near_plane, far_plane);
 	glm::mat4 lightView = glm::lookAt(lightPos, lightPos + lightDir, glm::vec3(0.0f, 1.0f, 0.0f));

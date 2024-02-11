@@ -3,6 +3,8 @@
 #include <memory>
 #include <vector>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/glm.hpp>
+#include <glm/gtc/quaternion.hpp>
 
 /*
 Base Class For Object Definitions
@@ -17,6 +19,14 @@ public:
 	virtual void bindTextures() = 0;
 	virtual void render() = 0;
 	void resetTransform() { m_transform = glm::mat4(1.0f); }
+	//void setTransform(glm::mat4 trans) { m_transform = trans; }
+	virtual void setTransform(glm::vec3 T, glm::vec3 R, glm::vec3 S) 
+	{
+		glm::mat4 t = glm::translate(glm::mat4(1.0f), T);
+		glm::mat4 r = glm::mat4_cast(glm::quat(R));
+		glm::mat4 s = glm::scale(glm::mat4(1.0f), S);
+		m_transform = t * r * s;
+	}
 
 	virtual uint32_t getVAO() { return m_VAO; };
 	virtual glm::mat4& getTransform() { return m_transform; };

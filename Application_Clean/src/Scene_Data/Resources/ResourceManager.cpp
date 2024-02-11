@@ -5,16 +5,17 @@ ResourceManager::ResourceManager()
 {
 	resources.reset(new Resources);
 
-	resources->m_shaders["GeometryShader"]	=	std::make_shared<Shader>("..\\Shaders\\Scene\\GeometryPass.vert",			"..\\Shaders\\Scene\\GeometryPass.frag");
-	resources->m_shaders["LightShader"]		=	std::make_shared<Shader>("..\\Shaders\\Scene\\Light.vert",					"..\\Shaders\\Scene\\Light.frag");
-	resources->m_shaders["LightingShader"]	=	std::make_shared<Shader>("..\\Shaders\\Scene\\LightingShader.vert",			"..\\Shaders\\Scene\\LightingShader.frag");
+	resources->m_shaders["TerrainShader"] = std::make_shared<Shader>("..\\Shaders\\Scene\\TerrainPass.glsl");
+	resources->m_shaders["GeometryShader"]	=	std::make_shared<Shader>("..\\Shaders\\Scene\\GeometryPass.glsl");
+	resources->m_shaders["LightShader"]		=	std::make_shared<Shader>("..\\Shaders\\Scene\\Light.glsl");
+	resources->m_shaders["LightingShader"]	=	std::make_shared<Shader>("..\\Shaders\\Scene\\LightingShader.glsl");
 	resources->m_shaders["PPShader"]		=	std::make_shared<Shader>("..\\Shaders\\Post Processing\\HDRShader.vert",	"..\\Shaders\\Post Processing\\HDRShader.frag");
 	resources->m_shaders["DShadowMapShader"]	=	std::make_shared<Shader>("..\\Shaders\\Post Processing\\DShadowMap.vert",	"..\\Shaders\\Post Processing\\DShadowMap.frag");
 
-	this->initAssimpModel("../Resources/Models/Backpack/backpack.obj", false, true, glm::vec3(2.0f, 2.0f, 0.0f), glm::vec3(0.f, 1.f, 0.f), 0.0f, glm::vec3(1.f, 1.f, 1.f));
-	this->initAssimpModel("../Resources/Models/Frog/object.obj", true, true, glm::vec3(-2.0f, 0.1f, 0.0f), glm::vec3(0.f, 1.f, 0.f), 0.f, glm::vec3(3.f, 3.f, 3.f));
-	this->initAssimpModel("../Resources/Models/Floor/object.obj", true, false, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.f, 1.f, 0.f), 0.f, glm::vec3(10.f, 0.001f, 10.f));
-	this->initAssimpModel("../Resources/Models/Floor/object.obj", true, false, glm::vec3(0.0f, 10.0f, -10.0f), glm::vec3(1.f, 0.f, 0.f), 90.f, glm::vec3(10.f, 0.001f, 10.f));
+	//this->initAssimpModel("../Resources/Models/Backpack/backpack.obj", false, true, glm::vec3(2.0f, 2.0f, 0.0f), glm::vec3(0.f, 1.f, 0.f), 0.0f, glm::vec3(1.f, 1.f, 1.f));
+	this->initAssimpModel("../Resources/Models/Frog/object.obj", true, true, glm::vec3(-2.0f, 0.1f, 0.0f), glm::vec3(0.f, 0.f, 0.f), glm::vec3(3.f, 3.f, 3.f));
+	this->initTerrain("../Resources/Models/Plane/Plane.obj", true, false, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.f, 0.f, 0.f), glm::vec3(50.f, 1.f, 50.f));
+	//this->initAssimpModel("../Resources/Models/Floor/object.obj", true, false, glm::vec3(0.0f, 10.0f, -10.0f), glm::vec3(1.f, 0.f, 0.f), 90.f, glm::vec3(10.f, 0.001f, 10.f));
 
 	this->initDirectionalLight(glm::vec3(0.3, 0.3, 0.3), glm::vec3(-0.5f, -1.0f, -0.5f), 0.03f);
 
@@ -37,24 +38,28 @@ ResourceManager::ResourceManager()
 	for (auto light : resources->m_pointLights)
 	{
 		std::shared_ptr<Cube> temp = std::make_shared<Cube>(light.color, 16.f, 0.8f);
-		this->initSceneObject(temp, light.position, glm::vec3(1.f, 1.f, 1.f), 0.f, glm::vec3(1.f), 0.5f);
+		this->initSceneObject(temp, light.position, glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.5f, 0.5f, 0.5f));
 	}
 }
 
-void ResourceManager::initAssimpModel(const char* fp, bool isFlip, bool isStatic, glm::vec3 trans, glm::vec3 rotate, float rate, glm::vec3 scale)
+void ResourceManager::initAssimpModel(const char* fp, bool isFlip, bool isStatic, glm::vec3 trans, glm::vec3 rotate, glm::vec3 scale)
 {
 	Model temp(fp, isFlip);
-	temp.setTransform(glm::mat4(1.0f), trans, rotate, rate, scale);
+	temp.setTransform(trans, rotate, scale);
 	temp.isStatic = isStatic;
 	resources->m_models.push_back(temp);
 }
 
-void ResourceManager::initSceneObject(std::shared_ptr<BaseObject> obj, glm::vec3 position, glm::vec3 rotation, float rate, glm::vec3 axis, float scale)
+void ResourceManager::initTerrain(const char* fp, bool isFlip, bool isStatic, glm::vec3 trans, glm::vec3 rotate, glm::vec3 scale)
 {
-	obj->resetTransform();
-	obj->scale(scale, axis);
-	obj->rotate(rate, rotation);
-	obj->translate(position);
+	resources->m_terrain = std::make_shared <Model>(fp, isFlip);
+	resources->m_terrain->setTransform(trans, rotate, scale);
+	resources->m_terrain->isStatic = isStatic;
+}
+
+void ResourceManager::initSceneObject(std::shared_ptr<BaseObject> obj, glm::vec3 position, glm::vec3 rotation, glm::vec3 scale)
+{
+	obj->setTransform(position, rotation, scale);
 	resources->m_sceneObjects.push_back(obj);
 	
 }

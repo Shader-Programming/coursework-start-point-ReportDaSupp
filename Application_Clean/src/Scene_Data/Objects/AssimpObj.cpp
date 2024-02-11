@@ -1,6 +1,7 @@
 #include "Scene_Data/Objects/AssimpObj.h"
 #include <iostream>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/quaternion.hpp>
 
 Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures)
 {
@@ -140,7 +141,14 @@ void Model::setTransform(glm::mat4 model, glm::vec3 translation, glm::vec3 rotat
     modelTransform = glm::rotate(modelTransform, glm::radians(rate), rotation);
     modelTransform = glm::scale(modelTransform, scale);
     
-    
+}
+
+void Model::setTransform(glm::vec3 T, glm::vec3 R, glm::vec3 S)
+{
+    glm::mat4 t = glm::translate(glm::mat4(1.0f), T);
+    glm::mat4 r = glm::mat4_cast(glm::quat(R));
+    glm::mat4 s = glm::scale(glm::mat4(1.0f), S);
+    modelTransform = t * r * s;
 }
 
 void Model::Draw(std::shared_ptr<Shader> shader)

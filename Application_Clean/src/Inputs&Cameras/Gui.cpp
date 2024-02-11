@@ -45,14 +45,13 @@ void Gui::drawGui()
                 ImGui::InputText("Asset Filepath", &guiVariables.localAssetPath);
                 ImGui::InputFloat3("Position", &guiVariables.localAssetPosition.x);
                 ImGui::InputFloat3("Rotation", &guiVariables.localAssetRotation.x);
-                ImGui::InputFloat("Rotation Angle", &guiVariables.localAssetRotation.x);
                 ImGui::InputFloat3("Scale", &guiVariables.localAssetScale.x);
                 ImGui::Checkbox("is Flipped Textures", &guiVariables.texFlipped);
                 ImGui::Checkbox("is Asset Static", &guiVariables.isStatic);
                 ImGui::Text("");
                 if (ImGui::Button("Load Asset"))
                 {
-                    resourceManager->initAssimpModel(("../Resources/Models" + guiVariables.localAssetPath).c_str(), guiVariables.texFlipped, guiVariables.isStatic, guiVariables.localAssetPosition, guiVariables.localAssetRotation, guiVariables.localRotateAngle, guiVariables.localAssetScale);
+                    resourceManager->initAssimpModel(("../Resources/Models" + guiVariables.localAssetPath).c_str(), guiVariables.texFlipped, guiVariables.isStatic, guiVariables.localAssetPosition, guiVariables.localAssetRotation, guiVariables.localAssetScale);
                 }
                 
             ImGui::EndMenu();
@@ -71,10 +70,11 @@ void Gui::drawGui()
                 ImGui::Checkbox("Render Lights", &resources->eLightsVisible);
                 ImGui::Text("");
                 ImGui::TextColored(SubTitleColor, "Post-Proccessing");
-                ImGui::Checkbox("Shadows", &resources->eDirectionalSM);
+                ImGui::Checkbox("Dir Shadows", &resources->eDirectionalSM);
                 ImGui::Checkbox("Bloom", &resources->eBloom);
                 ImGui::Checkbox("Tone", &resources->eTone);
                 ImGui::Checkbox("Gamma", &resources->eGamma);
+                ImGui::Checkbox("Wireframe", &resources->eWireframe);
                 ImGui::Checkbox("Grayscale", &resources->eGrayscale);
                 ImGui::Checkbox("Inverse", &resources->eInverse);
 

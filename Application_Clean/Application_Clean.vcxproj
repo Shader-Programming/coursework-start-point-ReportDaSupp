@@ -161,7 +161,6 @@
     <ClCompile Include="src\Scene_Data\Objects\Cube.cpp" />
     <ClCompile Include="src\Scene_Data\Objects\Plane.cpp" />
     <ClCompile Include="src\Scene_Data\Objects\SkyBox.cpp" />
-    <ClCompile Include="src\Scene_Data\Objects\Terrain.cpp" />
     <ClCompile Include="src\Scene_Data\Resources\ResourceManager.cpp" />
     <ClCompile Include="src\Scene_Data\Textures\stb_image.cpp" />
     <ClCompile Include="src\Scene_Data\Textures\TextureManager.cpp" />
@@ -198,7 +197,6 @@
     <ClInclude Include="include\Scene_Data\Objects\Cube.h" />
     <ClInclude Include="include\Scene_Data\Objects\Plane.h" />
     <ClInclude Include="include\Scene_Data\Objects\Skybox.h" />
-    <ClInclude Include="include\Scene_Data\Objects\Terrain.h" />
     <ClInclude Include="include\Scene_Data\Resources\ResourceManager.h" />
     <ClInclude Include="include\Scene_Data\Textures\stb_image.h" />
     <ClInclude Include="include\Scene_Data\Textures\TextureManager.h" />

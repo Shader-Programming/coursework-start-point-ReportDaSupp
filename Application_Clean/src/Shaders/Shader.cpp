@@ -3,6 +3,10 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
+#include <string>
+#include <array>
+#include <glm/gtc/type_ptr.hpp>
+#include <vector>
 
 Shader::Shader(const char* vertexPath, const char* fragmentPath)
 {
@@ -147,6 +151,87 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath, const char* geo
 	glDeleteShader(vertex);
 	glDeleteShader(fragment);
 	glDeleteShader(geometry);
+
+}
+
+Shader::Shader(const char* glslPath)
+{
+
+	enum Region { None = -1, Vertex = 0, Fragment, Geometry, TesselationControl, TesselationEvaluation, Compute };
+	bool v = false; bool f = false; bool g = false;
+	std::string line;
+	std::array<std::string, Region::Compute + 1> src;
+	uint32_t region = Region::None;
+
+	std::fstream handle(glslPath, std::ios::in);
+
+	if (handle.is_open())
+	{
+
+		while (getline(handle, line))
+		{
+			if (line.find("#region Vertex") != std::string::npos) { region = Region::Vertex; v = true; continue; };
+			if (line.find("#region Fragment") != std::string::npos) { region = Region::Fragment; f = true; continue; };
+			if (line.find("#region Geometry") != std::string::npos) { region = Region::Geometry; g = true; continue; };
+			if (line.find("#region TesselationControl") != std::string::npos) { region = Region::TesselationControl; continue; };
+			if (line.find("#region TesselationEvaluation") != std::string::npos) { region = Region::TesselationEvaluation; continue; };
+			if (line.find("#region Compute") != std::string::npos) { region = Region::Compute; continue; };
+			if (region != Region::None) src[region] += (line + "\n");
+		}
+
+	}
+	else
+	{
+		return;
+	}
+	handle.close();
+
+	const char* vShaderCode = src[Region::Vertex].c_str();
+	const char* gShaderCode = src[Region::Geometry].c_str();
+	const char* fShaderCode = src[Region::Fragment].c_str();
+
+	// 2. compile shaders
+	unsigned int vertex, fragment, geometry;
+	if (v)
+	{
+		// vertex shader
+		vertex = glCreateShader(GL_VERTEX_SHADER);
+		glShaderSource(vertex, 1, &vShaderCode, NULL);
+		glCompileShader(vertex);
+		checkCompileErrors(vertex, "VERTEX");
+}
+	if (f)
+	{
+		// fragment Shader
+		fragment = glCreateShader(GL_FRAGMENT_SHADER);
+		glShaderSource(fragment, 1, &fShaderCode, NULL);
+		glCompileShader(fragment);
+		checkCompileErrors(fragment, "FRAGMENT");
+	}
+	if (g)
+	{
+		// geometry Shader
+		geometry = glCreateShader(GL_GEOMETRY_SHADER);
+		glShaderSource(geometry, 1, &gShaderCode, NULL);
+		glCompileShader(geometry);
+		checkCompileErrors(geometry, "GEOMETRY");
+	}
+
+
+	// shader Program
+	ID = glCreateProgram();
+	if (v) glAttachShader(ID, vertex);
+	if (f) glAttachShader(ID, fragment);
+	if (g) glAttachShader(ID, geometry);
+
+	glLinkProgram(ID);
+	checkCompileErrors(ID, "PROGRAM");
+
+	// delete the shaders as they're linked into our program now and no longer necessery
+	if (v) glDeleteShader(vertex);
+	if (f) glDeleteShader(fragment);
+	if (g) glDeleteShader(geometry);
+	
 
 }
 

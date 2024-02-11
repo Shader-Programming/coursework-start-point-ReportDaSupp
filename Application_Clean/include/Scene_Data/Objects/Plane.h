@@ -20,6 +20,14 @@ public:
 	virtual std::vector<float> getVertices() override { return vertexData; };
 	virtual std::vector<uint32_t> getIndices() override { return indexData; };
 
+	virtual void setTransform(glm::vec3 T, glm::vec3 R, glm::vec3 S) override
+	{
+		glm::mat4 t = glm::translate(glm::mat4(1.0f), T);
+		glm::mat4 r = glm::mat4_cast(glm::quat(R));
+		glm::mat4 s = glm::scale(glm::mat4(1.0f), S);
+		m_transform = t * r * s;
+	}
+
 	virtual void translate(glm::vec3 translation) override { m_transform = glm::translate(m_transform, translation); };
 	virtual void rotate(float angle, glm::vec3 axis) override { m_transform = glm::rotate(m_transform, angle, axis); };
 	virtual void scale(float scaleFactor, glm::vec3 axis) override { m_transform = glm::scale(m_transform, (scaleFactor * axis)); };

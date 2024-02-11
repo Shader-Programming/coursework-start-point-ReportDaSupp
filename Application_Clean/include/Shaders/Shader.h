@@ -20,6 +20,7 @@ public:
 
 	Shader(const char* vertexPath, const char* fragmentPath);
 	Shader(const char* vertexPath, const char* fragmentPath, const char* geometryPath);
+	Shader(const char* glslPath);
 	void use();
 	inline unsigned int getID() const { return ID; }
 	// utility uniform functions
