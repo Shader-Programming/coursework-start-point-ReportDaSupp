@@ -76,7 +76,7 @@ void ObjectViewer::render(float dt)
 	// Terrain Geometry Pass
 	resources->m_shaders["TerrainShader"]->use();
 	m_ColorFBO.bindGBuffer();
-	m_ColorFBO.clearScreen();
+	m_ColorFBO.clearBuffers();
 
 	// Geometry Rendering
 	this->setMatrixUniforms(resources->m_shaders["TerrainShader"]);
@@ -84,24 +84,24 @@ void ObjectViewer::render(float dt)
 
 
 	// Core Asset Rendering Pass
-	resources->m_shaders["GeometryShader"]->use();
+	//resources->m_shaders["GeometryShader"]->use();
 
 	// Geometry Rendering
-	this->setMatrixUniforms(resources->m_shaders["GeometryShader"]);
-	this->renderGeometry(resources->m_shaders["GeometryShader"], dt);
+	//this->setMatrixUniforms(resources->m_shaders["GeometryShader"]);
+	//this->renderGeometry(resources->m_shaders["GeometryShader"], dt);
 
 	glDisable(GL_CULL_FACE);
 	
-	if (resources->eDirectionalSM)
+	/*if (resources->eDirectionalSM)
 	{
 		glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
 		resources->m_shaders["DShadowMapShader"]->use();
 		m_ColorFBO.bindDSMFBO();
-		m_ColorFBO.clearDepthBuffer();
+		m_ColorFBO.clearBuffers();
 
 		this->setSMUniforms(resources->m_shaders["DShadowMapShader"]);
 		this->renderGeometry(resources->m_shaders["DShadowMapShader"], dt);
-	}
+	}*/
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
@@ -111,7 +111,7 @@ void ObjectViewer::render(float dt)
 	glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
 	m_ColorFBO.bindFBO();
 	resources->m_shaders["LightingShader"]->use();
-	m_ColorFBO.clearBuffer();
+	m_ColorFBO.clearBuffers();
 	this->setMatrixUniforms(resources->m_shaders["LightingShader"]);
 	if (resources->eDirectionalSM)
 		this->setSMUniforms(resources->m_shaders["LightingShader"]);
@@ -123,16 +123,16 @@ void ObjectViewer::render(float dt)
 
 	//m_ColorFBO.bindFBO();
 	// Lighting Rendering as Cubes
-	resources->m_shaders["LightShader"]->use();
+	/*resources->m_shaders["LightShader"]->use();
 	this->setMatrixUniforms(resources->m_shaders["LightShader"]);
-	this->renderLighting(resources->m_shaders["LightShader"], dt);
+	this->renderLighting(resources->m_shaders["LightShader"], dt);*/
 
-	if (resources->eBloom)
-		m_ColorFBO.drawSampledBloom();
+	/*if (resources->eBloom)
+		m_ColorFBO.drawSampledBloom();*/
 
 	m_ColorFBO.bindDefault();
 	resources->m_shaders["PPShader"]->use();
-	m_ColorFBO.clearBuffer();
+	m_ColorFBO.clearScreen();
 	this->setPPShaderUniforms(m_ColorFBO.getActiveShader());
 	m_ColorFBO.drawFrame();
 }
@@ -153,6 +153,7 @@ void ObjectViewer::renderTerrain(std::shared_ptr<Shader> Shader, float dt)
 {
 
 	Shader->use();
+	Shader->setFloat("tessLevel", resources->tessLevel);
 	Shader->setMat4("model", resources->m_terrain->getTransform());
 	resources->m_terrain->Draw(Shader);
 
@@ -220,54 +221,40 @@ void ObjectViewer::setLightingUniforms(std::shared_ptr<Shader> Shader)
 
 	Shader->setVec3("dLight.color", resources->m_directionalLight.color);
 	Shader->setVec3("dLight.direction", resources->m_directionalLight.direction);
+	Shader->setFloat("dLight.ambient", resources->m_directionalLight.ambient);
 	
 	std::string name;
 
 	for (int i = 0; i < resources->m_pointLights.size(); i++)
 	{
-		name = std::string("pLight.color[" + std::to_string(i) + "]");
+		name = std::string("pLights[" + std::to_string(i) + "].color");
 		Shader->setVec3(name, resources->m_pointLights[i].color);
-		name = std::string("pLight.position[" + std::to_string(i) + "]");
+		name = std::string("pLights[" + std::to_string(i) + "].position");
 		Shader->setVec3(name, resources->m_pointLights[i].position);
-		name = std::string("pLight.attenuation[" + std::to_string(i) + "]");
+		name = std::string("pLights[" + std::to_string(i) + "].attenuation");
 		Shader->setVec3(name, resources->m_pointLights[i].attenuation);
 	}
-
-	Shader->setFloat("pLight.numLights", resources->m_pointLights.size());
-
-
-	name = std::string("sLight.color[0]");
-	Shader->setVec3(name, resources->m_torch.color);
-	name = std::string("sLight.position[0]");
-	Shader->setVec3(name, resources->m_torch.position);
-	name = std::string("sLight.direction[0]");
-	Shader->setVec3(name, resources->m_torch.direction);
-	name = std::string("sLight.attenuation[0]");
-	Shader->setVec3(name, resources->m_torch.attenuation);
-	name = std::string("sLight.cutOff[0]");
-	Shader->setFloat(name, resources->m_torch.cutOff);
-	name = std::string("sLight.outerCutOff[0]");
-	Shader->setFloat(name, resources->m_torch.outerCutOff);
 
 
 	for (int i = 1; i < resources->m_spotLights.size()+1; i++)
 	{
-		name = std::string("sLight.color["+ std::to_string(i) + "]");
+		name = std::string("sLights["+ std::to_string(i) + "].color");
 		Shader->setVec3(name, resources->m_spotLights[i].color);
-		name = std::string("sLight.position[" + std::to_string(i) + "]");
+		name = std::string("sLights[" + std::to_string(i) + "].position");
 		Shader->setVec3(name, resources->m_spotLights[i].position);
-		name = std::string("sLight.direction[" + std::to_string(i) + "]");
+		name = std::string("sLights[" + std::to_string(i) + "].direction");
 		Shader->setVec3(name, resources->m_spotLights[i].direction);
-		name = std::string("sLight.attenuation[" + std::to_string(i) + "]");
+		name = std::string("sLights[" + std::to_string(i) + "].attenuation");
 		Shader->setVec3(name, resources->m_spotLights[i].attenuation);
-		name = std::string("sLight.cutOff[" + std::to_string(i) + "]");
+		name = std::string("sLights[" + std::to_string(i) + "].cutOff");
 		Shader->setFloat(name, resources->m_spotLights[i].cutOff);
-		name = std::string("sLight.outerCutOff[" + std::to_string(i) + "]");
+		name = std::string("sLights[" + std::to_string(i) + "].outerCutOff");
 		Shader->setFloat(name, resources->m_spotLights[i].outerCutOff);
 	}
 
 	//Shader->setFloat("sLight.enabled", m_camera->isTorch);
-	Shader->setFloat("sLight.numLights", resources->m_spotLights.size()+1);
+	Shader->setInt("numPointLights", resources->m_pointLights.size());
+	Shader->setInt("numSpotLights", resources->m_spotLights.size());
 }
 
 void ObjectViewer::setPPShaderUniforms(std::shared_ptr<Shader> Shader)

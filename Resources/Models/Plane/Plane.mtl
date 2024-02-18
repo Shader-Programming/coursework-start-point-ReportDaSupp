@@ -13,3 +13,4 @@ illum 1
 map_Kd	xxxxTextures/Diffuse.jpg
 map_Bump	xxxxTextures/Normal.png
 map_Ks	xxxxTextures/Specular.png
+disp xxxxTextures/Displacement.png

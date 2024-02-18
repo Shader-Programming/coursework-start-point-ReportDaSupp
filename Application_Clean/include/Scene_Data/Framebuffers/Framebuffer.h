@@ -30,7 +30,8 @@ public:
 	inline void bindDSMFBO() { glBindFramebuffer(GL_FRAMEBUFFER, m_DSMFBO); };
 	inline void bindGBuffer() { glBindFramebuffer(GL_FRAMEBUFFER, m_GBuffer); };
 	inline void clearScreen() { glClearColor(0.1f, 0.1f, 0.1f, 1.0f); glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); };
-	inline void clearBuffer() { glClearColor(0.0f, 0.0f, 0.0f, 1.0f); glClear(GL_COLOR_BUFFER_BIT); };
+	inline void clearBuffers() { glClearColor(0.0f, 0.0f, 0.0f, 1.0f); glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); };
+	inline void clearColorBuffer() { glClearColor(0.0f, 0.0f, 0.0f, 1.0f); glClear(GL_COLOR_BUFFER_BIT); };
 	inline void clearDepthBuffer() { glClearColor(0.0f, 0.0f, 0.0f, 1.0f); glClear(GL_DEPTH_BUFFER_BIT); };
 
 	inline void attachLightingShader(std::shared_ptr<Shader> Shader) { m_LightingShader = Shader; }

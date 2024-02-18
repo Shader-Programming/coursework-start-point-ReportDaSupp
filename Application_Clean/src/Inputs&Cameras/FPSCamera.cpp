@@ -40,7 +40,7 @@ void FirstPersonCamera::update(float dt)
 
 	if (m_handler->keyHasBeenPressed()) {
 		if (m_handler->isKeyPressed(GLFW_KEY_LEFT_SHIFT)) {
-			vel *= 2;
+			vel *= 3;
 		}
 		if (m_handler->isKeyPressed(GLFW_KEY_W)) {
 			m_position += m_front * vel;

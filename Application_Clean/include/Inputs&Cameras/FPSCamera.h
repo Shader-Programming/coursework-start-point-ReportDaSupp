@@ -16,6 +16,7 @@ public:
 	glm::mat4 getProjectionMatrix()                                    override;
 	void update(float dt)                                              override;
 	void attachHandler(GLFWwindow* W, std::shared_ptr<InputHandler> H) override;
+	virtual glm::vec3& getPosition() override { return m_position; }
 
 	bool isTorch = true;
 

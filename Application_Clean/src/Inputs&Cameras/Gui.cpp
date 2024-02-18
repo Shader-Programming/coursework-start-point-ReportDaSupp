@@ -62,8 +62,9 @@ void Gui::drawGui()
         {
             if (isActive)
             {
-                ImGui::TextColored(SubTitleColor, "Lighting");
-                ImGui::Checkbox("Directional", &resources->eDirectional);
+                /*ImGui::TextColored(SubTitleColor, "Lighting");*/
+                ImGui::DragFloat("TessLevel", &resources->tessLevel);
+                /*ImGui::Checkbox("Directional", &resources->eDirectional);
                 ImGui::Checkbox("Point", &resources->ePointLight);
                 ImGui::Checkbox("Spot", &resources->eSpotLight);
                 ImGui::Checkbox("Rim", &resources->eRimming);
@@ -73,10 +74,10 @@ void Gui::drawGui()
                 ImGui::Checkbox("Dir Shadows", &resources->eDirectionalSM);
                 ImGui::Checkbox("Bloom", &resources->eBloom);
                 ImGui::Checkbox("Tone", &resources->eTone);
-                ImGui::Checkbox("Gamma", &resources->eGamma);
+                ImGui::Checkbox("Gamma", &resources->eGamma);*/
                 ImGui::Checkbox("Wireframe", &resources->eWireframe);
-                ImGui::Checkbox("Grayscale", &resources->eGrayscale);
-                ImGui::Checkbox("Inverse", &resources->eInverse);
+                /*ImGui::Checkbox("Grayscale", &resources->eGrayscale);
+                ImGui::Checkbox("Inverse", &resources->eInverse);*/
 
                 ImGui::EndMenu();
             }

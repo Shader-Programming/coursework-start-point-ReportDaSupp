@@ -19,17 +19,19 @@ struct Resources {
 	std::unordered_map<std::string, std::shared_ptr<Shader>> m_shaders;
 
 	bool eWireframe = false;
-	bool eBloom = true;
-	bool eTone = true;
+	bool eBloom = false;
+	bool eTone = false;
 	bool eGrayscale = false;
 	bool eInverse = false;
 	bool eGamma = false;
-	bool eDirectional = true;
-	bool ePointLight = true;
-	bool eSpotLight = true;
+	bool eDirectional = false;
+	bool ePointLight = false;
+	bool eSpotLight = false;
 	bool eRimming = false;
-	bool eLightsVisible = true;
-	bool eDirectionalSM = true;
+	bool eLightsVisible = false;
+	bool eDirectionalSM = false;
+
+	float tessLevel = 32.0f;
 
 };
 

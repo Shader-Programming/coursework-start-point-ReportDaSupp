@@ -13,8 +13,6 @@ out vec4 FragColor;
 
 in vec2 TexCoords;
 
-float gammaStrength = 1.6;
-
 vec3 ACESFilm(vec3 x)
 {
 float a = 2.51f;
@@ -23,6 +21,11 @@ float c = 2.43f;
 float d = 0.59f;
 float e = 0.14f;
 return clamp((x*(a*x+b))/(x*(c*x+d)+e), 0.0, 1.0);
+}
+
+vec3 toneMapReinhard(vec3 color) {
+    color = color / (color + vec3(1.0));
+    return color;
 }
 
 vec3 Grayscale(vec3 x)
@@ -41,22 +44,22 @@ vec3 Inverse(vec3 x)
 
 vec3 Gamma(vec3 x)
 {
-	float distance = 1.5;
-	float attenuation = 1.0 / (eGamma ? distance * distance : distance);
-	vec3 color = x * attenuation;
-	return pow(color, vec3(1.0/gammaStrength));
+	vec3 color = pow(x, vec3(1.0/2.2));
+	return color;
 }
 
 void main()
 {
-	vec3 result;
-	if (eBloom)
-	{ result = mix(texture(ColorAttachment, TexCoords).rgb, (texture(BloomAttachment, TexCoords).rgb), 0.3); }
-	else 
-	{ result = texture(ColorAttachment, TexCoords).rgb; }
+	vec3 result = texture(ColorAttachment, TexCoords).rgb;
 
 	if (eTone)
-	{ result = ACESFilm(result); }
+	{ result = toneMapReinhard(result); }
+
+	if (eGamma)
+	{ result = Gamma(result); }
+
+	if (eBloom)
+	{ result = mix(result, (texture(BloomAttachment, TexCoords).rgb), 0.5); }
 
 	if (eInverse)
 	{ result = Inverse(result); }
@@ -64,8 +67,7 @@ void main()
 	if (eGrayscale)
 	{ result = Grayscale(result); }
 
-	if (eGamma)
-	{ result = Gamma(result); }
+	
 
 	FragColor = vec4(result, 1.0);
 }

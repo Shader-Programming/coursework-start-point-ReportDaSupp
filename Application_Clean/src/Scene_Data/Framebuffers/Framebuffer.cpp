@@ -34,22 +34,29 @@ void Framebuffer::calcLighting()
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, m_BufferAttachments["Position"]);
 	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, m_BufferAttachments["Normal"]);
+	glBindTexture(GL_TEXTURE_2D, m_BufferAttachments["NormalMap"]);
 	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, m_BufferAttachments["AlbedoSpec"]);
 	glActiveTexture(GL_TEXTURE3);
-	glBindTexture(GL_TEXTURE_2D, m_BufferAttachments["Tangent"]);
+	glBindTexture(GL_TEXTURE_2D, m_BufferAttachments["Normal"]);
 	glActiveTexture(GL_TEXTURE4);
-	glBindTexture(GL_TEXTURE_2D, m_BufferAttachments["NormalMat"]);
+	glBindTexture(GL_TEXTURE_2D, m_BufferAttachments["TBN1"]);
 	glActiveTexture(GL_TEXTURE5);
+	glBindTexture(GL_TEXTURE_2D, m_BufferAttachments["TBN2"]);
+	glActiveTexture(GL_TEXTURE6);
+	glBindTexture(GL_TEXTURE_2D, m_BufferAttachments["TBN3"]);
+	glActiveTexture(GL_TEXTURE7);
 	glBindTexture(GL_TEXTURE_2D, ShadowMapTex);
 
 	m_LightingShader->setInt("gPosition", 0);
-	m_LightingShader->setInt("gNormal", 1);
+	m_LightingShader->setInt("gNormalMap", 1);
 	m_LightingShader->setInt("gAlbedoSpec", 2);
-	m_LightingShader->setInt("gTangent", 3);
-	m_LightingShader->setInt("gNormalMat", 4);
-	m_LightingShader->setInt("ShadowMap", 5);
+	m_LightingShader->setInt("gNormal", 3);
+	m_LightingShader->setInt("gTBN1", 4);
+	m_LightingShader->setInt("gTBN2", 5);
+	m_LightingShader->setInt("gTBN3", 6);
+
+	m_LightingShader->setInt("ShadowMap", 7);
 
 	m_ScreenQuad->render();
 
@@ -158,54 +165,77 @@ void Framebuffer::initGBuffer()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, gPosition, 0);
 
+	uint32_t gNormalMap;
+
+	// normal color buffer
+	glGenTextures(1, &gNormalMap);
+	glBindTexture(GL_TEXTURE_2D, gNormalMap);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, SCR_WIDTH, SCR_HEIGHT, 0, GL_RGBA, GL_FLOAT, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, gNormalMap, 0);
+
+	uint32_t gAlbedoSpec;
+
+	// color + specular color buffer
+	glGenTextures(1, &gAlbedoSpec);
+	glBindTexture(GL_TEXTURE_2D, gAlbedoSpec);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, SCR_WIDTH, SCR_HEIGHT, 0, GL_RGBA, GL_FLOAT, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, gAlbedoSpec, 0);
+
 	uint32_t gNormal;
 
-	// - normal color buffer
+	// normal color buffer
 	glGenTextures(1, &gNormal);
 	glBindTexture(GL_TEXTURE_2D, gNormal);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, SCR_WIDTH, SCR_HEIGHT, 0, GL_RGBA, GL_FLOAT, NULL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, gNormal, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT3, GL_TEXTURE_2D, gNormal, 0);
 
-	uint32_t gAlbedoSpec;
+	uint32_t gTBN1;
 
-	// - color + specular color buffer
-	glGenTextures(1, &gAlbedoSpec);
-	glBindTexture(GL_TEXTURE_2D, gAlbedoSpec);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, SCR_WIDTH, SCR_HEIGHT, 0, GL_RGBA, GL_FLOAT, NULL);
+	// tbn1 data buffer
+	glGenTextures(1, &gTBN1);
+	glBindTexture(GL_TEXTURE_2D, gTBN1);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, SCR_WIDTH, SCR_HEIGHT, 0, GL_RGBA, GL_FLOAT, NULL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, gAlbedoSpec, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT4, GL_TEXTURE_2D, gTBN1, 0);
 
-	uint32_t gTangent;
+	uint32_t gTBN2;
 
-	// Tangent For TBN
-	glGenTextures(1, &gTangent);
-	glBindTexture(GL_TEXTURE_2D, gTangent);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, SCR_WIDTH, SCR_HEIGHT, 0, GL_RGBA, GL_FLOAT, NULL);
+	// tbn2 data buffer
+	glGenTextures(1, &gTBN2);
+	glBindTexture(GL_TEXTURE_2D, gTBN2);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, SCR_WIDTH, SCR_HEIGHT, 0, GL_RGBA, GL_FLOAT, NULL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT3, GL_TEXTURE_2D, gTangent, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT5, GL_TEXTURE_2D, gTBN2, 0);
 
-	uint32_t gNormalMat;
+	uint32_t gTBN3;
 
-	// Normal For TBN
-	glGenTextures(1, &gNormalMat);
-	glBindTexture(GL_TEXTURE_2D, gNormalMat);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, SCR_WIDTH, SCR_HEIGHT, 0, GL_RGBA, GL_FLOAT, NULL);
+	// tbn3 data buffer
+	glGenTextures(1, &gTBN3);
+	glBindTexture(GL_TEXTURE_2D, gTBN3);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, SCR_WIDTH, SCR_HEIGHT, 0, GL_RGBA, GL_FLOAT, NULL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT4, GL_TEXTURE_2D, gNormalMat, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT6, GL_TEXTURE_2D, gTBN3, 0);
+
 
 	m_BufferAttachments["Position"] = gPosition;
-	m_BufferAttachments["Normal"] = gNormal;
+	m_BufferAttachments["NormalMap"] = gNormalMap;
 	m_BufferAttachments["AlbedoSpec"] = gAlbedoSpec;
-	m_BufferAttachments["Tangent"] = gTangent;
-	m_BufferAttachments["NormalMat"] = gNormalMat;
+	m_BufferAttachments["Normal"] = gNormal;
+	m_BufferAttachments["TBN1"] = gTBN1;
+	m_BufferAttachments["TBN2"] = gTBN2;
+	m_BufferAttachments["TBN3"] = gTBN3;
 
-	unsigned int GeometryAttachments[5] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4 };
-	glDrawBuffers(5, GeometryAttachments);
+	unsigned int GeometryAttachments[7] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4, GL_COLOR_ATTACHMENT5, GL_COLOR_ATTACHMENT6};
+	glDrawBuffers(7, GeometryAttachments);
 
 	unsigned int rbo;
 	glGenRenderbuffers(1, &rbo);

@@ -158,7 +158,7 @@ Shader::Shader(const char* glslPath)
 {
 
 	enum Region { None = -1, Vertex = 0, Fragment, Geometry, TesselationControl, TesselationEvaluation, Compute };
-	bool v = false; bool f = false; bool g = false;
+	bool v = false; bool f = false; bool g = false; bool tc = false; bool te = false; bool c = false;
 	std::string line;
 	std::array<std::string, Region::Compute + 1> src;
 	uint32_t region = Region::None;
@@ -173,9 +173,9 @@ Shader::Shader(const char* glslPath)
 			if (line.find("#region Vertex") != std::string::npos) { region = Region::Vertex; v = true; continue; };
 			if (line.find("#region Fragment") != std::string::npos) { region = Region::Fragment; f = true; continue; };
 			if (line.find("#region Geometry") != std::string::npos) { region = Region::Geometry; g = true; continue; };
-			if (line.find("#region TesselationControl") != std::string::npos) { region = Region::TesselationControl; continue; };
-			if (line.find("#region TesselationEvaluation") != std::string::npos) { region = Region::TesselationEvaluation; continue; };
-			if (line.find("#region Compute") != std::string::npos) { region = Region::Compute; continue; };
+			if (line.find("#region TesselationControl") != std::string::npos) { region = Region::TesselationControl; tc = true; continue; };
+			if (line.find("#region TesselationEvaluation") != std::string::npos) { region = Region::TesselationEvaluation; te = true; continue; };
+			if (line.find("#region Compute") != std::string::npos) { region = Region::Compute; c = true; continue; };
 			if (region != Region::None) src[region] += (line + "\n");
 		}
 
@@ -189,9 +189,12 @@ Shader::Shader(const char* glslPath)
 	const char* vShaderCode = src[Region::Vertex].c_str();
 	const char* gShaderCode = src[Region::Geometry].c_str();
 	const char* fShaderCode = src[Region::Fragment].c_str();
+	const char* tcShaderCode = src[Region::TesselationControl].c_str();
+	const char* teShaderCode = src[Region::TesselationEvaluation].c_str();
+	const char* cShaderCode = src[Region::Compute].c_str();
 
 	// 2. compile shaders
-	unsigned int vertex, fragment, geometry;
+	unsigned int vertex, fragment, geometry, tesselationControl, tesselationEvaluation, compute;
 	if (v)
 	{
 		// vertex shader
@@ -208,6 +211,22 @@ Shader::Shader(const char* glslPath)
 		glCompileShader(fragment);
 		checkCompileErrors(fragment, "FRAGMENT");
 	}
+	if (tc)
+	{
+		// fragment Shader
+		tesselationControl = glCreateShader(GL_TESS_CONTROL_SHADER);
+		glShaderSource(tesselationControl, 1, &tcShaderCode, NULL);
+		glCompileShader(tesselationControl);
+		checkCompileErrors(tesselationControl, "TESSELATION_CONTROL");
+	}
+	if (te)
+	{
+		// geometry Shader
+		tesselationEvaluation = glCreateShader(GL_TESS_EVALUATION_SHADER);
+		glShaderSource(tesselationEvaluation, 1, &teShaderCode, NULL);
+		glCompileShader(tesselationEvaluation);
+		checkCompileErrors(tesselationEvaluation, "TESSELATION_EVALUATION");
+	}
 	if (g)
 	{
 		// geometry Shader
@@ -216,21 +235,35 @@ Shader::Shader(const char* glslPath)
 		glCompileShader(geometry);
 		checkCompileErrors(geometry, "GEOMETRY");
 	}
+	if (c)
+	{
+		// geometry Shader
+		compute = glCreateShader(GL_COMPUTE_SHADER);
+		glShaderSource(compute, 1, &cShaderCode, NULL);
+		glCompileShader(compute);
+		checkCompileErrors(compute, "COMPUTE");
+	}
 
 
 	// shader Program
 	ID = glCreateProgram();
 	if (v) glAttachShader(ID, vertex);
-	if (f) glAttachShader(ID, fragment);
+	if (tc) glAttachShader(ID, tesselationControl);
+	if (te) glAttachShader(ID, tesselationEvaluation);
 	if (g) glAttachShader(ID, geometry);
+	if (f) glAttachShader(ID, fragment);
+	if (c) glAttachShader(ID, compute);
 
 	glLinkProgram(ID);
 	checkCompileErrors(ID, "PROGRAM");
 
 	// delete the shaders as they're linked into our program now and no longer necessery
 	if (v) glDeleteShader(vertex);
-	if (f) glDeleteShader(fragment);
+	if (tc) glDeleteShader(tesselationControl);
+	if (te) glDeleteShader(tesselationEvaluation);
 	if (g) glDeleteShader(geometry);
+	if (f) glDeleteShader(fragment);
+	if (c) glDeleteShader(compute);
 	
 
 }
