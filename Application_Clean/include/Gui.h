@@ -8,6 +8,9 @@
 
 struct GuiVals {
 	glm::vec3 lightDir = glm::vec3(0.0,-1.0f,0.0f);
+	glm::vec3 floorCol = glm::vec3(0.1f, 0.8f, 0.1f);
+	glm::vec3 lightCol = glm::vec3(1.0f);
+	bool eWireframe = true;
 };
 
 class Gui {
