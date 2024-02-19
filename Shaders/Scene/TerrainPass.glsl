@@ -25,7 +25,7 @@ void main()
     
     data_out.PosInWS   = model * vec4(aPos, 1.0);
     data_out.PosInSSP  = view * data_out.PosInWS;
-    data_out.PosInCSP  = projection * data_out.PosInCSP;
+    data_out.PosInCSP  = projection * data_out.PosInSSP;
     gl_Position        = data_out.PosInCSP;
 }
 
@@ -132,7 +132,7 @@ void main()
     vec4 posinCSP1 = data_in[1].PosInCSP;
     vec4 posinCSP2 = data_in[2].PosInCSP;
 
-    vec3 pos = interpolate3D(pos0, pos1, pos2);
+    gl_Position = vec4(interpolate3D(pos0, pos1, pos2), 1.0);
     data_out.TexCoords = interpolate2D(uv0, uv1, uv2);
     data_out.Normal = interpolate3D(normal0, normal1, normal2);
     data_out.PosInWS = vec4(interpolate3D(posinWS0.xyz, posinWS1.xyz, posinWS2.xyz),1.0);
@@ -141,8 +141,6 @@ void main()
 
     //float height = texture(heightTexture, interpolate2D(data_in[0].TexCoords, data_in[1].TexCoords, data_in[2].TexCoords)).r * 2 - 1;
     //pos.y += height * 2.f;
-
-    gl_Position = vec4(pos, 1.0);
 }
 
 #region Geometry
@@ -188,6 +186,7 @@ void main()
 
     for(int i = 0; i < 3; i++)
     {
+		gl_Position = gl_in[i].gl_Position;
         data_out.PosInWS = data_in[i].PosInWS;
         data_out.PosInSSP = data_in[i].PosInSSP;
         data_out.PosInCSP = data_in[i].PosInCSP;
@@ -226,7 +225,7 @@ uniform sampler2D normalTexture;
 void main()
 {   
     // G-buffer outputs
-    gPosition = data_in.PosInCSP;
+    gPosition = data_in.PosInWS;
 
     // Applying normal mapping
     gNormalMap = vec4(texture(normalTexture, data_in.TexCoords).rgb, 0.0f);
