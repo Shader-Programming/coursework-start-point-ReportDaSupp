@@ -34,8 +34,8 @@ void Gui::drawGui()
     ImGui::Begin("IMAT3907");
     ImGui::Text("FPS %.3f ms/frame (%.1f FPS)", ms, ImGui::GetIO().Framerate);  // display FPS and ms
     ImGui::SliderFloat3("Light Dir", (float*)&guiVals.lightDir, -1.0, 1.0);
-    ImGui::SliderFloat3("Light Color", (float*)&guiVals.lightCol, -1.0, 1.0);
-    ImGui::SliderFloat3("Floor Color", (float*)&guiVals.floorCol, -1.0, 1.0);
+    ImGui::SliderFloat3("Light Color", (float*)&guiVals.lightCol, 0, 1.0);
+    ImGui::SliderFloat3("Floor Color", (float*)&guiVals.floorCol, 0, 1.0);
     ImGui::Checkbox("Wireframe", &guiVals.eWireframe);
     //ImGui::ShowDemoWindow();
     ImGui::End();

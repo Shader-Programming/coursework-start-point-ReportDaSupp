@@ -4,6 +4,7 @@
 #include "Gui.h"
 #include "Texture.h"
 #include "Terrain.h"
+#include "Skybox.h"
 
 
 class TestScene : public Scene {
@@ -20,6 +21,7 @@ private:
 	std::shared_ptr<Gui> m_gui;
 	std::shared_ptr<Shader> m_floorShader;
 	std::shared_ptr<Terrain> m_terrain;
+	std::shared_ptr<SkyBox> m_skyBox;
 	glm::mat4 m_view, m_projection;
 
 	GuiVals guiVals;

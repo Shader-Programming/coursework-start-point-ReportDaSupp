@@ -1,16 +1,21 @@
 #include "..\include\TestScene.h"
 
 TestScene::TestScene(GLFWwindow* window, std::shared_ptr<InputHandler> H): Scene(window, H){
-		// Shaders
+	// Shaders
 	m_floorShader = std::make_shared<Shader>("..\\shaders\\floorVert.glsl", "..\\shaders\\floorFrag.glsl");
-		// Camera & Input
-		m_camera = std::make_shared<FirstPersonCamera>(glm::vec3(0,20,0));   
-		m_camera->attachHandler(window, H);
-		//imGui
-		m_gui = std::make_shared<Gui>(m_window);
 
-		//Terrain/ Plane
-		m_terrain = std::make_shared<Terrain>();
+	// Camera & Input
+	m_camera = std::make_shared<FirstPersonCamera>(glm::vec3(0,20,0));   
+	m_camera->attachHandler(window, H);
+
+	//imGui
+	m_gui = std::make_shared<Gui>(m_window);
+
+	//Terrain / Plane
+	m_terrain = std::make_shared<Terrain>();
+
+	//SkyBox
+	m_skyBox = std::make_shared<SkyBox>();
 }
 
 
@@ -49,7 +54,10 @@ void TestScene::processInput(float dt)
 
 
 void TestScene::render()
-{
+{	
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	m_skyBox->renderSkyBox(glm::mat4(m_camera->getProjectionMatrix() * m_camera->getViewMatrix()));
+	
 	//floor
 	// Scene Data - Lights, Camera
 	m_floorShader->use();
@@ -57,11 +65,10 @@ void TestScene::render()
 	m_floorShader->setMat4("view", m_camera->getViewMatrix());
 	m_floorShader->setMat4("model", glm::mat4(1.0f));
 	m_floorShader->setVec3("viewPos", m_camera->getPosition());
-	//
+	// guiVals
 	m_floorShader->setVec3("floorCol", guiVals.floorCol);
 	m_floorShader->setVec3("lightDirection", guiVals.lightDir);
 	m_floorShader->setVec3("lightColor", guiVals.lightCol);
-
 
 	//draw
 	glBindVertexArray(m_terrain->getVAO());

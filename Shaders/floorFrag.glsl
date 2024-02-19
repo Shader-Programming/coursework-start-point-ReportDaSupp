@@ -9,9 +9,10 @@ in vec3 posInWS ;
 
 
 ///////////////////////// UNIFORMS
-uniform vec3 lightDirection ;
-uniform vec3 floorCol ;
-uniform vec3 viewPos ;
+uniform vec3 lightDirection;
+uniform vec3 floorCol;
+uniform vec3 viewPos;
+uniform vec3 lightColor;
 
 ///////////////////////// FUNCTIONS
 vec3 getDirectionalLight() ;
@@ -21,7 +22,6 @@ vec3 getDirectionalLight() ;
 float ambientFactor = 0.5 ;
 float shine = 16.0f ;
 float specularStrength = 0.3f ;
-vec3 lightColour = vec3(1.0f) ;
 vec3 viewDir ;
 vec3 n ;
 vec3 lightDir ;
@@ -47,12 +47,12 @@ vec3 getDirectionalLight() {
    
 
    // ambient
-  vec3 ambient = floorCol * lightColour * ambientFactor;
+  vec3 ambient = floorCol * lightColor * ambientFactor;
 
   //diffuse 
   float diffuseFactor = dot(n,lightDir) ;
   diffuseFactor = max(diffuseFactor, 0.0f) ;
-  vec3 diffuse = floorCol * lightColour * diffuseFactor;
+  vec3 diffuse = floorCol * lightColor * diffuseFactor;
 
 
   // Blinn Phong specular
@@ -60,7 +60,7 @@ vec3 getDirectionalLight() {
   float specLevel = dot(n, H) ;   
   specLevel = max(specLevel, 0.0) ; 
   specLevel = pow(specLevel, shine) ; 
-  vec3 specular = lightColour*specLevel* specularStrength;
+  vec3 specular = lightColor*specLevel* specularStrength;
 
   return ambient + specular + diffuse;
 
