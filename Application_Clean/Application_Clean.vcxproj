@@ -146,15 +146,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="include\IMGUI\imgui.cpp" />
+    <ClCompile Include="include\IMGUI\imgui_demo.cpp" />
+    <ClCompile Include="include\IMGUI\imgui_draw.cpp" />
+    <ClCompile Include="include\IMGUI\imgui_impl_glfw.cpp" />
+    <ClCompile Include="include\IMGUI\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="include\IMGUI\imgui_tables.cpp" />
+    <ClCompile Include="include\IMGUI\imgui_widgets.cpp" />
     <ClCompile Include="src\glad.c" />
-    <ClCompile Include="src\IMgui\imgui.cpp" />
-    <ClCompile Include="src\IMgui\imgui_demo.cpp" />
-    <ClCompile Include="src\IMgui\imgui_draw.cpp" />
-    <ClCompile Include="src\IMgui\imgui_impl_glfw.cpp" />
-    <ClCompile Include="src\IMgui\imgui_impl_opengl3.cpp" />
     <ClCompile Include="include\IMGUI\imgui_stdlib.cpp" />
-    <ClCompile Include="src\IMgui\imgui_tables.cpp" />
-    <ClCompile Include="src\IMgui\imgui_widgets.cpp" />
     <ClCompile Include="src\Inputs&amp;Cameras\Gui.cpp" />
     <ClCompile Include="src\Scene_Data\Framebuffers\Framebuffer.cpp" />
     <ClCompile Include="src\Scene_Data\Objects\AssimpObj.cpp" />

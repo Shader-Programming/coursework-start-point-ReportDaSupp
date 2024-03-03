@@ -11,14 +11,19 @@ void Framebuffer::initAttachments()
 {
 	m_ScreenQuad = std::make_shared<Plane>();
 
+	m_HeightMapShader = std::make_shared<Shader>("..\\Shaders\\Scene\\HeightMap.glsl");
+
 	this->initGBuffer();
 	this->initColorFBO();
 	this->initDownFBO();
 	this->initUpFBO();
 	this->initDirectionalSM();
+	this->initHeightMap();
 
 	m_DownSampleShader = std::make_shared<Shader>("..\\Shaders\\Post Processing\\DownSampleShader.vert", "..\\Shaders\\Post Processing\\DownSampleShader.frag");
 	m_UpSampleShader = std::make_shared<Shader>("..\\Shaders\\Post Processing\\UpSampleShader.vert", "..\\Shaders\\Post Processing\\UpSampleShader.frag");
+
+	
 }
 
 void Framebuffer::calcLighting()
@@ -149,6 +154,21 @@ void Framebuffer::drawFrame()
 
 
 	m_ScreenQuad->render();
+}
+
+void Framebuffer::initHeightMap()
+{
+	glGenTextures(1, &HeightMapTex);
+	glBindTexture(GL_TEXTURE_2D, HeightMapTex);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, 2048, 2048, 0, GL_RGBA, GL_FLOAT, nullptr);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	glGenTextures(1, &DuDvMapTex);
+	glBindTexture(GL_TEXTURE_2D, DuDvMapTex);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_R32F, 2048, 2048, 0, GL_RED, GL_FLOAT, nullptr);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }
 
 void Framebuffer::initGBuffer()
@@ -346,4 +366,16 @@ void Framebuffer::initDirectionalSM()
 	glDrawBuffer(GL_NONE);
 	glReadBuffer(GL_NONE);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
+void Framebuffer::runHeightMap(float et)
+{
+	m_HeightMapShader->use();
+	m_HeightMapShader->setFloat("ellapsedTime", et);
+	glBindImageTexture(0, HeightMapTex, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA32F);
+	glBindImageTexture(1, DuDvMapTex, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_R32F);
+	glDispatchCompute((GLuint)ceil(2048 / 32.0f), (GLuint)ceil(2048 / 32.0f), 1);
+
+	// Wait for compute shader to complete before using the texture
+	glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
 }

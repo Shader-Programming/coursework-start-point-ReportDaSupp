@@ -22,38 +22,47 @@ public:
 	void calcLighting();
 	void drawSampledBloom();
 	void drawFrame();
+	void initHeightMap();
+	void runHeightMap(float et);
 
 	inline void bindDefault() { glBindFramebuffer(GL_FRAMEBUFFER, 0); };
 	inline void bindDown() { glBindFramebuffer(GL_FRAMEBUFFER, DownSample.FBO); };
 	inline void bindUp() { glBindFramebuffer(GL_FRAMEBUFFER, UpSample.FBO); };
 	inline void bindFBO() { glBindFramebuffer(GL_FRAMEBUFFER, m_FBO); };
 	inline void bindDSMFBO() { glBindFramebuffer(GL_FRAMEBUFFER, m_DSMFBO); };
+	inline void bindHMFBO() { glBindFramebuffer(GL_FRAMEBUFFER, m_HMFBO); };
 	inline void bindGBuffer() { glBindFramebuffer(GL_FRAMEBUFFER, m_GBuffer); };
 	inline void clearScreen() { glClearColor(0.1f, 0.1f, 0.1f, 1.0f); glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); };
 	inline void clearBuffers() { glClearColor(0.0f, 0.0f, 0.0f, 1.0f); glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); };
 	inline void clearColorBuffer() { glClearColor(0.0f, 0.0f, 0.0f, 1.0f); glClear(GL_COLOR_BUFFER_BIT); };
 	inline void clearDepthBuffer() { glClearColor(0.0f, 0.0f, 0.0f, 1.0f); glClear(GL_DEPTH_BUFFER_BIT); };
-
+	
 	inline void attachLightingShader(std::shared_ptr<Shader> Shader) { m_LightingShader = Shader; }
 	inline void attachColorShader(std::shared_ptr<Shader> Shader) { m_ActiveColorShader = Shader; }
+
+	inline uint32_t getHeightMapTextureBinding() { glActiveTexture(GL_TEXTURE0 + 16); glBindTexture(GL_TEXTURE_2D, HeightMapTex); return(16); };
+	inline uint32_t getDuDvTextureBinding() { glActiveTexture(GL_TEXTURE0 + 17); glBindTexture(GL_TEXTURE_2D, DuDvMapTex); return(17); };
 
 	std::shared_ptr<Shader> getActiveShader() { return m_ActiveColorShader; };
 
 
 private:
-	uint32_t m_GBuffer, m_FBO, m_DSMFBO;
+	uint32_t m_GBuffer, m_FBO, m_DSMFBO, m_HMFBO;
 	
 	MipData DownSample;
 	MipData UpSample;
 	
 	std::unordered_map<std::string, uint32_t> m_BufferAttachments;
 	uint32_t ShadowMapTex;
+	uint32_t HeightMapTex;
+	uint32_t DuDvMapTex;
 
 	std::unordered_map<std::string, std::shared_ptr<Shader>> m_Shaders;
 	std::shared_ptr<Shader> m_LightingShader;
 	std::shared_ptr<Shader> m_ActiveColorShader;
 	std::shared_ptr<Shader> m_DownSampleShader;
 	std::shared_ptr<Shader> m_UpSampleShader;
+	std::shared_ptr<Shader> m_HeightMapShader;
 
 	std::shared_ptr<Plane> m_ScreenQuad;
 	
@@ -62,6 +71,7 @@ private:
 	void initDownFBO();
 	void initUpFBO();
 	void initDirectionalSM();
+	
 };
 
 extern Framebuffer m_ColorFBO;
