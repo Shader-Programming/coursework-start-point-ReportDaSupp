@@ -64,6 +64,7 @@ uniform bool eDirectional;
 uniform bool ePointLight;
 uniform bool eSpotLight;
 uniform bool eRimming;
+uniform bool eNormals;
 
 vec3 calcDirectionalLighting(vec3 normalMap, vec3 albedo, float specularStrength, vec3 viewDir, vec3 fragPos)
 {
@@ -116,14 +117,18 @@ vec3 calcPointLighting(vec3 normalMap, vec3 albedo, float specularStrength, vec3
 
 	    result += (albedo * (diffuse * inten) + specularStrength * specular * inten) * pLights[i].color;
     }
-     return result;
+    return result;
 }
 
 void main()
 {
     // Sample G-buffer textures to retrieve fragment position, normal, and albedo/specular
     vec3 fragPos = texture(gPosition, TexCoords).rgb;
-    vec3 normalMap = texture(gNormal, TexCoords).rgb;
+    vec3 normalMap;
+    if (eNormals)
+        normalMap = normalize(texture(gNormal, TexCoords).rgb * 0.7 + texture(gNormalMap, TexCoords).rgb * 0.4);
+    else
+        normalMap = texture(gNormal, TexCoords).rgb;
     vec3 albedo = texture(gAlbedoSpec, TexCoords).rgb;
     float specularStrength = texture(gAlbedoSpec, TexCoords).a;
     

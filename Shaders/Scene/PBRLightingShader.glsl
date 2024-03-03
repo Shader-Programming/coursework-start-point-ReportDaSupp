@@ -64,12 +64,17 @@ uniform bool eDirectional;
 uniform bool ePointLight;
 uniform bool eSpotLight;
 uniform bool eRimming;
+uniform bool eNormals;
 
 void main()
 {
     // Sample G-buffer textures to retrieve fragment position, normal, and albedo/specular
-    vec3 albedo = texture(gAlbedoSpec, TexCoords).rgb;
-    float spec = texture(gAlbedoSpec, TexCoords).a * texture(gNormalMap, TexCoords).r;
+    vec3 albedo = vec3(1, 0.3, 0.3); //texture(gAlbedoSpec, TexCoords).rgb;
+    float spec;
+    if (eNormals)
+        spec = texture(gAlbedoSpec, TexCoords).a * texture(gNormalMap, TexCoords).r;
+    else
+        spec = texture(gAlbedoSpec, TexCoords).a * texture(gNormal, TexCoords).r;
     FragColor = vec4(albedo * vec3(spec), 1.0f);
     BrightColor = vec4(0.0f, 0.0f, 0.0f, 1.0f);
 }

@@ -5,19 +5,20 @@ ResourceManager::ResourceManager()
 {
 	resources.reset(new Resources);
 
-	resources->m_shaders["TerrainShader"] = std::make_shared<Shader>("..\\Shaders\\Scene\\TerrainPass.glsl");
-	resources->m_shaders["GeometryShader"]	=	std::make_shared<Shader>("..\\Shaders\\Scene\\GeometryPass.glsl");
-	resources->m_shaders["LightShader"]		=	std::make_shared<Shader>("..\\Shaders\\Scene\\Light.glsl");
-	resources->m_shaders["LightingShader"]	=	std::make_shared<Shader>("..\\Shaders\\Scene\\PBRLightingShader.glsl");
-	resources->m_shaders["PPShader"]		=	std::make_shared<Shader>("..\\Shaders\\Post Processing\\HDRShader.vert",	"..\\Shaders\\Post Processing\\HDRShader.frag");
+	resources->m_shaders["TerrainShader"]		=	std::make_shared<Shader>("..\\Shaders\\Scene\\TerrainPass.glsl");
+	resources->m_shaders["GeometryShader"]		=	std::make_shared<Shader>("..\\Shaders\\Scene\\GeometryPass.glsl");
+	resources->m_shaders["LightShader"]			=	std::make_shared<Shader>("..\\Shaders\\Scene\\Light.glsl");
+	resources->m_shaders["LightingShader"]		=	std::make_shared<Shader>("..\\Shaders\\Scene\\LightingShader.glsl");
+	resources->m_shaders["SkyBoxShader"]		=	std::make_shared<Shader>("..\\Shaders\\Scene\\SkyBoxShader.glsl");
+	resources->m_shaders["PPShader"]			=	std::make_shared<Shader>("..\\Shaders\\Post Processing\\HDRShader.vert",	"..\\Shaders\\Post Processing\\HDRShader.frag");
 	resources->m_shaders["DShadowMapShader"]	=	std::make_shared<Shader>("..\\Shaders\\Post Processing\\DShadowMap.vert",	"..\\Shaders\\Post Processing\\DShadowMap.frag");
 
 	//this->initAssimpModel("../Resources/Models/Backpack/backpack.obj", false, true, glm::vec3(2.0f, 2.0f, 0.0f), glm::vec3(0.f, 1.f, 0.f), 0.0f, glm::vec3(1.f, 1.f, 1.f));
-	//this->initAssimpModel("../Resources/Models/Frog/object.obj", true, true, glm::vec3(-2.0f, 0.1f, 0.0f), glm::vec3(0.f, 0.f, 0.f), glm::vec3(3.f, 3.f, 3.f));
+	//this->initAssimpModel("../Resources/Models/Frog/object.obj", true, true, glm::vec3(-2.0f, 5.0f, 0.0f), glm::vec3(0.f, 0.f, 0.f), glm::vec3(3.f, 3.f, 3.f));
 	this->initTerrain("../Resources/Models/Plane/Plane.obj", true, false, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.f, 0.f, 0.f), glm::vec3(200.f, 1.f, 200.f));
 	//this->initAssimpModel("../Resources/Models/Floor/object.obj", true, false, glm::vec3(0.0f, 10.0f, -10.0f), glm::vec3(1.f, 0.f, 0.f), 90.f, glm::vec3(10.f, 0.001f, 10.f));
-
-	this->initDirectionalLight(glm::vec3(0.2, 0.2, 0.2), glm::vec3(-0.5f, -1.0f, -0.5f), 0.2f);
+	this->initSkyBox("..\\Resources\\Models\\SkyBox\\");
+	this->initDirectionalLight(glm::vec3(0.8, 0.4, 0.5), glm::vec3(-0.5f, -1.0f, -0.5f), 0.3f);
 
 	srand(time(NULL));
 
@@ -48,6 +49,11 @@ void ResourceManager::initTerrain(const char* fp, bool isFlip, bool isStatic, gl
 	resources->m_terrain = std::make_shared <Model>(fp, isFlip);
 	resources->m_terrain->setTransform(trans, rotate, scale);
 	resources->m_terrain->isStatic = isStatic;
+}
+
+void ResourceManager::initSkyBox(const char* fp)
+{
+	resources->m_SkyBox = std::make_shared<SkyBox>(fp);
 }
 
 void ResourceManager::initSceneObject(std::shared_ptr<BaseObject> obj, glm::vec3 position, glm::vec3 rotation, glm::vec3 scale)

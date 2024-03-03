@@ -28,7 +28,8 @@ ObjectViewer::~ObjectViewer()
 
 void ObjectViewer::update(float dt)
 {
-	
+	glm::vec3 camPos = m_camera->getPosition();
+	resources->m_terrain->setTransform({ camPos.x, 0,camPos.z }, { 0, 0, 0 }, {200, 1, 200});
 	m_ColorFBO.bindDefault();
 	m_ColorFBO.clearScreen();
 
@@ -63,6 +64,9 @@ void  ObjectViewer::processInput(float dt)
 
 void ObjectViewer::render(float dt)
 {
+	resources->ellapsedTime += dt;
+	m_ColorFBO.runHeightMap(m_camera->getPosition(), resources->ellapsedTime);
+
 	if (resources->eWireframe) glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	else glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
@@ -72,11 +76,20 @@ void ObjectViewer::render(float dt)
 	glCullFace(GL_BACK);
 
 	glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
+	
+	m_ColorFBO.bindGBuffer();
+	m_ColorFBO.clearBuffers();
+
+	// SkyBox Geometry Pass
+	resources->m_shaders["SkyBoxShader"]->use();
+	resources->m_SkyBox->setMaterialValues(resources->m_shaders["SkyBoxShader"]);
+	this->setMatrixUniforms(resources->m_shaders["SkyBoxShader"]);
+	resources->m_SkyBox->render();
+
+	glDepthFunc(GL_LESS);
 
 	// Terrain Geometry Pass
 	resources->m_shaders["TerrainShader"]->use();
-	m_ColorFBO.bindGBuffer();
-	m_ColorFBO.clearBuffers();
 
 	// Geometry Rendering
 	this->setMatrixUniforms(resources->m_shaders["TerrainShader"]);
@@ -84,11 +97,11 @@ void ObjectViewer::render(float dt)
 
 
 	// Core Asset Rendering Pass
-	//resources->m_shaders["GeometryShader"]->use();
+	resources->m_shaders["GeometryShader"]->use();
 
 	// Geometry Rendering
-	//this->setMatrixUniforms(resources->m_shaders["GeometryShader"]);
-	//this->renderGeometry(resources->m_shaders["GeometryShader"], dt);
+	this->setMatrixUniforms(resources->m_shaders["GeometryShader"]);
+	this->renderGeometry(resources->m_shaders["GeometryShader"], dt);
 
 	glDisable(GL_CULL_FACE);
 	
@@ -127,8 +140,8 @@ void ObjectViewer::render(float dt)
 	this->setMatrixUniforms(resources->m_shaders["LightShader"]);
 	this->renderLighting(resources->m_shaders["LightShader"], dt);*/
 
-	/*if (resources->eBloom)
-		m_ColorFBO.drawSampledBloom();*/
+	if (resources->eBloom)
+		m_ColorFBO.drawSampledBloom();
 
 	m_ColorFBO.bindDefault();
 	resources->m_shaders["PPShader"]->use();
@@ -153,8 +166,9 @@ void ObjectViewer::renderTerrain(std::shared_ptr<Shader> Shader, float dt)
 {
 
 	Shader->use();
-	Shader->setFloat("tessLevel", resources->tessLevel);
 	Shader->setMat4("model", resources->m_terrain->getTransform());
+	Shader->setInt("HeightMapTex", m_ColorFBO.getHeightMapTextureBinding());
+	Shader->setInt("DuDvMapTex", m_ColorFBO.getDuDvTextureBinding());
 	resources->m_terrain->Draw(Shader);
 
 }
@@ -218,6 +232,7 @@ void ObjectViewer::setLightingUniforms(std::shared_ptr<Shader> Shader)
 	Shader->setBool("eSpotLight", resources->eSpotLight);
 	Shader->setBool("eRimming", resources->eRimming);
 	Shader->setBool("eDirectionalSM", resources->eDirectionalSM);
+	Shader->setBool("eNormals", resources->eNormalMap);
 
 	Shader->setVec3("dLight.color", resources->m_directionalLight.color);
 	Shader->setVec3("dLight.direction", resources->m_directionalLight.direction);
@@ -236,7 +251,7 @@ void ObjectViewer::setLightingUniforms(std::shared_ptr<Shader> Shader)
 	}
 
 
-	for (int i = 1; i < resources->m_spotLights.size()+1; i++)
+	/*for (int i = 1; i < resources->m_spotLights.size()+1; i++)
 	{
 		name = std::string("sLights["+ std::to_string(i) + "].color");
 		Shader->setVec3(name, resources->m_spotLights[i].color);
@@ -250,7 +265,7 @@ void ObjectViewer::setLightingUniforms(std::shared_ptr<Shader> Shader)
 		Shader->setFloat(name, resources->m_spotLights[i].cutOff);
 		name = std::string("sLights[" + std::to_string(i) + "].outerCutOff");
 		Shader->setFloat(name, resources->m_spotLights[i].outerCutOff);
-	}
+	}*/
 
 	//Shader->setFloat("sLight.enabled", m_camera->isTorch);
 	Shader->setInt("numPointLights", resources->m_pointLights.size());

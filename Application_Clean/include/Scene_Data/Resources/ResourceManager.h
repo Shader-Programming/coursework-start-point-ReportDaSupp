@@ -13,25 +13,28 @@ struct Resources {
 	std::vector<Cube> m_lights;
 	std::vector<Model> m_models;
 	std::shared_ptr<Model> m_terrain;
+	std::shared_ptr<SkyBox> m_SkyBox;
+	uint32_t HeightMapTexture;
 
 	SpotLight m_torch;
 
 	std::unordered_map<std::string, std::shared_ptr<Shader>> m_shaders;
 
 	bool eWireframe = false;
-	bool eBloom = false;
-	bool eTone = false;
+	bool eBloom = true;
+	bool eTone = true;
 	bool eGrayscale = false;
 	bool eInverse = false;
-	bool eGamma = false;
-	bool eDirectional = false;
+	bool eGamma = true;
+	bool eDirectional = true;
 	bool ePointLight = false;
-	bool eSpotLight = false;
+	bool eSpotLight = true;
 	bool eRimming = false;
 	bool eLightsVisible = false;
 	bool eDirectionalSM = false;
+	bool eNormalMap = false;
 
-	float tessLevel = 32.0f;
+	float ellapsedTime = 0.f;
 
 };
 
@@ -44,6 +47,7 @@ public:
 
 	void initAssimpModel(const char* fp, bool isFlip, bool isStatic, glm::vec3 trans, glm::vec3 rotate, glm::vec3 scale);
 	void initTerrain(const char* fp, bool isFlip, bool isStatic, glm::vec3 trans, glm::vec3 rotate, glm::vec3 scale);
+	void initSkyBox(const char* fp);
 	void initSceneObject(std::shared_ptr<BaseObject> obj, glm::vec3 position, glm::vec3 rotation, glm::vec3 scale);
 	void initDirectionalLight(glm::vec3 color, glm::vec3 direction, float ambient);
 	void initPointLight(glm::vec3 color, glm::vec3 position, glm::vec3 attenuation);

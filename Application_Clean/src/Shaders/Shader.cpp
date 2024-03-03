@@ -213,7 +213,7 @@ Shader::Shader(const char* glslPath)
 	}
 	if (tc)
 	{
-		// fragment Shader
+		// tesselation control Shader
 		tesselationControl = glCreateShader(GL_TESS_CONTROL_SHADER);
 		glShaderSource(tesselationControl, 1, &tcShaderCode, NULL);
 		glCompileShader(tesselationControl);
@@ -221,7 +221,7 @@ Shader::Shader(const char* glslPath)
 	}
 	if (te)
 	{
-		// geometry Shader
+		// tesselation evaluation Shader
 		tesselationEvaluation = glCreateShader(GL_TESS_EVALUATION_SHADER);
 		glShaderSource(tesselationEvaluation, 1, &teShaderCode, NULL);
 		glCompileShader(tesselationEvaluation);
@@ -237,7 +237,7 @@ Shader::Shader(const char* glslPath)
 	}
 	if (c)
 	{
-		// geometry Shader
+		// compute Shader
 		compute = glCreateShader(GL_COMPUTE_SHADER);
 		glShaderSource(compute, 1, &cShaderCode, NULL);
 		glCompileShader(compute);

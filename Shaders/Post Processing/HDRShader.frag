@@ -52,22 +52,20 @@ void main()
 {
 	vec3 result = texture(ColorAttachment, TexCoords).rgb;
 
+	if (eBloom)
+	{ result = result + texture(BloomAttachment, TexCoords).rgb * 0.5; }
+
 	if (eTone)
 	{ result = toneMapReinhard(result); }
 
 	if (eGamma)
 	{ result = Gamma(result); }
 
-	if (eBloom)
-	{ result = mix(result, (texture(BloomAttachment, TexCoords).rgb), 0.5); }
-
 	if (eInverse)
 	{ result = Inverse(result); }
 
 	if (eGrayscale)
 	{ result = Grayscale(result); }
-
-	
 
 	FragColor = vec4(result, 1.0);
 }

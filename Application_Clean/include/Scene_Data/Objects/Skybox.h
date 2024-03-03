@@ -8,7 +8,7 @@ Inherited Class For A Cube Object
 class SkyBox : public BaseObject
 {
 public:
-	SkyBox(const char* dfilepath = (const char*)("..\\Resources\\Textures\\Skybox\\"));
+	SkyBox(const char* dfilepath = (const char*)("..\\Resources\\Models\\SkyBox\\"));
 	~SkyBox() {};
 
 	virtual void setMaterialValues(std::shared_ptr<Shader> Shader) override;
