@@ -124,7 +124,7 @@ vec3 lowColor = vec3(0.0, 0.0, 1.0);
 vec3 midColor = vec3(0.0, 1.0, 0.0); 
 vec3 highColor = vec3(1.0, 0.0, 0.0); 
 
-float midHeight = 0.3; 
+float midHeight = 0.5; 
 float highHeight = 1.0; 
 
 uniform sampler2D HeightMapTex;
