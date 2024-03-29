@@ -22,8 +22,6 @@ void Framebuffer::initAttachments()
 
 	m_DownSampleShader = std::make_shared<Shader>("..\\Shaders\\Post Processing\\DownSampleShader.vert", "..\\Shaders\\Post Processing\\DownSampleShader.frag");
 	m_UpSampleShader = std::make_shared<Shader>("..\\Shaders\\Post Processing\\UpSampleShader.vert", "..\\Shaders\\Post Processing\\UpSampleShader.frag");
-
-	
 }
 
 void Framebuffer::calcLighting()

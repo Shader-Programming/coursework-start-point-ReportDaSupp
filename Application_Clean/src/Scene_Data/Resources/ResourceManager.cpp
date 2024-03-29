@@ -6,6 +6,7 @@ ResourceManager::ResourceManager()
 	resources.reset(new Resources);
 
 	resources->m_shaders["TerrainShader"]		=	std::make_shared<Shader>("..\\Shaders\\Scene\\TerrainPass.glsl");
+	resources->m_shaders["GenTerrainShader"]	=	std::make_shared<Shader>("..\\Shaders\\Scene\\GeneratePlane.glsl");
 	resources->m_shaders["GeometryShader"]		=	std::make_shared<Shader>("..\\Shaders\\Scene\\GeometryPass.glsl");
 	resources->m_shaders["LightShader"]			=	std::make_shared<Shader>("..\\Shaders\\Scene\\Light.glsl");
 	resources->m_shaders["LightingShader"]		=	std::make_shared<Shader>("..\\Shaders\\Scene\\LightingShader.glsl");
@@ -13,11 +14,8 @@ ResourceManager::ResourceManager()
 	resources->m_shaders["PPShader"]			=	std::make_shared<Shader>("..\\Shaders\\Post Processing\\HDRShader.vert",	"..\\Shaders\\Post Processing\\HDRShader.frag");
 	resources->m_shaders["DShadowMapShader"]	=	std::make_shared<Shader>("..\\Shaders\\Post Processing\\DShadowMap.vert",	"..\\Shaders\\Post Processing\\DShadowMap.frag");
 
-	//this->initAssimpModel("../Resources/Models/Backpack/backpack.obj", false, true, glm::vec3(2.0f, 2.0f, 0.0f), glm::vec3(0.f, 1.f, 0.f), 0.0f, glm::vec3(1.f, 1.f, 1.f));
-	//this->initAssimpModel("../Resources/Models/Frog/object.obj", true, true, glm::vec3(-2.0f, 5.0f, 0.0f), glm::vec3(0.f, 0.f, 0.f), glm::vec3(3.f, 3.f, 3.f));
-	this->initTerrain("../Resources/Models/Plane/Plane.obj", true, false, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.f, 0.f, 0.f), glm::vec3(200.f, 1.f, 200.f));
-	//this->initAssimpModel("../Resources/Models/Floor/object.obj", true, false, glm::vec3(0.0f, 10.0f, -10.0f), glm::vec3(1.f, 0.f, 0.f), 90.f, glm::vec3(10.f, 0.001f, 10.f));
-	this->initSkyBox("..\\Resources\\Models\\SkyBox\\");
+	this->initTerrain(32, 32);
+	this->initSkyBox("../Resources/Models/SkyBox/");
 	this->initDirectionalLight(glm::vec3(0.8, 0.4, 0.5), glm::vec3(-0.5f, -1.0f, -0.5f), 0.3f);
 
 	srand(time(NULL));
@@ -44,11 +42,25 @@ void ResourceManager::initAssimpModel(const char* fp, bool isFlip, bool isStatic
 	resources->m_models.push_back(temp);
 }
 
-void ResourceManager::initTerrain(const char* fp, bool isFlip, bool isStatic, glm::vec3 trans, glm::vec3 rotate, glm::vec3 scale)
-{
-	resources->m_terrain = std::make_shared <Model>(fp, isFlip);
-	resources->m_terrain->setTransform(trans, rotate, scale);
-	resources->m_terrain->isStatic = isStatic;
+void ResourceManager::initTerrain(uint32_t gridWidth, uint32_t gridHeight)
+{	
+	glGenVertexArrays(1, &resources->m_terrainVAO);
+	glBindVertexArray(resources->m_terrainVAO);
+
+	resources->m_terrainCount = gridWidth * gridHeight * 6;
+	glGenBuffers(1, &resources->m_terrainVBO);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, resources->m_terrainVBO);
+	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(SimpleVertex) * resources->m_terrainCount, NULL, GL_DYNAMIC_DRAW);
+	
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, resources->m_terrainVBO);
+
+	resources->m_shaders["GenTerrainShader"]->use();
+	resources->m_shaders["GenTerrainShader"]->setInt("gridWidth", gridWidth);
+	resources->m_shaders["GenTerrainShader"]->setInt("gridHeight", gridHeight);
+
+	glDispatchCompute((gridWidth) / 32, (gridHeight) / 32, 1);
+	glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
+
 }
 
 void ResourceManager::initSkyBox(const char* fp)
@@ -60,7 +72,6 @@ void ResourceManager::initSceneObject(std::shared_ptr<BaseObject> obj, glm::vec3
 {
 	obj->setTransform(position, rotation, scale);
 	resources->m_sceneObjects.push_back(obj);
-	
 }
 
 void ResourceManager::initDirectionalLight(glm::vec3 color, glm::vec3 direction, float ambient)

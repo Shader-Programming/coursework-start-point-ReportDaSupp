@@ -5,6 +5,13 @@
 #include "Scene_Data/Objects/AssimpObj.h"
 #include <unordered_map>
 
+struct SimpleVertex
+{
+	glm::vec4 position;
+	glm::vec4 texCoords;
+	glm::vec4 normal;
+};
+
 struct Resources {
 	DirectionalLight m_directionalLight;
 	std::vector<PointLight> m_pointLights;
@@ -12,9 +19,14 @@ struct Resources {
 	std::vector<std::shared_ptr<BaseObject>> m_sceneObjects;
 	std::vector<Cube> m_lights;
 	std::vector<Model> m_models;
-	std::shared_ptr<Model> m_terrain;
 	std::shared_ptr<SkyBox> m_SkyBox;
 	uint32_t HeightMapTexture;
+	
+	uint32_t m_terrainSSBO;
+	uint32_t m_terrainVAO;
+	uint32_t m_terrainVBO;
+	uint32_t m_terrainCount;
+	std::vector<uint32_t> m_terrainIndices;
 
 	SpotLight m_torch;
 
@@ -46,7 +58,7 @@ public:
 	std::shared_ptr<Resources> getResourcesPtr() { return resources; }
 
 	void initAssimpModel(const char* fp, bool isFlip, bool isStatic, glm::vec3 trans, glm::vec3 rotate, glm::vec3 scale);
-	void initTerrain(const char* fp, bool isFlip, bool isStatic, glm::vec3 trans, glm::vec3 rotate, glm::vec3 scale);
+	void initTerrain(uint32_t gridWidth, uint32_t gridHeight);
 	void initSkyBox(const char* fp);
 	void initSceneObject(std::shared_ptr<BaseObject> obj, glm::vec3 position, glm::vec3 rotation, glm::vec3 scale);
 	void initDirectionalLight(glm::vec3 color, glm::vec3 direction, float ambient);

@@ -2,9 +2,9 @@
 
 #version 440 core
 
-layout (location = 0) in vec3 aPos;
-layout (location = 1) in vec2 aTexCoords;
-layout (location = 2) in vec3 aNormal;
+layout (location = 0) in vec4 aPos;
+layout (location = 1) in vec4 aTexCoords;
+layout (location = 2) in vec4 aNormal;
 
 out DATA_VERTEX {
     vec2 TexCoords;
@@ -13,9 +13,9 @@ out DATA_VERTEX {
 
 void main()
 {
-    data_out.TexCoords = aTexCoords;
-    data_out.Normal    = aNormal;
-    gl_Position        = vec4(aPos, 1.0);
+    data_out.TexCoords = vec2(aTexCoords.xy);
+    data_out.Normal    = vec3(aNormal.xyz);
+    gl_Position        = vec4(aPos);
 }
 
 #region TesselationControl
@@ -120,12 +120,12 @@ out DATA_TE {
     vec3 Color;
 } data_out;
 
-vec3 lowColor = vec3(0.0, 0.0, 1.0);
+vec3 lowColor = vec3(1.0, 1.0, 0.0);
 vec3 midColor = vec3(0.0, 1.0, 0.0); 
-vec3 highColor = vec3(1.0, 0.0, 0.0); 
+vec3 highColor = vec3(1.0, 1.0, 1.0); 
 
-float midHeight = 0.5; 
-float highHeight = 1.0; 
+float midHeight = 0.7; 
+float highHeight = 1.3; 
 
 uniform sampler2D HeightMapTex;
 uniform sampler2D DuDvMapTex;
@@ -155,14 +155,15 @@ void main()
     data_out.Normal = texture(HeightMapTex, interpolate2D(data_in[0].TexCoords, data_in[1].TexCoords, data_in[2].TexCoords)).rgb;
 
     float height = texture(HeightMapTex, data_out.TexCoords).a;
-    gl_Position.y += (height * 2 - 1) * 10.f;
+    if (height > 0.5)
+        gl_Position.y += (height * 2 - 1) * 20.f;
+    else
+        gl_Position.y += (height * 2 - 1) * 20.f;
 
-    if (height <= 0.4)
-    {
-        gl_Position.y -= (texture(DuDvMapTex, data_out.TexCoords).r) - 0.5;
-        data_out.Color = vec3(0.1, 0.1, 0.87);
-    }
-    else if(height < midHeight) {
+    
+    //gl_Position.y += (texture(DuDvMapTex, data_out.TexCoords).r)* 2 - 1;
+    
+    if(height < midHeight) {
         float t = height / midHeight;
         data_out.Color = mix(lowColor, midColor, t);
     } 

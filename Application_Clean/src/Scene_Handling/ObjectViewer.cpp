@@ -29,7 +29,7 @@ ObjectViewer::~ObjectViewer()
 void ObjectViewer::update(float dt)
 {
 	glm::vec3 camPos = m_camera->getPosition();
-	resources->m_terrain->setTransform({ camPos.x, 0,camPos.z }, { 0, 0, 0 }, {200, 1, 200});
+	//resources->m_terrain->setTransform({ camPos.x, 0,camPos.z }, { 0, 0, 0 }, {200, 1, 200});
 	m_ColorFBO.bindDefault();
 	m_ColorFBO.clearScreen();
 
@@ -72,8 +72,8 @@ void ObjectViewer::render(float dt)
 
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
+	//glEnable(GL_CULL_FACE);
+	//glCullFace(GL_BACK);
 
 	glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
 	
@@ -104,17 +104,6 @@ void ObjectViewer::render(float dt)
 	this->renderGeometry(resources->m_shaders["GeometryShader"], dt);
 
 	glDisable(GL_CULL_FACE);
-	
-	/*if (resources->eDirectionalSM)
-	{
-		glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
-		resources->m_shaders["DShadowMapShader"]->use();
-		m_ColorFBO.bindDSMFBO();
-		m_ColorFBO.clearBuffers();
-
-		this->setSMUniforms(resources->m_shaders["DShadowMapShader"]);
-		this->renderGeometry(resources->m_shaders["DShadowMapShader"], dt);
-	}*/
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
@@ -133,12 +122,6 @@ void ObjectViewer::render(float dt)
 
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
-
-	//m_ColorFBO.bindFBO();
-	// Lighting Rendering as Cubes
-	/*resources->m_shaders["LightShader"]->use();
-	this->setMatrixUniforms(resources->m_shaders["LightShader"]);
-	this->renderLighting(resources->m_shaders["LightShader"], dt);*/
 
 	if (resources->eBloom)
 		m_ColorFBO.drawSampledBloom();
@@ -164,12 +147,24 @@ void ObjectViewer::renderGeometry(std::shared_ptr<Shader> Shader, float dt)
 
 void ObjectViewer::renderTerrain(std::shared_ptr<Shader> Shader, float dt)
 {
+	glBindVertexArray(resources->m_terrainVAO);
 
 	Shader->use();
-	Shader->setMat4("model", resources->m_terrain->getTransform());
+	glm::mat4 temp = glm::mat4(1.0);
+	Shader->setMat4("model", temp);
 	Shader->setInt("HeightMapTex", m_ColorFBO.getHeightMapTextureBinding());
 	Shader->setInt("DuDvMapTex", m_ColorFBO.getDuDvTextureBinding());
-	resources->m_terrain->Draw(Shader);
+	
+	glBindBuffer(GL_ARRAY_BUFFER, resources->m_terrainVBO);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(SimpleVertex), (void*)offsetof(SimpleVertex, position));
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(SimpleVertex), (void*)offsetof(SimpleVertex, texCoords));
+	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(SimpleVertex), (void*)offsetof(SimpleVertex, normal));
+	glPatchParameteri(GL_PATCH_VERTICES, 3);
+	// Draw the plane
+	glDrawArrays(GL_PATCHES, 0, resources->m_terrainCount);
 
 }
 
@@ -250,24 +245,6 @@ void ObjectViewer::setLightingUniforms(std::shared_ptr<Shader> Shader)
 		Shader->setVec3(name, resources->m_pointLights[i].attenuation);
 	}
 
-
-	/*for (int i = 1; i < resources->m_spotLights.size()+1; i++)
-	{
-		name = std::string("sLights["+ std::to_string(i) + "].color");
-		Shader->setVec3(name, resources->m_spotLights[i].color);
-		name = std::string("sLights[" + std::to_string(i) + "].position");
-		Shader->setVec3(name, resources->m_spotLights[i].position);
-		name = std::string("sLights[" + std::to_string(i) + "].direction");
-		Shader->setVec3(name, resources->m_spotLights[i].direction);
-		name = std::string("sLights[" + std::to_string(i) + "].attenuation");
-		Shader->setVec3(name, resources->m_spotLights[i].attenuation);
-		name = std::string("sLights[" + std::to_string(i) + "].cutOff");
-		Shader->setFloat(name, resources->m_spotLights[i].cutOff);
-		name = std::string("sLights[" + std::to_string(i) + "].outerCutOff");
-		Shader->setFloat(name, resources->m_spotLights[i].outerCutOff);
-	}*/
-
-	//Shader->setFloat("sLight.enabled", m_camera->isTorch);
 	Shader->setInt("numPointLights", resources->m_pointLights.size());
 	Shader->setInt("numSpotLights", resources->m_spotLights.size());
 }

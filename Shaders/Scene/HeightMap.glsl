@@ -84,7 +84,7 @@ vec3 calculateNormal(ivec2 coords) {
 
 void main() {
     ivec2 texelCoords = ivec2(gl_GlobalInvocationID.xy);
-    float n = perlin(float(texelCoords.x) / 100.0 + viewPos.x / 4, float(texelCoords.y) / 100.0 + viewPos.z / 4, 0);
+    float n = perlin(float(texelCoords.x) / 100.0, float(texelCoords.y) / 100.0, 0);
 
     vec3 normal = calculateNormal(texelCoords / 100);
 
@@ -99,14 +99,9 @@ void main() {
         }
     }
     smoothNormal = normalize(smoothNormal / float(count));
-    float d = perlin(float(texelCoords.x)/100 + viewPos.x / 4, float(texelCoords.y) / 100.0 + viewPos.z / 4.0, ellapsedTime);
-    float waterLevel = 0.4; // Example water level threshold
-    bool isWater = n < waterLevel;
+    float d = perlin(float(texelCoords.x)/100, float(texelCoords.y) / 100.0, ellapsedTime);
     vec4 heightNormal;
-    if (isWater)
-        heightNormal = vec4(smoothNormal * 0.5 + 0.5, 0.4);
-    else
-        heightNormal = vec4(smoothNormal * 0.5 + 0.5, n);
+    heightNormal = vec4(smoothNormal * 0.5 + 0.5, n);
     imageStore(heightMap, texelCoords, heightNormal);
     imageStore(DuDvMap, texelCoords, vec4(d, 0, 0, 0));
 }
