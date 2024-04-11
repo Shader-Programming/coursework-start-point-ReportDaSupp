@@ -21,6 +21,7 @@ private:
 	void render(float dt);
 	void renderGeometry(std::shared_ptr<Shader> Shader, float dt);
 	void renderTerrain(std::shared_ptr<Shader> Shader, float dt);
+	void initTerrainTex();
 	void renderLighting(std::shared_ptr<Shader> Shader, float dt);
 	void setMatrixUniforms(std::shared_ptr<Shader> Shader);
 	void setSMUniforms(std::shared_ptr<Shader> Shader);
@@ -32,5 +33,8 @@ private:
 	std::shared_ptr<Gui> m_gui;
 	std::shared_ptr<ResourceManager> resourceManager;
 	std::shared_ptr<Resources> resources;
+	std::shared_ptr<TextureManager> texManager;
+
+	std::vector<uint32_t> terrainTextures;
 
 };

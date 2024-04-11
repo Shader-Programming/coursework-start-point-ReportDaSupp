@@ -9,29 +9,29 @@ ResourceManager::ResourceManager()
 	resources->m_shaders["GenTerrainShader"]	=	std::make_shared<Shader>("..\\Shaders\\Scene\\GeneratePlane.glsl");
 	resources->m_shaders["GeometryShader"]		=	std::make_shared<Shader>("..\\Shaders\\Scene\\GeometryPass.glsl");
 	resources->m_shaders["LightShader"]			=	std::make_shared<Shader>("..\\Shaders\\Scene\\Light.glsl");
-	resources->m_shaders["LightingShader"]		=	std::make_shared<Shader>("..\\Shaders\\Scene\\LightingShader.glsl");
+	resources->m_shaders["LightingShader"]		=	std::make_shared<Shader>("..\\Shaders\\Scene\\PBRLightingShader.glsl");
 	resources->m_shaders["SkyBoxShader"]		=	std::make_shared<Shader>("..\\Shaders\\Scene\\SkyBoxShader.glsl");
 	resources->m_shaders["PPShader"]			=	std::make_shared<Shader>("..\\Shaders\\Post Processing\\HDRShader.vert",	"..\\Shaders\\Post Processing\\HDRShader.frag");
 	resources->m_shaders["DShadowMapShader"]	=	std::make_shared<Shader>("..\\Shaders\\Post Processing\\DShadowMap.vert",	"..\\Shaders\\Post Processing\\DShadowMap.frag");
 
 	this->initTerrain(32, 32);
 	this->initSkyBox("../Resources/Models/SkyBox/");
-	this->initDirectionalLight(glm::vec3(0.8, 0.4, 0.5), glm::vec3(-0.5f, -1.0f, -0.5f), 0.3f);
+	this->initDirectionalLight(glm::vec3(0.8, 0.4, 0.5), glm::vec3(-0.5f, -1.0f, -0.5f), 0.7f);
 
 	srand(time(NULL));
 
-	for (int i = 0; i < 1; i++)
-	{
-		this->initPointLight(glm::vec3(((float)std::rand() / (RAND_MAX)), ((float)std::rand() / (RAND_MAX)), ((float)std::rand() / (RAND_MAX))), glm::vec3((((float)std::rand() / (RAND_MAX)) * 20) - 10, (((float)std::rand() / (RAND_MAX)) * 4), (((float)std::rand() / (RAND_MAX)) * 20) - 10), glm::vec3(1, 0.03, 0.0015));
-	}
+	//for (int i = 0; i < 1; i++)
+	//{
+	//	this->initPointLight(glm::vec3(((float)std::rand() / (RAND_MAX)), ((float)std::rand() / (RAND_MAX)), ((float)std::rand() / (RAND_MAX))), glm::vec3((((float)std::rand() / (RAND_MAX)) * 20) - 10, (((float)std::rand() / (RAND_MAX)) * 4), (((float)std::rand() / (RAND_MAX)) * 20) - 10), glm::vec3(1, 0.03, 0.0015));
+	//}
 
-	this->initSpotLight(glm::vec3(0.3, 0.3, 0.3), glm::vec3(0.0, 10.0, 0.0), glm::vec3(0.0, -1.0, 0.0), glm::vec3(1.0, 0.03, 0.0015), (float) glm::cos(glm::radians(12.5f)), (float)glm::cos(glm::radians(17.5f)));
+	//this->initSpotLight(glm::vec3(0.3, 0.3, 0.3), glm::vec3(0.0, 10.0, 0.0), glm::vec3(0.0, -1.0, 0.0), glm::vec3(1.0, 0.03, 0.0015), (float) glm::cos(glm::radians(12.5f)), (float)glm::cos(glm::radians(17.5f)));
 
-	for (auto light : resources->m_pointLights)
-	{
-		std::shared_ptr<Cube> temp = std::make_shared<Cube>(light.color, 16.f, 0.8f);
-		this->initSceneObject(temp, light.position, glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.5f, 0.5f, 0.5f));
-	}
+	//for (auto light : resources->m_pointLights)
+	//{
+	//	std::shared_ptr<Cube> temp = std::make_shared<Cube>(light.color, 16.f, 0.8f);
+	//	this->initSceneObject(temp, light.position, glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.5f, 0.5f, 0.5f));
+	//}
 }
 
 void ResourceManager::initAssimpModel(const char* fp, bool isFlip, bool isStatic, glm::vec3 trans, glm::vec3 rotate, glm::vec3 scale)

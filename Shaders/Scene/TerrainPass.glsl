@@ -39,16 +39,16 @@ uniform mat4 view;
 uniform mat4 model;
 uniform vec3 viewPos;
 
-//float calculateScreenSpaceEdgeLength(vec3 vertexPositionWorldSpace, vec3 otherVertexPositionWorldSpace) {
-//    vec4 vertexPositionClipSpace = projection * view * vec4(vertexPositionWorldSpace, 1.0);
-//    vec4 otherVertexPositionClipSpace = projection * view * vec4(otherVertexPositionWorldSpace, 1.0);
-//    
-//    vec3 vertexPositionNDC = vertexPositionClipSpace.xyz / vertexPositionClipSpace.w;
-//    vec3 otherVertexPositionNDC = otherVertexPositionClipSpace.xyz / otherVertexPositionClipSpace.w;
-//   
-//    float screenSpaceDistance = length(vertexPositionNDC.xy - otherVertexPositionNDC.xy);
-//    return screenSpaceDistance;
-//}
+float calculateScreenSpaceEdgeLength(vec3 vertexPositionWorldSpace, vec3 otherVertexPositionWorldSpace) {
+    vec4 vertexPositionClipSpace = projection * view * vec4(vertexPositionWorldSpace, 1.0);
+    vec4 otherVertexPositionClipSpace = projection * view * vec4(otherVertexPositionWorldSpace, 1.0);
+    
+    vec3 vertexPositionNDC = vertexPositionClipSpace.xyz / vertexPositionClipSpace.w;
+    vec3 otherVertexPositionNDC = otherVertexPositionClipSpace.xyz / otherVertexPositionClipSpace.w;
+   
+    float screenSpaceDistance = length(vertexPositionNDC.xy - otherVertexPositionNDC.xy);
+    return screenSpaceDistance;
+}
 
 float getDistanceFromCamera(vec3 worldPos) {
     return length(viewPos - worldPos);
@@ -57,8 +57,8 @@ float getDistanceFromCamera(vec3 worldPos) {
 float calculateTessLevel(float distance) {
 
     const float maxDistance = 200.0; // Maximum distance for tessellation
-    const float minTessLevel = 8.0; // Minimum tessellation level
-    const float maxTessLevel = 64.0; // Maximum tessellation level
+    const float minTessLevel = 1.0; // Minimum tessellation level
+    const float maxTessLevel = 8.0; // Maximum tessellation level
     
     float normalizedDistance = clamp(distance / maxDistance, 0.0, 1.0);
     
@@ -69,26 +69,28 @@ float calculateTessLevel(float distance) {
 void main()
 {
     // Screen Space Method
-    //vec3 controlPointsWorld[3];
-    //for (int i = 0; i < 3; ++i) {
-    //    vec4 worldPos = model * gl_in[i].gl_Position;
-    //    controlPointsWorld[i] = worldPos.xyz;
-    //}
+    vec3 controlPointsWorld[3];
+    for (int i = 0; i < 3; ++i) {
+        vec4 worldPos = model * gl_in[i].gl_Position;
+        controlPointsWorld[i] = worldPos.xyz;
+    }
 
-    //float avgEdgeLength = 0.0;
-    //for (int i = 0; i < 3; ++i) {
-    //    avgEdgeLength += calculateScreenSpaceEdgeLength(controlPointsWorld[i], controlPointsWorld[(i + 1) % 3]);
-    //}
-    //avgEdgeLength /= 3.0;
-    //
-    //float tessLevel = 1.0 / avgEdgeLength * 10.0; // Example scaling factor
+    float avgEdgeLength = 0.0;
+    for (int i = 0; i < 3; ++i) {
+        avgEdgeLength += calculateScreenSpaceEdgeLength(controlPointsWorld[i], controlPointsWorld[(i + 1) % 3]);
+    }
+    avgEdgeLength /= 3.0;
+    
+    float tessLevel1 = (avgEdgeLength) * 8; // Example scaling factor
 
     // View Distance Method
     vec4 worldPos = model * gl_in[gl_InvocationID].gl_Position;
     
     float distance = getDistanceFromCamera(worldPos.xyz);
     
-    float tessLevel = calculateTessLevel(distance);
+    float tessLevel2 = calculateTessLevel(distance);
+
+    float tessLevel = mix(tessLevel1 * tessLevel1, tessLevel2 * tessLevel2, 0.5);
 
     if(gl_InvocationID == 0)
     {
@@ -269,12 +271,12 @@ void main()
     gPosition = vec4(data_in.FragPos, 1.0);
 
     // Applying normal mapping
-    gNormalMap = vec4(texture(HeightMapTex, data_in.TexCoords).rgb, 0.0f) * 2.0 - 1.0;
+    gNormalMap = vec4(texture(normalTexture, data_in.TexCoords).rgb, 0.0f);
     gNormal = data_in.Normal;
 
     // Albedo and specular from textures
     //vec3 albedo = texture(diffuseTexture, data_in.TexCoords).rgb;
-    vec3 albedo = data_in.Color;
+    vec3 albedo = (texture(diffuseTexture, data_in.TexCoords).rgb) / 2;
     float specular = texture(specularTexture, data_in.TexCoords).r;
     gAlbedoSpec = vec4(albedo, specular);
 

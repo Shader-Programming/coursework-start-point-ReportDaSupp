@@ -19,6 +19,8 @@ ObjectViewer::ObjectViewer(GLFWwindow* window, std::shared_ptr<InputHandler> H) 
 	m_ColorFBO.initAttachments();
 	m_ColorFBO.attachLightingShader(resources->m_shaders["LightingShader"]);
 	m_ColorFBO.attachColorShader(resources->m_shaders["PPShader"]);
+
+	this->initTerrainTex();
 }
 
 ObjectViewer::~ObjectViewer()
@@ -72,8 +74,8 @@ void ObjectViewer::render(float dt)
 
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
-	//glEnable(GL_CULL_FACE);
-	//glCullFace(GL_BACK);
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
 
 	glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
 	
@@ -88,6 +90,8 @@ void ObjectViewer::render(float dt)
 
 	glDepthFunc(GL_LESS);
 
+	glDisable(GL_CULL_FACE);
+
 	// Terrain Geometry Pass
 	resources->m_shaders["TerrainShader"]->use();
 
@@ -97,13 +101,11 @@ void ObjectViewer::render(float dt)
 
 
 	// Core Asset Rendering Pass
-	resources->m_shaders["GeometryShader"]->use();
+	//resources->m_shaders["GeometryShader"]->use();
 
 	// Geometry Rendering
-	this->setMatrixUniforms(resources->m_shaders["GeometryShader"]);
-	this->renderGeometry(resources->m_shaders["GeometryShader"], dt);
-
-	glDisable(GL_CULL_FACE);
+	//this->setMatrixUniforms(resources->m_shaders["GeometryShader"]);
+	//this->renderGeometry(resources->m_shaders["GeometryShader"], dt);
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
@@ -115,9 +117,8 @@ void ObjectViewer::render(float dt)
 	resources->m_shaders["LightingShader"]->use();
 	m_ColorFBO.clearBuffers();
 	this->setMatrixUniforms(resources->m_shaders["LightingShader"]);
-	if (resources->eDirectionalSM)
-		this->setSMUniforms(resources->m_shaders["LightingShader"]);
 	this->setLightingUniforms(resources->m_shaders["LightingShader"]);
+	resources->m_SkyBox->setMaterialValues(resources->m_shaders["LightingShader"]);
 	m_ColorFBO.calcLighting();
 
 	glEnable(GL_DEPTH_TEST);
@@ -154,6 +155,18 @@ void ObjectViewer::renderTerrain(std::shared_ptr<Shader> Shader, float dt)
 	Shader->setMat4("model", temp);
 	Shader->setInt("HeightMapTex", m_ColorFBO.getHeightMapTextureBinding());
 	Shader->setInt("DuDvMapTex", m_ColorFBO.getDuDvTextureBinding());
+
+	glActiveTexture(GL_TEXTURE0 + 8);
+	glBindTexture(GL_TEXTURE_2D, terrainTextures[0]);
+	Shader->setInt("diffuseTexture", 8);
+	glActiveTexture(GL_TEXTURE0 + 9);
+	glBindTexture(GL_TEXTURE_2D, terrainTextures[1]);
+	Shader->setInt("specularTexture", 9);
+	glActiveTexture(GL_TEXTURE0 + 10);
+	glBindTexture(GL_TEXTURE_2D, terrainTextures[2]);
+	Shader->setInt("normalTexture", 10);
+
+
 	
 	glBindBuffer(GL_ARRAY_BUFFER, resources->m_terrainVBO);
 	glEnableVertexAttribArray(0);
@@ -166,6 +179,14 @@ void ObjectViewer::renderTerrain(std::shared_ptr<Shader> Shader, float dt)
 	// Draw the plane
 	glDrawArrays(GL_PATCHES, 0, resources->m_terrainCount);
 
+}
+
+void ObjectViewer::initTerrainTex()
+{
+	terrainTextures.resize(3);
+	terrainTextures[0] = texManager->loadTexture("..\\Resources\\Textures\\SandDiff.jpg");
+	terrainTextures[1] = texManager->loadTexture("..\\Resources\\Textures\\SandSpec.jpg");
+	terrainTextures[2] = texManager->loadTexture("..\\Resources\\Textures\\SandNorm.jpg");
 }
 
 void ObjectViewer::renderLighting(std::shared_ptr<Shader> Shader, float dt)
