@@ -109,7 +109,7 @@ void ObjectViewer::render(float dt)
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-	glDisable(GL_DEPTH_TEST);
+	//glDisable(GL_DEPTH_TEST);
 
 	// Lighting Pass
 	glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
@@ -132,6 +132,8 @@ void ObjectViewer::render(float dt)
 	m_ColorFBO.clearScreen();
 	this->setPPShaderUniforms(m_ColorFBO.getActiveShader());
 	m_ColorFBO.drawFrame();
+	
+	
 }
 
 void ObjectViewer::renderGeometry(std::shared_ptr<Shader> Shader, float dt)

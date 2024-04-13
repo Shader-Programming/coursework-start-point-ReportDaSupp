@@ -110,7 +110,7 @@ void main() {
     vec3 albedo = texture(gAlbedoSpec, TexCoords).rgb;
     float metallic = 0.1;
     float roughness = texture(gAlbedoSpec, TexCoords).a;
-    float ao = 0.2;
+    float ao = 0.1;
 
     vec3 V = normalize(viewPos - fragPos); // View direction
 
@@ -123,16 +123,16 @@ void main() {
     vec3 directLight = calcPBRDirectLight(N, V, L, lightColor, roughness, metallic, albedo);
     
     // Output color
-    vec3 color = directLight * ao;
+    vec3 color = directLight + ao;
     
     vec3 F0 = mix(vec3(0.04), albedo, metallic);
     vec3 ambientDiffuse = calcDiffuseIBL(N, albedo);
-    vec3 ambientSpecular = calcSpecularIBL(N, V, roughness, F0);
+    vec3 ambientSpecular = vec3(0.5);// = calcSpecularIBL(N, V, roughness, F0);
 
     vec3 ambient = ambientDiffuse + ambientSpecular;
 
     // Combine direct lighting with IBL
-    vec3 finalColor = directLight + ambient;
+    vec3 finalColor = directLight * ambient;
 
     FragColor = vec4(finalColor, 1.0);
 

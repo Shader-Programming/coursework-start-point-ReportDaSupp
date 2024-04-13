@@ -21,7 +21,7 @@ uint32_t TextureManager::loadTexture(std::string path)
 		else if (nrComponents == 4)
 			format = GL_RGBA;
 
-		//glBindTexture(GL_TEXTURE_2D, textureID);
+		glBindTexture(GL_TEXTURE_2D, textureID);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, width, height, 0, format, GL_UNSIGNED_BYTE, data); // whats this?
 		glGenerateMipmap(GL_TEXTURE_2D);
 
@@ -53,7 +53,7 @@ std::shared_ptr<Texture> TextureManager::assignTexture(std::string filepath, std
 	temp->id = loadTexture(filepath);
 	temp->type = texType;
 
-	glActiveTexture(GL_TEXTURE0 + temp->id);//temp->m_identifier);
+	glActiveTexture(GL_TEXTURE0 + temp->id);
 	glBindTexture(GL_TEXTURE_2D, temp->id);
 	glActiveTexture(NULL);
 

@@ -188,7 +188,7 @@ void main()
     gPosition = vec4(data_in.FragPos, 1.0);
 
     // Applying normal mapping
-    gNormalMap = vec4(texture(normalTexture, data_in.TexCoords).rgb, 0.0f) * 2.0 - 1.0;
+    gNormalMap = vec4(data_in.Normal, 1.0); //vec4(texture(normalTexture, data_in.TexCoords).rgb, 0.0f) * 2.0 - 1.0;
     gNormal = data_in.Normal;
 
     // Albedo and specular from textures
