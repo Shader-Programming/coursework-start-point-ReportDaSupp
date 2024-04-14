@@ -7,22 +7,6 @@
 #include "Inputs&Cameras/InputHandler.h"
 
 
-
-
-
-
-/*
-* A lot going on in this class
-* GLFw window
-* also creates GL context
-* an input handler is initialised here as a raw pointer
-* raw because of the GLFW callbacks ( glfwSetWindowUserPointer(m_window, m_rawHandler); )
-* when the handler is returned in getter it is converted to a shared pointer as it might be passed around
-* GLFWwindow* and shared_ptr<InputHandler> returned and passed on to application
-* GL context is global, be careful if you add multi-threading
-*
-*/
-
 class WindowManager {
 
 public:

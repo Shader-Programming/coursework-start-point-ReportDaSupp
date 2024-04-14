@@ -1,7 +1,6 @@
 #pragma once
 #pragma once
 #include "Camera.h"
-#include "Scene_Data/Framebuffers/Framebuffer.h"
 
 /*
 Very Basic First Person Camera
@@ -10,7 +9,7 @@ WSAD and mouse for rotate/zoom
 class FirstPersonCamera : public Camera {
 
 public:
-	FirstPersonCamera(glm::vec3 pos = glm::vec3(0.0f, 1.0f, 10.0f));
+	FirstPersonCamera(glm::vec3 pos = glm::vec3(0.0f, 150.0f, 200.0f));
 
 	glm::mat4 getViewMatrix()                                          override;
 	glm::mat4 getProjectionMatrix()                                    override;
@@ -34,8 +33,6 @@ private:
 	void updateCameraVectors();
 	void zoom(float offsetY);
 	void look(float offsetX, float offsetY);  // mouse scroll
-
-
 
 };
 

@@ -63,53 +63,6 @@ void FirstPersonCamera::update(float dt)
 		if (m_handler->isKeyPressed(GLFW_KEY_ESCAPE)) {
 			glfwSetWindowShouldClose(m_window, GL_TRUE);
 		}
-		/*if (m_handler->isKeyPressed(GLFW_KEY_1)) {
-			eBloom = true;
-			eTone = true;
-			eInverse = false;
-			eGrayscale = false;
-			eGamma = false;
-			eDirectional = true;
-			ePointLight = true;
-			eSpotLight = true;
-			eRimming = false;
-			eLightsVisible = true;
-			eDirectionalSM = true;
-		}
-		if (m_handler->isKeyPressed(GLFW_KEY_2)) {
-			eDirectional = false;
-		}
-		if (m_handler->isKeyPressed(GLFW_KEY_3)) {
-			ePointLight = false;
-		}
-		if (m_handler->isKeyPressed(GLFW_KEY_4)) {
-			eSpotLight = false;
-		}
-		if (m_handler->isKeyPressed(GLFW_KEY_5)) {
-			eRimming = true;
-		}
-		if (m_handler->isKeyPressed(GLFW_KEY_6)) {
-			eTone = false;
-		}
-		if (m_handler->isKeyPressed(GLFW_KEY_7)) {
-			eBloom = false;
-		}
-		if (m_handler->isKeyPressed(GLFW_KEY_8)) {
-			eInverse = true;
-		}
-		if (m_handler->isKeyPressed(GLFW_KEY_9)) {
-			eGrayscale = true;
-		}
-		if (m_handler->isKeyPressed(GLFW_KEY_0)) {
-			eGamma = true;
-		}
-		if (m_handler->isKeyPressed(GLFW_KEY_TAB)) {
-			eLightsVisible = false;
-		}
-		if (m_handler->isKeyPressed(GLFW_KEY_CAPS_LOCK)) {
-			eDirectionalSM = false;
-		}*/
-		
 	}
 	if (m_handler->isLeftClicked())
 	{

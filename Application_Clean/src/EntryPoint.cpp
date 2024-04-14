@@ -1,6 +1,6 @@
 #include "Windows/WindowManager.h"
 #include "Globals/Properties.h"
-#include "Scene_Handling/ObjectViewer.h"
+#include "Scene_Handling/Biomes.h"
 
 /*
 Entry point for App
@@ -12,7 +12,7 @@ Runs game loop
 void main() {
 
 	WindowManager windowMan("IMAT3907 Assessed Program", SCR_WIDTH, SCR_HEIGHT, true);  // name, width, height, vSync,
-	ObjectViewer scene(windowMan.getWindow(), windowMan.getHandler()); // pass GLFWwindow and Input Handler to scene
+	Biomes scene(windowMan.getWindow(), windowMan.getHandler()); // pass GLFWwindow and Input Handler to scene
 
 	while (!glfwWindowShouldClose(windowMan.getWindow())) {
 

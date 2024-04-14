@@ -3,7 +3,6 @@
 #include "IMGUI/imgui_impl_glfw.h"
 #include "IMGUI/imgui_impl_opengl3.h"
 #include "ImGui/imgui_stdlib.h"
-#include "Scene_Data/Resources/ResourceManager.h"
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include <glm/common.hpp>
@@ -27,14 +26,11 @@ public:
 	~Gui();
 	void newGuiFrame();
 	void drawGui();
-	void bindResourcesPtr(std::shared_ptr<ResourceManager> rmPtr, std::shared_ptr<Resources> rptr) { resourceManager = rmPtr; resources = rptr; };
 	bool isActive = false;
 
 
 private:
 	GLFWwindow* m_window;
-	std::shared_ptr<ResourceManager> resourceManager;
-	std::shared_ptr<Resources> resources;
 	guiVars guiVariables;
 
 	ImVec4 TitleColor = { 1.f, 0.5f, 0.f, 1.f };
