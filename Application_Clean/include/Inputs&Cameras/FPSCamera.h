@@ -21,9 +21,9 @@ public:
 
 private:
 
-	float m_speed;       // camera speed
-	float m_sensitivity; // mouse sensitivity
-	float m_pitchContrain; // don't allow pitch to go above/below 90 otherwise screen flips
+	float m_speed;			// camera speed
+	float m_sensitivity;	// mouse sensitivity
+	float m_pitchContrain;	// don't allow pitch to go above/below 90 otherwise screen flips
 
 	
 

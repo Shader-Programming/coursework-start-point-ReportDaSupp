@@ -12,7 +12,6 @@ FirstPersonCamera::FirstPersonCamera(glm::vec3 pos) : Camera(pos), m_speed(5.0f)
 	isTorch = true;
 }
 
-//getters
 glm::mat4 FirstPersonCamera::getViewMatrix()
 {
 	return glm::lookAt(m_position, m_position + m_front, WORLD_UP);
@@ -24,15 +23,12 @@ glm::mat4 FirstPersonCamera::getProjectionMatrix()
 	return glm::perspective(glm::radians(m_zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, m_nearP, m_farP);
 }
 
-//updates
 void FirstPersonCamera::attachHandler(GLFWwindow* W, std::shared_ptr<InputHandler> H)
 {
 	m_window = W;
 	m_handler = H;
 }
 
-// Camera Key movement
-// Standard WSAD, could extend for any other movement you want ( eg, up, down, etc..)
 void FirstPersonCamera::update(float dt)
 {
 	float vel = m_speed * dt;
@@ -76,10 +72,8 @@ void FirstPersonCamera::update(float dt)
 	look(m_handler->getMouseDeltaX(), m_handler->getMouseDeltaY());
 	zoom(m_handler->getMouseScrollY());
 
-	m_handler->endFrame();  // reset delta values
+	m_handler->endFrame();
 }
-
-
 
 void FirstPersonCamera::updateCameraVectors()
 {
@@ -87,12 +81,10 @@ void FirstPersonCamera::updateCameraVectors()
 	m_front.y = sin(glm::radians(m_pitch));
 	m_front.z = sin(glm::radians(m_yaw)) * cos(glm::radians(m_pitch));
 	m_front = glm::normalize(m_front);
-	//re-calculate the Right and Up vector
-	m_right = glm::normalize(glm::cross(m_front, WORLD_UP));  // Normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
+	m_right = glm::normalize(glm::cross(m_front, WORLD_UP));
 	m_up = glm::normalize(glm::cross(m_right, m_front));
 
 }
-
 
 void FirstPersonCamera::zoom(float offsetY)
 {
@@ -104,8 +96,6 @@ void FirstPersonCamera::zoom(float offsetY)
 	if (m_zoom >= max) m_zoom = max;
 }
 
-
-// move mouse around and update pitch and yaw
 void FirstPersonCamera::look(float x, float y)
 {
 
