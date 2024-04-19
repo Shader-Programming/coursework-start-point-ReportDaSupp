@@ -7,8 +7,6 @@ layout(binding = 1, r32f) uniform writeonly imageCube temperatureMap;
 layout(binding = 2, r32f) uniform writeonly imageCube precipitationMap;
 
 uniform float heightSeed = 0.1;
-uniform float temperatureSeed = 0.1;
-uniform float precipitationSeed = 0.17;
 
 int hash(int x, int y, int z, float seed) {
     int n = x + y * 57 + z * 3623 + int(seed * 43758.5453);
@@ -62,11 +60,14 @@ float perlinNoise(vec3 coord, float scale, float seed) {
 
 float perlinNoiseLayered(vec3 coord, float scale, float seed)
 {
-    float baseNoise = perlinNoise(coord, scale, seed);
-    float fineNoise = perlinNoise(coord, scale*2, seed);
-    float finestNoise = perlinNoise(coord, scale*4, seed);
-    float refined1 = mix(baseNoise, fineNoise, 0.4);
-    return mix(refined1, finestNoise, 0.2);
+    float baseNoise = perlinNoise(coord, (scale + seed) * 1.5, seed);
+    float fineNoise = perlinNoise(coord, (scale + seed) * 8, seed);
+    float finestNoise = perlinNoise(coord, (scale + seed) * 24, seed);
+
+    baseNoise /= 1.75;
+    baseNoise += fineNoise / 64;
+    baseNoise += finestNoise / 256;
+    return baseNoise;
 }
 
 vec3 getDirection(uint faceIndex, vec2 uv) {
@@ -102,7 +103,7 @@ void main() {
 
     float heightNoise = perlinNoiseLayered(direction, 1.0, heightSeed) * 5;
 
-    float baseMoisture = perlinNoiseLayered(direction, 1.0, precipitationSeed);
+    float baseMoisture = perlinNoiseLayered(direction, 1.0, heightSeed) * 2;
 
     float temperatureNoise = calculateTemperature(direction, heightNoise);
     float precipitationNoise = calculatePrecipitation(heightNoise, direction, baseMoisture);

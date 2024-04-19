@@ -21,6 +21,6 @@ private:
     std::shared_ptr<Shader> computeShader;
     GLuint terrainVAO, terrainVBO, terrainIBO;
     int indexCount;
-    int subdivisions = 8;
+    int subdivisions = 32;
     void initializeMesh();
 };

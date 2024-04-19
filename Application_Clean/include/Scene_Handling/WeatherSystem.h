@@ -15,6 +15,7 @@ public:
     ~WeatherSystem();
 
     void renderSkybox(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix);
+    void loadSkybox(std::shared_ptr<Shader> shader);
 
 private:
     GLuint cubemapTexture;

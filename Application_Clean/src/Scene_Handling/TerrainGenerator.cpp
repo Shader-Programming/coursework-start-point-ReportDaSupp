@@ -65,7 +65,7 @@ void TerrainGenerator::generateTerrainMesh() {
     glBindVertexArray(terrainVAO);
     glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, terrainVBO);
 
-    glDispatchCompute(8,8,1);
+    glDispatchCompute(subdivisions, subdivisions,1);
     glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
 
     glBindVertexArray(0);

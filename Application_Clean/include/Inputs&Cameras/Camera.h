@@ -35,7 +35,7 @@ public:
 		m_yaw(-90.0f),
 		m_pitch(0.0),
 		m_nearP(0.1f),
-		m_farP(500.0f)
+		m_farP(1000.0f)
 	{};
 
 	// default view na dproj matrices

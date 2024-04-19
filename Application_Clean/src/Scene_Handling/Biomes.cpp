@@ -1,32 +1,40 @@
 #include "Scene_Handling/Biomes.h"
 
 void Biomes::initializeBiomes() {
-    m_biomeDistributor = std::make_unique<BiomeDistributor>("../Shaders/Scene/BiomeDistributor.glsl");
-    m_terrainGenerator = std::make_unique<TerrainGenerator>("../Shaders/Scene/TerrainGenerator.glsl");
-    m_biomeRenderer = std::make_unique<BiomeRenderer>(m_terrainGenerator->getTerrainVAO(), "../Shaders/Scene/BiomeRenderer.glsl");
-    m_weatherSystem = std::make_unique<WeatherSystem>("../Shaders/Scene/SkyBox.glsl");
+    earth = std::make_shared<celestialBody>(true, true, 1);
     m_camera = std::make_unique<FirstPersonCamera>();
     m_camera->attachHandler(m_window, m_handler);
 }
 
 void Biomes::update(float dt) {
     
-    updateTerrain(dt);
+    timeElapsed += dt;
+
     updateCamera(dt);
 
-    m_weatherSystem->renderSkybox(m_camera->getViewMatrix(), m_camera->getProjectionMatrix());
+    float angle = (timeElapsed) * moonOrbitSpeed;
+    float x = moonOrbitRadius * sin(angle);
+    float z = moonOrbitRadius * cos(angle);
 
-    // Render current view of the planet
-    m_biomeRenderer->setupShaderWithMaps(m_biomeDistributor->getHeightMap(), m_biomeDistributor->getTemperatureMap(), m_biomeDistributor->getPrecipitationMap());
-    m_biomeRenderer->renderPlanet(m_camera->getViewMatrix(), m_camera->getProjectionMatrix(), m_terrainGenerator->getIndexCount(), m_camera->getPosition(), dt);
+    glm::mat4 earthModel(1.0f);
+    earthModel = glm::translate(earthModel, glm::vec3(0, 0, 0));
+    earthModel = glm::rotate(earthModel, (float)glm::radians(timeElapsed), glm::vec3(0, 1, 0));
+    earthModel = glm::scale(earthModel, glm::vec3(100, 100, 100));
+    
+
+    glm::mat4 moonModel(1.0f);
+    
+    moonModel = glm::translate(moonModel, glm::vec3(x, z / 4, z));
+    moonModel = glm::rotate(moonModel, (float)angle, glm::vec3(0, 1, 0));
+    moonModel = glm::scale(moonModel, glm::vec3(25, 25, 25));
+
+    earth->renderMoon(m_camera->getViewMatrix(), m_camera->getProjectionMatrix(), m_camera->getPosition(), moonModel, dt);
+    earth->renderPlanet(m_camera->getViewMatrix(), m_camera->getProjectionMatrix(), m_camera->getPosition(), earthModel, dt);
+    
 }
 
 void Biomes::updateWeather(float dt) {
     // Weather system updates are handled here
-}
-
-void Biomes::updateTerrain(float dt) {
-    // Check if the terrain needs updating due to environmental factors or changes in the scene
 }
 
 void Biomes::updateCamera(float dt) {

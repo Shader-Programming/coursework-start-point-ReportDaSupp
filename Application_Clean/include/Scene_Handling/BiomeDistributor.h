@@ -4,6 +4,8 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <iostream>
+#include <chrono>
+#include <random>
 
 #include "Shaders/Shader.h"
 
@@ -20,5 +22,6 @@ public:
 private:
     std::shared_ptr<Shader> computeShader;
     GLuint heightMap, temperatureMap, precipitationMap;
+    float seed;
     void initializeMaps();
 };

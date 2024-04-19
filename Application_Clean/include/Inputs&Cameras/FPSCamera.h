@@ -9,7 +9,7 @@ WSAD and mouse for rotate/zoom
 class FirstPersonCamera : public Camera {
 
 public:
-	FirstPersonCamera(glm::vec3 pos = glm::vec3(0.0f, 150.0f, 200.0f));
+	FirstPersonCamera(glm::vec3 pos = glm::vec3(0.0f, 100.0f, 300.0f));
 
 	glm::mat4 getViewMatrix()                                          override;
 	glm::mat4 getProjectionMatrix()                                    override;
@@ -24,8 +24,6 @@ private:
 	float m_speed;			// camera speed
 	float m_sensitivity;	// mouse sensitivity
 	float m_pitchContrain;	// don't allow pitch to go above/below 90 otherwise screen flips
-
-	
 
 	GLFWwindow* m_window;
 	std::shared_ptr<InputHandler> m_handler;

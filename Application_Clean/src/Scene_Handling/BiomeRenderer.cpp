@@ -3,21 +3,67 @@
 #include <vector>
 #include <glm/gtc/matrix_transform.hpp>
 
-BiomeRenderer::BiomeRenderer(GLuint vao, const char* shaderPath)
+BiomeRenderer::BiomeRenderer(GLuint vao, const char* tShaderPath, const char* wShaderPath, const char* aShaderPath, const char* mShaderPath, int iCount)
     : planetVAO(vao) {
-    lightingShader = std::make_shared<Shader>(shaderPath);
-    GLuint sandTexture =    loadTexture("../Resources/Textures/Biomes/SandTexture.jpg");
-    GLuint snowTexture =    loadTexture("../Resources/Textures/Biomes/SandTexture.jpg");
-    GLuint forestTexture =  loadTexture("../Resources/Textures/Biomes/ForestTexture.jpg");
-    GLuint grassTexture =   loadTexture("../Resources/Textures/Biomes/SandTexture.jpg");
-    GLuint beachTexture =   loadTexture("../Resources/Textures/Biomes/SandTexture.jpg");
+    terrainLightingShader = std::make_shared<Shader>(tShaderPath);
+    waterLightingShader = std::make_shared<Shader>(wShaderPath);
+    atmosphereLightingShader = std::make_shared<Shader>(aShaderPath);
+    moonLightingShader = std::make_shared<Shader>(mShaderPath);
+
+    AlbedoPaths.push_back("../Resources/Textures/Biomes/Dirt/Albedo.jpg");
+    AlbedoPaths.push_back("../Resources/Textures/Biomes/Forest/Albedo.jpg");
+    AlbedoPaths.push_back("../Resources/Textures/Biomes/Grass/Albedo.jpg");
+    AlbedoPaths.push_back("../Resources/Textures/Biomes/Rock/Albedo.jpg");
+    AlbedoPaths.push_back("../Resources/Textures/Biomes/Sand/Albedo.jpg");
+    AlbedoPaths.push_back("../Resources/Textures/Biomes/Snow/Albedo.jpg");
+
+    Albedo = loadTextureArray(AlbedoPaths);
+
+    AOPaths.push_back("../Resources/Textures/Biomes/Dirt/AO.jpg");
+    AOPaths.push_back("../Resources/Textures/Biomes/Forest/AO.jpg");
+    AOPaths.push_back("../Resources/Textures/Biomes/Grass/AO.jpg");
+    AOPaths.push_back("../Resources/Textures/Biomes/Rock/AO.jpg");
+    AOPaths.push_back("../Resources/Textures/Biomes/Sand/AO.jpg");
+    AOPaths.push_back("../Resources/Textures/Biomes/Snow/AO.jpg");
+
+    AO = loadTextureArray(AOPaths);
+
+    DisplacementPaths.push_back("../Resources/Textures/Biomes/Dirt/Displacement.jpg");
+    DisplacementPaths.push_back("../Resources/Textures/Biomes/Forest/Displacement.jpg");
+    DisplacementPaths.push_back("../Resources/Textures/Biomes/Grass/Displacement.jpg");
+    DisplacementPaths.push_back("../Resources/Textures/Biomes/Rock/Displacement.jpg");
+    DisplacementPaths.push_back("../Resources/Textures/Biomes/Sand/Displacement.jpg");
+    DisplacementPaths.push_back("../Resources/Textures/Biomes/Snow/Displacement.jpg");
+
+    Displacement = loadTextureArray(DisplacementPaths);
+
+    NormalPaths.push_back("../Resources/Textures/Biomes/Dirt/Normal.jpg");
+    NormalPaths.push_back("../Resources/Textures/Biomes/Forest/Normal.jpg");
+    NormalPaths.push_back("../Resources/Textures/Biomes/Grass/Normal.jpg");
+    NormalPaths.push_back("../Resources/Textures/Biomes/Rock/Normal.jpg");
+    NormalPaths.push_back("../Resources/Textures/Biomes/Sand/Normal.jpg");
+    NormalPaths.push_back("../Resources/Textures/Biomes/Snow/Normal.jpg");
+
+    Normal = loadTextureArray(NormalPaths);
+
+    RoughnessPaths.push_back("../Resources/Textures/Biomes/Dirt/Roughness.jpg");
+    RoughnessPaths.push_back("../Resources/Textures/Biomes/Forest/Roughness.jpg");
+    RoughnessPaths.push_back("../Resources/Textures/Biomes/Grass/Roughness.jpg");
+    RoughnessPaths.push_back("../Resources/Textures/Biomes/Rock/Roughness.jpg");
+    RoughnessPaths.push_back("../Resources/Textures/Biomes/Sand/Roughness.jpg");
+    RoughnessPaths.push_back("../Resources/Textures/Biomes/Snow/Roughness.jpg");
+
+    Roughness = loadTextureArray(RoughnessPaths);
+    
+    indexCount = iCount;
+
 }
 
 BiomeRenderer::~BiomeRenderer() {
     glDeleteVertexArrays(1, &planetVAO);
 }
 
-void BiomeRenderer::renderPlanet(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix, int indexCount, glm::vec3 cameraPos, float dt) {
+void BiomeRenderer::renderPlanet(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix, glm::vec3 cameraPos, glm::mat4 model, float dt) {
     
     timeElapsed += dt;
 
@@ -25,26 +71,40 @@ void BiomeRenderer::renderPlanet(const glm::mat4& viewMatrix, const glm::mat4& p
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 
-    lightingShader->use();
-    lightingShader->setMat4("view", viewMatrix);
-    lightingShader->setMat4("projection", projectionMatrix);
-    glm::mat4 matrix(1.0f);
-    lightingShader->setMat4("model", glm::mat4(1.0f));
-    lightingShader->setVec3("cameraPos", cameraPos);
-    lightingShader->setBool("water", false);
-    lightingShader->setFloat("elapsedTime", timeElapsed);
+    terrainLightingShader->use();
+    terrainLightingShader->setMat4("view", viewMatrix);
+    terrainLightingShader->setMat4("projection", projectionMatrix);
+    terrainLightingShader->setMat4("model", model);
+    terrainLightingShader->setVec3("cameraPos", cameraPos);
+    terrainLightingShader->setFloat("elapsedTime", timeElapsed);
 
     glBindVertexArray(planetVAO);
-
-    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     glPatchParameteri(GL_PATCH_VERTICES, 3);
     glDrawElements(GL_PATCHES, indexCount, GL_UNSIGNED_INT, 0);
 
-    lightingShader->setBool("water", true);
-    
+    glDepthMask(GL_TRUE);
+    glDisable(GL_BLEND);
+}
+
+void BiomeRenderer::renderWater(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix, glm::vec3 cameraPos, glm::mat4 model, float dt) {
+
+    timeElapsed += dt;
+
+    glEnable(GL_DEPTH_TEST);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
+
+    waterLightingShader->use();
+    waterLightingShader->setMat4("view", viewMatrix);
+    waterLightingShader->setMat4("projection", projectionMatrix);
+    waterLightingShader->setMat4("model", model);
+    waterLightingShader->setVec3("cameraPos", cameraPos);
+    waterLightingShader->setFloat("elapsedTime", timeElapsed);
+
+    glBindVertexArray(planetVAO);
+
     glEnable(GL_BLEND);
-    
     glDepthMask(GL_FALSE);
 
     glPatchParameteri(GL_PATCH_VERTICES, 3);
@@ -52,43 +112,93 @@ void BiomeRenderer::renderPlanet(const glm::mat4& viewMatrix, const glm::mat4& p
 
     glDepthMask(GL_TRUE);
     glDisable(GL_BLEND);
-
-    glBindVertexArray(0);
 }
 
-void BiomeRenderer::setupShaderWithMaps(GLuint heightMap, GLuint tempMap, GLuint precipMap) {
-    lightingShader->use();
+void BiomeRenderer::renderAtmosphere(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix, glm::vec3 cameraPos, glm::mat4 model, float dt) {
 
-    // Bind and set textures to shader
-    lightingShader->setInt("heightMap", 1);
+    timeElapsed += dt;
+
+    glEnable(GL_DEPTH_TEST);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
+
+    atmosphereLightingShader->use();
+    atmosphereLightingShader->setMat4("view", viewMatrix);
+    atmosphereLightingShader->setMat4("projection", projectionMatrix);
+    atmosphereLightingShader->setMat4("model", model);
+    atmosphereLightingShader->setVec3("cameraPos", cameraPos);
+    atmosphereLightingShader->setFloat("elapsedTime", timeElapsed);
+
+    glBindVertexArray(planetVAO);
+
+    glEnable(GL_BLEND);
+    glDepthMask(GL_FALSE);
+
+    glPatchParameteri(GL_PATCH_VERTICES, 3);
+    glDrawElements(GL_PATCHES, indexCount, GL_UNSIGNED_INT, 0);
+
+    glDepthMask(GL_TRUE);
+    glDisable(GL_BLEND);
+}
+
+void BiomeRenderer::renderMoon(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix, glm::vec3 cameraPos, glm::mat4 model, float dt) {
+
+    timeElapsed += dt;
+
+    glEnable(GL_DEPTH_TEST);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
+
+    moonLightingShader->use();
+    moonLightingShader->setMat4("view", viewMatrix);
+    moonLightingShader->setMat4("projection", projectionMatrix);
+    moonLightingShader->setMat4("model", model);
+    moonLightingShader->setVec3("cameraPos", cameraPos);
+    moonLightingShader->setFloat("elapsedTime", timeElapsed);
+
+    glBindVertexArray(planetVAO);
+
+    glPatchParameteri(GL_PATCH_VERTICES, 3);
+    glDrawElements(GL_PATCHES, indexCount, GL_UNSIGNED_INT, 0);
+
+    glDepthMask(GL_TRUE);
+    glDisable(GL_BLEND);
+}
+
+void BiomeRenderer::setupShaderWithMaps(GLuint heightMap, GLuint tempMap, GLuint precipMap, std::shared_ptr<Shader> shader) {
+    shader->use();
+
+    shader->setInt("heightMap", 1);
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_CUBE_MAP, heightMap);
 
-    lightingShader->setInt("tempMap", 2);
+    shader->setInt("tempMap", 2);
     glActiveTexture(GL_TEXTURE2);
     glBindTexture(GL_TEXTURE_CUBE_MAP, tempMap);
 
-    lightingShader->setInt("precipMap", 3);
+    shader->setInt("precipMap", 3);
     glActiveTexture(GL_TEXTURE3);
     glBindTexture(GL_TEXTURE_CUBE_MAP, precipMap);
 
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, sandTexture);
-    lightingShader->setInt("sandTexture", 0);
 
-    glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_2D, snowTexture);
-    lightingShader->setInt("snowTexture", 1);
-
-    glActiveTexture(GL_TEXTURE2);
-    glBindTexture(GL_TEXTURE_2D, forestTexture);
-    lightingShader->setInt("forestTexture", 2);
-
-    glActiveTexture(GL_TEXTURE3);
-    glBindTexture(GL_TEXTURE_2D, grassTexture);
-    lightingShader->setInt("grassTexture", 3);
 
     glActiveTexture(GL_TEXTURE4);
-    glBindTexture(GL_TEXTURE_2D, beachTexture);
-    lightingShader->setInt("beachTexture", 4);
+    glBindTexture(GL_TEXTURE_2D_ARRAY, Albedo);
+    shader->setInt("AlbedoArray", 4);
+
+    glActiveTexture(GL_TEXTURE5);
+    glBindTexture(GL_TEXTURE_2D_ARRAY, AO);
+    shader->setInt("AOArray", 5);
+
+    glActiveTexture(GL_TEXTURE6);
+    glBindTexture(GL_TEXTURE_2D_ARRAY, Displacement);
+    shader->setInt("DisplacementArray", 6);
+
+    glActiveTexture(GL_TEXTURE7);
+    glBindTexture(GL_TEXTURE_2D_ARRAY, Normal);
+    shader->setInt("NormalArray", 7);
+
+    glActiveTexture(GL_TEXTURE8);
+    glBindTexture(GL_TEXTURE_2D_ARRAY, Roughness);
+    shader->setInt("RoughnessArray", 8);
 }

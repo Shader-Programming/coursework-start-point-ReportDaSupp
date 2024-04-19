@@ -9,13 +9,9 @@
 
 struct guiVars
 {
-	std::string localAssetPath = "/Frog/object.obj";
-	glm::vec3 localAssetPosition = {0.f, 0.f, 0.f};
-	glm::vec3 localAssetRotation = {1.f, 1.f, 1.f};
-	float localRotateAngle = 0.f;
-	glm::vec3 localAssetScale = { 1.f, 1.f, 1.f };
-	bool texFlipped = true;
-	bool isStatic = true;
+	bool isWireframe = false;
+	bool isPBR = true;
+	bool isSphere = false;
 };
 
 class Gui {

@@ -31,6 +31,13 @@ void WeatherSystem::renderSkybox(const glm::mat4& viewMatrix, const glm::mat4& p
     glDepthFunc(GL_LESS);
 }
 
+void WeatherSystem::loadSkybox(std::shared_ptr<Shader> shader)
+{
+    shader->setInt("skybox", 0);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
+}
+
 GLuint WeatherSystem::loadCubemap(const std::vector<std::string>& faces)
 {
     GLuint textureID;
