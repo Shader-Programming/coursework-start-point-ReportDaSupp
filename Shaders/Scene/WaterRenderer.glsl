@@ -91,6 +91,7 @@ out vec3 UV3;
 uniform mat4 projection;
 uniform mat4 view;
 uniform mat4 model;
+uniform bool sphere;
 uniform float elapsedTime;
 
 uniform samplerCube heightMap;
@@ -120,6 +121,13 @@ void main() {
         vec3 spherePos = normPosition * effectiveRadius;
 
         vec3 modelPosition = (vec4(spherePos, 1.0)).xyz;
+
+        if (!sphere)
+        {
+            spherePos = tes_position[i] * 0.93 + displacement * 0.15;
+            modelPosition = (vec4(spherePos, 1.0)).xyz;
+        }
+
         vec3 perturbedNormal = calculateNormal(modelPosition, normPosition);
 
         FragPos = modelPosition;

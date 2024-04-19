@@ -1,5 +1,8 @@
 #include "Inputs&Cameras/Gui.h"
+#include "Globals/Properties.h"
 
+
+guiVars g_guiData;
 
 Gui::Gui(GLFWwindow* window) : m_window(window)
 {
@@ -10,6 +13,7 @@ Gui::Gui(GLFWwindow* window) : m_window(window)
     ImGui_ImplGlfw_InitForOpenGL(m_window, true);
     ImGui_ImplOpenGL3_Init();
     ImGui::StyleColorsDark();
+
 }
 
 Gui::~Gui()
@@ -23,7 +27,7 @@ void Gui::newGuiFrame()
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
-    if(isActive) glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+    if(g_guiData.isActive) glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
     else glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     
 }
@@ -32,6 +36,14 @@ void Gui::drawGui()
 {
     float ms = 1000.0f / ImGui::GetIO().Framerate; ;  //milisecconds
     //ImGui::Text("FPS %.3f ms/frame (%.1f FPS)", ms, ImGui::GetIO().Framerate);  // display FPS and ms
+    if (ImGui::Begin("Test"))
+    {
+        ImGui::Checkbox("Wireframe", &g_guiData.isWireframe);
+        ImGui::Checkbox("Sphere", &g_guiData.isSphere);
+        ImGui::Checkbox("PBR", &g_guiData.isPBR);
+        ImGui::Checkbox("Moving", &g_guiData.isMoving);
+        ImGui::End();
+    }
     //ImGui::ShowDemoWindow();
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

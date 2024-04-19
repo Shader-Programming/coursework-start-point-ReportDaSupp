@@ -91,8 +91,7 @@ out vec3 UV3;
 uniform mat4 projection;
 uniform mat4 view;
 uniform mat4 model;
-uniform bool water;
-uniform bool moon;
+uniform bool sphere;
 uniform float elapsedTime;
 
 uniform samplerCube heightMap;
@@ -126,8 +125,19 @@ void main() {
         
         float effectiveRadius = 0.93 + displacement * 0.15;
         vec3 spherePos = normPosition * effectiveRadius;
-
         vec3 modelPosition = (vec4(spherePos, 1.0)).xyz;
+        
+        if (!sphere)
+        {
+            displacement = texture(heightMap, (vec4(tes_position[i], 1.0)).xyz).r;
+            if (displacement <= 0.5)
+                displacement = displacement * 0.5 + 0.25;
+            else
+                displacement = 0.5 - (displacement * 0.25);
+            spherePos = tes_position[i] + displacement * 0.15;
+            modelPosition = (vec4(spherePos, 1.0)).xyz;
+        }
+        
         vec3 perturbedNormal = calculateNormal(modelPosition, normPosition);
 
         FragPos = modelPosition;

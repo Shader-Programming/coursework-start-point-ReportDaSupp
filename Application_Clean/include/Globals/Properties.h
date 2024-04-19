@@ -1,5 +1,6 @@
 #pragma once
 #include "glm/glm.hpp"
+#include "Inputs&Cameras/Gui.h"
 
 static int SCR_WIDTH = 1920, SCR_HEIGHT = 1080;
 static int SHADOW_WIDTH = 2048, SHADOW_HEIGHT = 2048;

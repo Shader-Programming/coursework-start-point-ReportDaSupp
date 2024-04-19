@@ -4,11 +4,14 @@ void Biomes::initializeBiomes() {
     earth = std::make_shared<celestialBody>(true, true, 1);
     m_camera = std::make_unique<FirstPersonCamera>();
     m_camera->attachHandler(m_window, m_handler);
+    ImGuiInterface = std::make_shared<Gui>(m_window);
 }
 
 void Biomes::update(float dt) {
     
-    timeElapsed += dt;
+    
+    if (g_guiData.isMoving)
+        timeElapsed += dt;
 
     updateCamera(dt);
 
@@ -28,8 +31,16 @@ void Biomes::update(float dt) {
     moonModel = glm::rotate(moonModel, (float)angle, glm::vec3(0, 1, 0));
     moonModel = glm::scale(moonModel, glm::vec3(25, 25, 25));
 
+    if (g_guiData.isWireframe)
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    else
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
     earth->renderMoon(m_camera->getViewMatrix(), m_camera->getProjectionMatrix(), m_camera->getPosition(), moonModel, dt);
     earth->renderPlanet(m_camera->getViewMatrix(), m_camera->getProjectionMatrix(), m_camera->getPosition(), earthModel, dt);
+
+    ImGuiInterface->newGuiFrame();
+    ImGuiInterface->drawGui();
     
 }
 

@@ -35,43 +35,55 @@ void FirstPersonCamera::update(float dt)
 	bool mouseMove = m_handler->mouseHasMoved();
 
 	if (m_handler->keyHasBeenPressed()) {
-		if (m_handler->isKeyPressed(GLFW_KEY_LEFT_SHIFT)) {
-			vel *= 3;
+		if (m_handler->isKeyPressed(GLFW_KEY_TAB)) {
+			g_guiData.isActive = false;
 		}
-		if (m_handler->isKeyPressed(GLFW_KEY_W)) {
-			m_position += m_front * vel;
+		if (m_handler->isKeyPressed(GLFW_KEY_LEFT_ALT)) {
+			g_guiData.isActive = true;
 		}
-		if (m_handler->isKeyPressed(GLFW_KEY_S)) {
-			m_position -= m_front * vel;
+		if (!g_guiData.isActive)
+		{
+			if (m_handler->isKeyPressed(GLFW_KEY_LEFT_SHIFT)) {
+				vel *= 3;
+			}
+			if (m_handler->isKeyPressed(GLFW_KEY_W)) {
+				m_position += m_front * vel;
+			}
+			if (m_handler->isKeyPressed(GLFW_KEY_S)) {
+				m_position -= m_front * vel;
+			}
+			if (m_handler->isKeyPressed(GLFW_KEY_A)) {
+				m_position -= m_right * vel;
+			}
+			if (m_handler->isKeyPressed(GLFW_KEY_D)) {
+				m_position += m_right * vel;
+			}
+			if (m_handler->isKeyPressed(GLFW_KEY_SPACE)) {
+				m_position += m_up * vel;
+			}
+			if (m_handler->isKeyPressed(GLFW_KEY_LEFT_CONTROL)) {
+				m_position -= m_up * vel;
+			}
 		}
-		if (m_handler->isKeyPressed(GLFW_KEY_A)) {
-			m_position -= m_right * vel;
-		}
-		if (m_handler->isKeyPressed(GLFW_KEY_D)) {
-			m_position += m_right * vel;
-		}
-		if (m_handler->isKeyPressed(GLFW_KEY_SPACE)) {
-			m_position += m_up * vel;
-		}
-		if (m_handler->isKeyPressed(GLFW_KEY_LEFT_CONTROL)) {
-			m_position -= m_up * vel;
-		}
+		
 		if (m_handler->isKeyPressed(GLFW_KEY_ESCAPE)) {
 			glfwSetWindowShouldClose(m_window, GL_TRUE);
 		}
 	}
-	if (m_handler->isLeftClicked())
+	if (!g_guiData.isActive)
 	{
-		isTorch = true;
-	}
-	if (m_handler->isRightClicked())
-	{
-		isTorch = false;
-	}
+		if (m_handler->isLeftClicked())
+		{
+			isTorch = true;
+		}
+		if (m_handler->isRightClicked())
+		{
+			isTorch = false;
+		}
 
-	look(m_handler->getMouseDeltaX(), m_handler->getMouseDeltaY());
-	zoom(m_handler->getMouseScrollY());
-
+		look(m_handler->getMouseDeltaX(), m_handler->getMouseDeltaY());
+		zoom(m_handler->getMouseScrollY());
+	}
 	m_handler->endFrame();
 }
 

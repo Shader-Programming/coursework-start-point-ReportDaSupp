@@ -7,12 +7,20 @@
 #include <iostream>
 #include <glm/common.hpp>
 
-struct guiVars
-{
+#ifndef GUI_DATA_H
+#define GUI_DATA_H
+
+struct guiVars {
 	bool isWireframe = false;
-	bool isPBR = true;
-	bool isSphere = false;
+	bool isPBR = false;
+	bool isSphere = true;
+	bool isActive = false;
+	bool isMoving = true;
 };
+
+extern guiVars g_guiData;
+
+#endif // GUI_DATA_H
 
 class Gui {
 
@@ -22,12 +30,10 @@ public:
 	~Gui();
 	void newGuiFrame();
 	void drawGui();
-	bool isActive = false;
 
 
 private:
 	GLFWwindow* m_window;
-	guiVars guiVariables;
 
 	ImVec4 TitleColor = { 1.f, 0.5f, 0.f, 1.f };
 	ImVec4 SubTitleColor = { 0.3f, 0.3f, 1.f, 1.f };

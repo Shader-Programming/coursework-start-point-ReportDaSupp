@@ -11,11 +11,12 @@
 
 class BiomeRenderer {
 public:
-    BiomeRenderer(GLuint vao, const char* tShaderPath, const char* wShaderPath, const char* aShaderPath, const char* mShaderPath, int iCount);
+    BiomeRenderer(GLuint vao, const char* tShaderPath, const char* tPBRShaderPath, const char* wShaderPath, const char* aShaderPath, const char* mShaderPath, int iCount);
     ~BiomeRenderer();
 
-    void renderPlanet(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix, glm::vec3 cameraPos, glm::mat4 model, float dt);
+    void renderPlanet(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix, glm::vec3 cameraPos, glm::mat4 model, float dt, std::shared_ptr<Shader> shader);
     std::shared_ptr<Shader> getPlanetShader() { return terrainLightingShader; };
+    std::shared_ptr<Shader> getPBRPlanetShader() { return terrainPBRLightingShader; };
     void renderWater(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix, glm::vec3 cameraPos, glm::mat4 model, float dt);
     std::shared_ptr<Shader> getWaterShader() { return waterLightingShader; };
     void renderAtmosphere(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix, glm::vec3 cameraPos, glm::mat4 model, float dt);
@@ -25,7 +26,7 @@ public:
     void setupShaderWithMaps(GLuint heightMap, GLuint tempMap, GLuint precipMap, std::shared_ptr<Shader> shader);
 
 private:
-    std::shared_ptr<Shader> terrainLightingShader, waterLightingShader, atmosphereLightingShader, moonLightingShader;
+    std::shared_ptr<Shader> terrainLightingShader, terrainPBRLightingShader, waterLightingShader, atmosphereLightingShader, moonLightingShader;
     GLuint planetVAO;
 
     GLuint Albedo, AO, Displacement, Normal, Roughness;

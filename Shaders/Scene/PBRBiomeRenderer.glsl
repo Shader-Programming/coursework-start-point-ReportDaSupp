@@ -92,6 +92,7 @@ out mat3 TBN;
 uniform mat4 projection;
 uniform mat4 view;
 uniform mat4 model;
+uniform bool sphere;
 
 uniform samplerCube heightMap;
 
@@ -123,7 +124,14 @@ void main() {
         float displacement = texture(heightMap, (vec4(normPosition, 1.0)).xyz).r;
         float effectiveRadius = 0.95 + displacement * 0.1;
         vec3 spherePos = normPosition * effectiveRadius;
-        vec3 modelPosition = (model * vec4(spherePos, 1.0)).xyz;
+        vec3 modelPosition = (vec4(spherePos, 1.0)).xyz;
+
+        if (!sphere)
+        {
+            displacement = texture(heightMap, (vec4(tes_position[i], 1.0)).xyz).r;
+            spherePos = tes_position[i] + displacement * 0.1;
+            modelPosition = (vec4(spherePos, 1.0)).xyz;
+        }
 
         vec3 gradient = calculateGradient(modelPosition, eps);
         vec3 perturbedNormal = normalize(modelPosition - gradient);

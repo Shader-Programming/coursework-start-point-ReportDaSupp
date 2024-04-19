@@ -1,6 +1,7 @@
 #pragma once
 #pragma once
 #include "Camera.h"
+#include "Globals/Properties.h"
 
 /*
 Very Basic First Person Camera
@@ -33,4 +34,3 @@ private:
 	void look(float offsetX, float offsetY);  // mouse scroll
 
 };
-

@@ -2,10 +2,12 @@
 #include <iostream>
 #include <vector>
 #include <glm/gtc/matrix_transform.hpp>
+#include "Globals/Properties.h"
 
-BiomeRenderer::BiomeRenderer(GLuint vao, const char* tShaderPath, const char* wShaderPath, const char* aShaderPath, const char* mShaderPath, int iCount)
+BiomeRenderer::BiomeRenderer(GLuint vao, const char* tShaderPath, const char* tPBRShaderPath, const char* wShaderPath, const char* aShaderPath, const char* mShaderPath, int iCount)
     : planetVAO(vao) {
     terrainLightingShader = std::make_shared<Shader>(tShaderPath);
+    terrainPBRLightingShader = std::make_shared<Shader>(tPBRShaderPath);
     waterLightingShader = std::make_shared<Shader>(wShaderPath);
     atmosphereLightingShader = std::make_shared<Shader>(aShaderPath);
     moonLightingShader = std::make_shared<Shader>(mShaderPath);
@@ -63,7 +65,7 @@ BiomeRenderer::~BiomeRenderer() {
     glDeleteVertexArrays(1, &planetVAO);
 }
 
-void BiomeRenderer::renderPlanet(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix, glm::vec3 cameraPos, glm::mat4 model, float dt) {
+void BiomeRenderer::renderPlanet(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix, glm::vec3 cameraPos, glm::mat4 model, float dt, std::shared_ptr<Shader> shader) {
     
     timeElapsed += dt;
 
@@ -71,12 +73,13 @@ void BiomeRenderer::renderPlanet(const glm::mat4& viewMatrix, const glm::mat4& p
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 
-    terrainLightingShader->use();
-    terrainLightingShader->setMat4("view", viewMatrix);
-    terrainLightingShader->setMat4("projection", projectionMatrix);
-    terrainLightingShader->setMat4("model", model);
-    terrainLightingShader->setVec3("cameraPos", cameraPos);
-    terrainLightingShader->setFloat("elapsedTime", timeElapsed);
+    shader->use();
+    shader->setMat4("view", viewMatrix);
+    shader->setMat4("projection", projectionMatrix);
+    shader->setMat4("model", model);
+    shader->setVec3("cameraPos", cameraPos);
+    shader->setFloat("elapsedTime", timeElapsed);
+    shader->setBool("sphere", g_guiData.isSphere);
 
     glBindVertexArray(planetVAO);
 
@@ -101,6 +104,7 @@ void BiomeRenderer::renderWater(const glm::mat4& viewMatrix, const glm::mat4& pr
     waterLightingShader->setMat4("model", model);
     waterLightingShader->setVec3("cameraPos", cameraPos);
     waterLightingShader->setFloat("elapsedTime", timeElapsed);
+    waterLightingShader->setBool("sphere", g_guiData.isSphere);
 
     glBindVertexArray(planetVAO);
 
@@ -128,6 +132,7 @@ void BiomeRenderer::renderAtmosphere(const glm::mat4& viewMatrix, const glm::mat
     atmosphereLightingShader->setMat4("model", model);
     atmosphereLightingShader->setVec3("cameraPos", cameraPos);
     atmosphereLightingShader->setFloat("elapsedTime", timeElapsed);
+    atmosphereLightingShader->setBool("sphere", g_guiData.isSphere);
 
     glBindVertexArray(planetVAO);
 
@@ -155,6 +160,7 @@ void BiomeRenderer::renderMoon(const glm::mat4& viewMatrix, const glm::mat4& pro
     moonLightingShader->setMat4("model", model);
     moonLightingShader->setVec3("cameraPos", cameraPos);
     moonLightingShader->setFloat("elapsedTime", timeElapsed);
+    moonLightingShader->setBool("sphere", g_guiData.isSphere);
 
     glBindVertexArray(planetVAO);
 
