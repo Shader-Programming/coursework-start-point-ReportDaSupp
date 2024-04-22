@@ -1,12 +1,26 @@
 #include "Scene_Handling/WeatherSystem.h"
+#include <iomanip>
+#include <sstream>
+#include <glm/gtc/matrix_transform.hpp>
 
-WeatherSystem::WeatherSystem(const char* skyboxShaderFilepath) {
+WeatherSystem::WeatherSystem(const char* skyboxShaderFilepath, const char* cloudShaderFilepath) {
     skyboxShader = std::make_shared<Shader>(skyboxShaderFilepath);
+    cloudShader = std::make_shared<Shader>(cloudShaderFilepath);
     std::vector<std::string> faces;
     for (int i = 0; i < 6; i++)
         faces.push_back((std::string("../Resources/Textures/SkyBox/" + std::to_string(i+1) + ".png")).c_str());
     cubemapTexture = loadCubemap(faces);
     setupSkybox();
+    std::vector<std::string> texPaths;
+    texPaths.resize(84);
+    for (int i = 0; i < 84; i++) {
+        std::stringstream ss;
+        ss << "../Resources/Textures/Clouds/" << std::setw(4) << std::setfill('0') << i + 1 << ".png";
+        texPaths[i] = ss.str();
+    }
+    loadTextureArray(texPaths);
+    generateClouds(30);
+    setupClouds();
 }
 
 WeatherSystem::~WeatherSystem() {
@@ -29,6 +43,30 @@ void WeatherSystem::renderSkybox(const glm::mat4& viewMatrix, const glm::mat4& p
     glDepthFunc(GL_LEQUAL);
     glDrawArrays(GL_TRIANGLES, 0, 36);
     glDepthFunc(GL_LESS);
+}
+
+void WeatherSystem::renderClouds(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix, const glm::vec3 position)
+{
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    cloudShader->use();
+    glBindVertexArray(cloudVAO);
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D_ARRAY, cloudTextureArray);
+    cloudShader->setInt("cloudArray", 0);
+    cloudShader->setMat4("view", viewMatrix);
+    cloudShader->setMat4("projection", projectionMatrix);
+    cloudShader->setVec3("viewPosition", position);
+    for (const auto& cloud : clouds) {
+        glm::mat4 model = glm::translate(glm::mat4(1.0f), cloud.position);
+        cloudShader->setMat4("model", model);
+        glDrawArrays(GL_POINTS, 0, 1);
+    }
+    glBindVertexArray(0);
+
+    glDisable(GL_BLEND);
+    
 }
 
 void WeatherSystem::loadSkybox(std::shared_ptr<Shader> shader)
@@ -125,4 +163,83 @@ void WeatherSystem::setupSkybox() {
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glBindVertexArray(0);
+}
+
+void WeatherSystem::setupClouds()
+{
+    glGenVertexArrays(1, &cloudVAO);
+    glBindVertexArray(cloudVAO);
+    glGenBuffers(1, &cloudVBO);
+    glBindBuffer(GL_ARRAY_BUFFER, cloudVBO);
+    glBufferData(GL_ARRAY_BUFFER, clouds.size() * sizeof(Cloud), clouds.data(), GL_STATIC_DRAW);
+    glBindVertexArray(0);
+}
+
+void WeatherSystem::generateClouds(int count)
+{
+    srand((unsigned)time(0));
+    float planetRadius = 125.0f;
+    for (int i = 0; i < count; ++i) {
+        
+        float latitude = static_cast<float>(rand()) / RAND_MAX * 3.14159;
+        float longitude = static_cast<float>(rand()) / RAND_MAX * 2 * 3.14159;
+        glm::vec3 position = glm::vec3(
+            planetRadius * sin(latitude) * cos(longitude),
+            planetRadius * sin(latitude) * sin(longitude),
+            planetRadius * cos(latitude));
+        clouds.push_back({ position});
+    }
+}
+
+GLuint WeatherSystem::loadTextureArray(std::vector<std::string> texArrayPaths) {
+    int width, height, nrChannels;
+    std::vector<unsigned char*> data;
+    data.resize(texArrayPaths.size());
+    for (int i = 0; i < texArrayPaths.size(); i++)
+    {
+        data[i] = stbi_load(texArrayPaths[i].c_str(), &width, &height, &nrChannels, 0);
+        if (!data[i]) {
+            std::cerr << "Failed to load texture: " << texArrayPaths[i] << std::endl;
+            return 0;
+        }
+    }
+
+    GLuint textureArray;
+    glGenTextures(1, &textureArray);
+    glBindTexture(GL_TEXTURE_2D_ARRAY, textureArray);
+
+    GLenum format1, format2;
+
+    if (nrChannels == 1)
+        format1 = GL_R8;
+    else if (nrChannels == 3)
+        format1 = GL_RGB8;
+    else if (nrChannels == 4)
+        format1 = GL_RGBA8;
+
+    if (nrChannels == 1)
+        format2 = GL_RED;
+    else if (nrChannels == 3)
+        format2 = GL_RGB;
+    else if (nrChannels == 4)
+        format2 = GL_RGBA;
+
+    glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, format1, width, height, texArrayPaths.size(), 0, format2, GL_UNSIGNED_BYTE, NULL);
+
+    glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    for (int i = 0; i < texArrayPaths.size(); ++i) {
+        glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0, 0, 0, i, width, width, 1, format2, GL_UNSIGNED_BYTE, data[i]);
+        glGenerateMipmap(GL_TEXTURE_2D_ARRAY);
+    }
+
+
+    for (int i = 0; i < texArrayPaths.size(); i++)
+        stbi_image_free(data[i]);
+    glBindTexture(GL_TEXTURE_2D, 0); // Unbind texture when done
+
+    return textureArray;
 }

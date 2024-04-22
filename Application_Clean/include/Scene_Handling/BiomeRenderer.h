@@ -23,7 +23,7 @@ public:
     std::shared_ptr<Shader> getAtmosphereShader() { return atmosphereLightingShader; };
     void renderMoon(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix, glm::vec3 cameraPos, glm::mat4 model, float dt);
     std::shared_ptr<Shader> getMoonShader() { return moonLightingShader; };
-    void setupShaderWithMaps(GLuint heightMap, GLuint tempMap, GLuint precipMap, std::shared_ptr<Shader> shader);
+    void setupShaderWithMaps(GLuint heightMap, GLuint tempMap, GLuint precipMap, GLuint dudvMap, std::shared_ptr<Shader> shader);
 
 private:
     std::shared_ptr<Shader> terrainLightingShader, terrainPBRLightingShader, waterLightingShader, atmosphereLightingShader, moonLightingShader;

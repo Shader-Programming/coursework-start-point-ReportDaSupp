@@ -18,10 +18,11 @@ public:
     GLuint getHeightMap() const { return heightMap; }
     GLuint getTemperatureMap() const { return temperatureMap; }
     GLuint getPrecipitationMap() const { return precipitationMap; }
+    GLuint getDuDvMap() const { return DuDvMap; }
 
 private:
     std::shared_ptr<Shader> computeShader;
-    GLuint heightMap, temperatureMap, precipitationMap;
+    GLuint heightMap, temperatureMap, precipitationMap, DuDvMap;
     float seed;
     void initializeMaps();
 };

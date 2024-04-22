@@ -95,6 +95,7 @@ uniform bool sphere;
 uniform float elapsedTime;
 
 uniform samplerCube heightMap;
+uniform samplerCube DuDvMap;
 
 vec3 calculateNormal(vec3 pos, vec3 normPosition) {
     float eps = 0.01;
@@ -115,7 +116,7 @@ void main() {
     for (int i = 0; i < 3; i++) {
         vec3 normPosition = normalize(tes_position[i]);
         float wave = sin(normPosition.x * 20.0 + elapsedTime / 3) * 0.01;
-        float displacement = 0.47 + wave;
+        float displacement = 0.47 + wave; //texture(DuDvMap, vec3(normPosition.x + elapsedTime, normPosition.y + elapsedTime, normPosition.z + elapsedTime)).r;
 
         float effectiveRadius = 0.93 + displacement * 0.15;
         vec3 spherePos = normPosition * effectiveRadius;
@@ -150,8 +151,8 @@ in vec3 Normal;
 in vec3 UV3;
 
 uniform vec3 cameraPos;
-uniform samplerCube skybox;  // Assuming a skybox for environment reflections
-uniform float refractionIndex = 1.33; // Index of refraction for water
+uniform samplerCube skybox;
+uniform float refractionIndex = 1.33;
 
 vec3 fresnelSchlick(float cosTheta, vec3 F0) {
     return F0 + (1.0 - F0) * pow(1.0 - cosTheta, 5.0);

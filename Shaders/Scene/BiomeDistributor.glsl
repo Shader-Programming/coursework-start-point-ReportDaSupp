@@ -5,6 +5,7 @@ layout(local_size_x = 8, local_size_y = 8, local_size_z = 6) in;
 layout(binding = 0, r32f) uniform writeonly imageCube heightMap;
 layout(binding = 1, r32f) uniform writeonly imageCube temperatureMap;
 layout(binding = 2, r32f) uniform writeonly imageCube precipitationMap;
+layout(binding = 3, r32f) uniform writeonly imageCube DuDvMap;
 
 uniform float heightSeed = 0.1;
 
@@ -35,10 +36,10 @@ float lerp(float a, float b, float t) {
 }
 
 float perlinNoise(vec3 coord, float scale, float seed) {
-    coord = coord * scale;  // Scale and seed the coordinates
+    coord = coord * scale;
     ivec3 P = ivec3(floor(coord));
     vec3 f = fract(coord);
-    f = f * f * (3.0 - 2.0 * f);  // Smoothing curve
+    f = f * f * (3.0 - 2.0 * f);
 
     float n000 = dot(getGradient(P.x, P.y, P.z, seed), f);
     float n001 = dot(getGradient(P.x, P.y, P.z+1, seed), f - vec3(0,0,1));
@@ -57,6 +58,7 @@ float perlinNoise(vec3 coord, float scale, float seed) {
     float nxy1 = lerp(nx01, nx11, f.y);
     return lerp(nxy0, nxy1, f.z);
 }
+
 
 float perlinNoiseLayered(vec3 coord, float scale, float seed)
 {
@@ -107,8 +109,10 @@ void main() {
 
     float temperatureNoise = calculateTemperature(direction, heightNoise);
     float precipitationNoise = calculatePrecipitation(heightNoise, direction, baseMoisture);
+    float DuDvNoise = perlinNoise(direction, 5.0, heightSeed);
 
     imageStore(heightMap, xyz, vec4(abs(heightNoise), 0, 0, 1.0));
     imageStore(temperatureMap, xyz, vec4(abs(temperatureNoise), 0, 0, 1.0));
     imageStore(precipitationMap, xyz, vec4(precipitationNoise, 0, 0, 1.0));
+    imageStore(DuDvMap, xyz, vec4(DuDvNoise, 0, 0, 1.0));
 }

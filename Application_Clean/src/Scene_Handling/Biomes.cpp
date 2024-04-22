@@ -36,8 +36,8 @@ void Biomes::update(float dt) {
     else
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-    earth->renderMoon(m_camera->getViewMatrix(), m_camera->getProjectionMatrix(), m_camera->getPosition(), moonModel, dt);
-    earth->renderPlanet(m_camera->getViewMatrix(), m_camera->getProjectionMatrix(), m_camera->getPosition(), earthModel, dt);
+    earth->renderMoon(m_camera->getViewMatrix(), m_camera->getProjectionMatrix(), m_camera->getPosition(), moonModel, timeElapsed);
+    earth->renderPlanet(m_camera->getViewMatrix(), m_camera->getProjectionMatrix(), m_camera->getPosition(), earthModel, timeElapsed);
 
     ImGuiInterface->newGuiFrame();
     ImGuiInterface->drawGui();

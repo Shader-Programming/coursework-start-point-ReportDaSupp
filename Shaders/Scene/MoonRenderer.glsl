@@ -87,6 +87,7 @@ in vec3 tes_position[];
 out vec3 FragPos;
 out vec3 Normal;
 out vec3 UV3;
+out float height;
 
 uniform mat4 projection;
 uniform mat4 view;
@@ -124,8 +125,11 @@ void main() {
             displacement = 0.5 - (displacement * 0.25);
         
         float effectiveRadius = 0.93 + displacement * 0.15;
+        
         vec3 spherePos = normPosition * effectiveRadius;
         vec3 modelPosition = (vec4(spherePos, 1.0)).xyz;
+
+        height = displacement;
         
         if (!sphere)
         {
@@ -159,7 +163,7 @@ in vec3 Normal;
 in vec3 UV3;
 
 uniform vec3 cameraPos;
-uniform samplerCube heightMap;
+in float height;
 uniform sampler2DArray AlbedoArray;
 uniform sampler2DArray NormalArray;
 
@@ -198,7 +202,8 @@ void main() {
     vec3 normal = texture(NormalArray, vec3(selectTriplanarUV(UV3, Normal), 3)).rgb;
     normal = normalize(normal * 2.0 - 1.0);
 
-    ambientColor = texture(AlbedoArray, vec3(selectTriplanarUV(UV3, Normal), 3)).rgb;
+    ambientColor = vec3(0.1, 0.1, 0.1);
+    ambientColor = mix (ambientColor, vec3(0.75, 0.75, 0.75), height);
 
     vec3 lightDir = normalize(lightPosition - FragPos);
     float diff = max(dot(normal, lightDir), 0.0);

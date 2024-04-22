@@ -34,8 +34,8 @@ void Gui::newGuiFrame()
 
 void Gui::drawGui()
 {
-    float ms = 1000.0f / ImGui::GetIO().Framerate; ;  //milisecconds
-    //ImGui::Text("FPS %.3f ms/frame (%.1f FPS)", ms, ImGui::GetIO().Framerate);  // display FPS and ms
+    float ms = 1000.0f / ImGui::GetIO().Framerate;
+
     if (ImGui::Begin("Test"))
     {
         ImGui::Checkbox("Wireframe", &g_guiData.isWireframe);
@@ -44,7 +44,7 @@ void Gui::drawGui()
         ImGui::Checkbox("Moving", &g_guiData.isMoving);
         ImGui::End();
     }
-    //ImGui::ShowDemoWindow();
+
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }

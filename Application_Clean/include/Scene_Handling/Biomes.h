@@ -14,7 +14,7 @@ struct celestialBody
         m_biomeDistributor = std::make_unique<BiomeDistributor>("../Shaders/Scene/BiomeDistributor.glsl");
         m_terrainGenerator = std::make_unique<TerrainGenerator>("../Shaders/Scene/TerrainGenerator.glsl");
         m_biomeRenderer = std::make_unique<BiomeRenderer>(m_terrainGenerator->getTerrainVAO(), "../Shaders/Scene/BiomeRenderer.glsl", "../Shaders/Scene/PBRBiomeRenderer.glsl", "../Shaders/Scene/WaterRenderer.glsl", "../Shaders/Scene/AtmosphereRenderer.glsl", "../Shaders/Scene/MoonRenderer.glsl", m_terrainGenerator->getIndexCount());
-        m_weatherSystem = std::make_unique<WeatherSystem>("../Shaders/Scene/SkyBox.glsl");
+        m_weatherSystem = std::make_unique<WeatherSystem>("../Shaders/Scene/SkyBox.glsl", "../Shaders/Scene/Clouds.glsl");
 
         isWater = water;
         isAtmosphere = atmosphere;
@@ -24,25 +24,31 @@ struct celestialBody
     void renderPlanet(glm::mat4 view, glm::mat4 proj, glm::vec3 pos, glm::mat4 model, float dt)
     {
         m_weatherSystem->renderSkybox(view, proj);
+
+        
+       
+
         if (g_guiData.isPBR)
         {
-            m_biomeRenderer->setupShaderWithMaps(m_biomeDistributor->getHeightMap(), m_biomeDistributor->getTemperatureMap(), m_biomeDistributor->getPrecipitationMap(), m_biomeRenderer->getPBRPlanetShader());
+            m_biomeRenderer->setupShaderWithMaps(m_biomeDistributor->getHeightMap(), m_biomeDistributor->getTemperatureMap(), m_biomeDistributor->getPrecipitationMap(), m_biomeDistributor->getDuDvMap(), m_biomeRenderer->getPBRPlanetShader());
             m_biomeRenderer->renderPlanet(view, proj, pos, model, dt, m_biomeRenderer->getPBRPlanetShader());
         }
         else
         {
-            m_biomeRenderer->setupShaderWithMaps(m_biomeDistributor->getHeightMap(), m_biomeDistributor->getTemperatureMap(), m_biomeDistributor->getPrecipitationMap(), m_biomeRenderer->getPlanetShader());
+            m_biomeRenderer->setupShaderWithMaps(m_biomeDistributor->getHeightMap(), m_biomeDistributor->getTemperatureMap(), m_biomeDistributor->getPrecipitationMap(), m_biomeDistributor->getDuDvMap(), m_biomeRenderer->getPlanetShader());
             m_biomeRenderer->renderPlanet(view, proj, pos, model, dt, m_biomeRenderer->getPlanetShader());
         }
 
         if (isWater) {
-            m_biomeRenderer->setupShaderWithMaps(m_biomeDistributor->getHeightMap(), m_biomeDistributor->getTemperatureMap(), m_biomeDistributor->getPrecipitationMap(), m_biomeRenderer->getWaterShader());
+            m_biomeRenderer->setupShaderWithMaps(m_biomeDistributor->getHeightMap(), m_biomeDistributor->getTemperatureMap(), m_biomeDistributor->getPrecipitationMap(), m_biomeDistributor->getDuDvMap(), m_biomeRenderer->getWaterShader());
             m_weatherSystem->loadSkybox(m_biomeRenderer->getWaterShader());
             m_biomeRenderer->renderWater(view, proj, pos, model, dt);
         }
 
+        m_weatherSystem->renderClouds(view, proj, pos);
+
         if (isAtmosphere) {
-            m_biomeRenderer->setupShaderWithMaps(m_biomeDistributor->getHeightMap(), m_biomeDistributor->getTemperatureMap(), m_biomeDistributor->getPrecipitationMap(), m_biomeRenderer->getAtmosphereShader());
+            m_biomeRenderer->setupShaderWithMaps(m_biomeDistributor->getHeightMap(), m_biomeDistributor->getTemperatureMap(), m_biomeDistributor->getPrecipitationMap(), m_biomeDistributor->getDuDvMap(), m_biomeRenderer->getAtmosphereShader());
             m_biomeRenderer->renderAtmosphere(view, proj, pos, model, dt);
         }
     }
@@ -51,7 +57,7 @@ struct celestialBody
     {
         for (int i = 0; i < numMoons; i++)
         {
-            m_biomeRenderer->setupShaderWithMaps(m_biomeDistributor->getHeightMap(), m_biomeDistributor->getTemperatureMap(), m_biomeDistributor->getPrecipitationMap(), m_biomeRenderer->getMoonShader());
+            m_biomeRenderer->setupShaderWithMaps(m_biomeDistributor->getHeightMap(), m_biomeDistributor->getTemperatureMap(), m_biomeDistributor->getPrecipitationMap(), m_biomeDistributor->getDuDvMap(), m_biomeRenderer->getMoonShader());
             m_biomeRenderer->renderMoon(view, proj, pos, model, dt);
         }
     }

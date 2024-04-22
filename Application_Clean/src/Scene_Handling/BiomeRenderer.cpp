@@ -67,7 +67,7 @@ BiomeRenderer::~BiomeRenderer() {
 
 void BiomeRenderer::renderPlanet(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix, glm::vec3 cameraPos, glm::mat4 model, float dt, std::shared_ptr<Shader> shader) {
     
-    timeElapsed += dt;
+    timeElapsed = dt;
 
     glEnable(GL_DEPTH_TEST);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -92,7 +92,7 @@ void BiomeRenderer::renderPlanet(const glm::mat4& viewMatrix, const glm::mat4& p
 
 void BiomeRenderer::renderWater(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix, glm::vec3 cameraPos, glm::mat4 model, float dt) {
 
-    timeElapsed += dt;
+    timeElapsed = dt;
 
     glEnable(GL_DEPTH_TEST);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -120,7 +120,7 @@ void BiomeRenderer::renderWater(const glm::mat4& viewMatrix, const glm::mat4& pr
 
 void BiomeRenderer::renderAtmosphere(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix, glm::vec3 cameraPos, glm::mat4 model, float dt) {
 
-    timeElapsed += dt;
+    timeElapsed = dt;
 
     glEnable(GL_DEPTH_TEST);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -148,7 +148,7 @@ void BiomeRenderer::renderAtmosphere(const glm::mat4& viewMatrix, const glm::mat
 
 void BiomeRenderer::renderMoon(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix, glm::vec3 cameraPos, glm::mat4 model, float dt) {
 
-    timeElapsed += dt;
+    timeElapsed = dt;
 
     glEnable(GL_DEPTH_TEST);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -171,7 +171,7 @@ void BiomeRenderer::renderMoon(const glm::mat4& viewMatrix, const glm::mat4& pro
     glDisable(GL_BLEND);
 }
 
-void BiomeRenderer::setupShaderWithMaps(GLuint heightMap, GLuint tempMap, GLuint precipMap, std::shared_ptr<Shader> shader) {
+void BiomeRenderer::setupShaderWithMaps(GLuint heightMap, GLuint tempMap, GLuint precipMap, GLuint dudvMap, std::shared_ptr<Shader> shader) {
     shader->use();
 
     shader->setInt("heightMap", 1);
@@ -186,25 +186,29 @@ void BiomeRenderer::setupShaderWithMaps(GLuint heightMap, GLuint tempMap, GLuint
     glActiveTexture(GL_TEXTURE3);
     glBindTexture(GL_TEXTURE_CUBE_MAP, precipMap);
 
-
-
+    shader->setInt("DuDvMap", 4);
     glActiveTexture(GL_TEXTURE4);
-    glBindTexture(GL_TEXTURE_2D_ARRAY, Albedo);
-    shader->setInt("AlbedoArray", 4);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, dudvMap);
+
+
 
     glActiveTexture(GL_TEXTURE5);
-    glBindTexture(GL_TEXTURE_2D_ARRAY, AO);
-    shader->setInt("AOArray", 5);
+    glBindTexture(GL_TEXTURE_2D_ARRAY, Albedo);
+    shader->setInt("AlbedoArray", 5);
 
     glActiveTexture(GL_TEXTURE6);
-    glBindTexture(GL_TEXTURE_2D_ARRAY, Displacement);
-    shader->setInt("DisplacementArray", 6);
+    glBindTexture(GL_TEXTURE_2D_ARRAY, AO);
+    shader->setInt("AOArray", 6);
 
     glActiveTexture(GL_TEXTURE7);
-    glBindTexture(GL_TEXTURE_2D_ARRAY, Normal);
-    shader->setInt("NormalArray", 7);
+    glBindTexture(GL_TEXTURE_2D_ARRAY, Displacement);
+    shader->setInt("DisplacementArray", 7);
 
     glActiveTexture(GL_TEXTURE8);
+    glBindTexture(GL_TEXTURE_2D_ARRAY, Normal);
+    shader->setInt("NormalArray", 8);
+
+    glActiveTexture(GL_TEXTURE9);
     glBindTexture(GL_TEXTURE_2D_ARRAY, Roughness);
-    shader->setInt("RoughnessArray", 8);
+    shader->setInt("RoughnessArray", 9);
 }

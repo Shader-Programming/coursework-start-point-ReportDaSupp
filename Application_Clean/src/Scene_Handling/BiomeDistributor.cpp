@@ -47,6 +47,19 @@ void BiomeDistributor::initializeMaps() {
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_REPEAT);
 
     glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+
+    glGenTextures(1, &DuDvMap);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, DuDvMap);
+    for (unsigned int i = 0; i < 6; ++i) {
+        glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_R32F, 4096, 4096, 0, GL_RED, GL_FLOAT, NULL);
+    }
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_REPEAT);
+
+    glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 }
 
 void BiomeDistributor::generateMaps() {
@@ -55,6 +68,7 @@ void BiomeDistributor::generateMaps() {
     glBindImageTexture(0, heightMap, 0, GL_TRUE, 0, GL_WRITE_ONLY, GL_R32F);
     glBindImageTexture(1, temperatureMap, 0, GL_TRUE, 0, GL_WRITE_ONLY, GL_R32F);
     glBindImageTexture(2, precipitationMap, 0, GL_TRUE, 0, GL_WRITE_ONLY, GL_R32F);
+    glBindImageTexture(3, DuDvMap, 0, GL_TRUE, 0, GL_WRITE_ONLY, GL_R32F);
 
     auto now = std::chrono::high_resolution_clock::now();
     auto nanos = std::chrono::duration_cast<std::chrono::nanoseconds>(now.time_since_epoch()).count();
@@ -73,4 +87,5 @@ void BiomeDistributor::generateMaps() {
     glBindImageTexture(0, 0, 0, GL_TRUE, 0, GL_WRITE_ONLY, GL_R32F);
     glBindImageTexture(1, 0, 0, GL_TRUE, 0, GL_WRITE_ONLY, GL_R32F);
     glBindImageTexture(2, 0, 0, GL_TRUE, 0, GL_WRITE_ONLY, GL_R32F);
+    glBindImageTexture(3, 0, 0, GL_TRUE, 0, GL_WRITE_ONLY, GL_R32F);
 }
