@@ -31,7 +31,7 @@ out float texLayerIndex;
 uniform mat4 view;
 uniform mat4 projection;
 uniform vec3 viewPosition;
-uniform float size = 25.0; // Adjust the size to fit your scene scale
+uniform float size = 25.0;
 
 vec3 planetCenter = vec3(0,0,0);
 
@@ -56,14 +56,9 @@ void main() {
 
     texLayerIndex = 84 - ((texLayerIndexY * 12) + texLayerIndexXZ);
 
-    // Continue with billboard vertex calculation
     vec3 billboardUp = vec3(0, 1, 0);
-
-    // Compute the right vector as perpendicular to the up vector and view direction
     vec3 billboardRight = normalize(cross(viewDir, billboardUp)) * size;
-    // Recompute up to ensure orthogonality in case of changes in viewDir
     billboardUp = normalize(cross(billboardRight, viewDir)) * size;
-
     vec3 p1 = gs_in[0].worldPos - billboardRight - billboardUp;
     vec3 p2 = gs_in[0].worldPos + billboardRight - billboardUp;
     vec3 p3 = gs_in[0].worldPos - billboardRight + billboardUp;

@@ -21,6 +21,22 @@ BiomeRenderer::BiomeRenderer(GLuint vao, const char* tShaderPath, const char* tP
 
     Albedo = loadTextureArray(AlbedoPaths);
 
+    NormalPaths.push_back("../Resources/Textures/Biomes/Dirt/Normal.jpg");
+    NormalPaths.push_back("../Resources/Textures/Biomes/Forest/Normal.jpg");
+    NormalPaths.push_back("../Resources/Textures/Biomes/Grass/Normal.jpg");
+    NormalPaths.push_back("../Resources/Textures/Biomes/Rock/Normal.jpg");
+    NormalPaths.push_back("../Resources/Textures/Biomes/Sand/Normal.jpg");
+    NormalPaths.push_back("../Resources/Textures/Biomes/Snow/Normal.jpg");
+
+    Normal = loadTextureArray(NormalPaths);
+    
+    indexCount = iCount;
+
+}
+
+void BiomeRenderer::loadTexturesPBR()
+{
+
     AOPaths.push_back("../Resources/Textures/Biomes/Dirt/AO.jpg");
     AOPaths.push_back("../Resources/Textures/Biomes/Forest/AO.jpg");
     AOPaths.push_back("../Resources/Textures/Biomes/Grass/AO.jpg");
@@ -39,15 +55,6 @@ BiomeRenderer::BiomeRenderer(GLuint vao, const char* tShaderPath, const char* tP
 
     Displacement = loadTextureArray(DisplacementPaths);
 
-    NormalPaths.push_back("../Resources/Textures/Biomes/Dirt/Normal.jpg");
-    NormalPaths.push_back("../Resources/Textures/Biomes/Forest/Normal.jpg");
-    NormalPaths.push_back("../Resources/Textures/Biomes/Grass/Normal.jpg");
-    NormalPaths.push_back("../Resources/Textures/Biomes/Rock/Normal.jpg");
-    NormalPaths.push_back("../Resources/Textures/Biomes/Sand/Normal.jpg");
-    NormalPaths.push_back("../Resources/Textures/Biomes/Snow/Normal.jpg");
-
-    Normal = loadTextureArray(NormalPaths);
-
     RoughnessPaths.push_back("../Resources/Textures/Biomes/Dirt/Roughness.jpg");
     RoughnessPaths.push_back("../Resources/Textures/Biomes/Forest/Roughness.jpg");
     RoughnessPaths.push_back("../Resources/Textures/Biomes/Grass/Roughness.jpg");
@@ -56,9 +63,6 @@ BiomeRenderer::BiomeRenderer(GLuint vao, const char* tShaderPath, const char* tP
     RoughnessPaths.push_back("../Resources/Textures/Biomes/Snow/Roughness.jpg");
 
     Roughness = loadTextureArray(RoughnessPaths);
-    
-    indexCount = iCount;
-
 }
 
 BiomeRenderer::~BiomeRenderer() {

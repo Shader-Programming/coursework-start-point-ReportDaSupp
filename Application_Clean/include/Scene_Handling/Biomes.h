@@ -25,9 +25,6 @@ struct celestialBody
     {
         m_weatherSystem->renderSkybox(view, proj);
 
-        
-       
-
         if (g_guiData.isPBR)
         {
             m_biomeRenderer->setupShaderWithMaps(m_biomeDistributor->getHeightMap(), m_biomeDistributor->getTemperatureMap(), m_biomeDistributor->getPrecipitationMap(), m_biomeDistributor->getDuDvMap(), m_biomeRenderer->getPBRPlanetShader());
@@ -98,6 +95,7 @@ private:
 
     float moonOrbitRadius = 400.f;
     float moonOrbitSpeed = 0.06f;
+    bool isPBRLoaded = false;
 
     std::shared_ptr<Gui> ImGuiInterface;
 };

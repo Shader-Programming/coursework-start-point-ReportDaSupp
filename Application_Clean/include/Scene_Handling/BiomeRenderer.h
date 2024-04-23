@@ -25,11 +25,13 @@ public:
     std::shared_ptr<Shader> getMoonShader() { return moonLightingShader; };
     void setupShaderWithMaps(GLuint heightMap, GLuint tempMap, GLuint precipMap, GLuint dudvMap, std::shared_ptr<Shader> shader);
 
+    void loadTexturesPBR();
 private:
     std::shared_ptr<Shader> terrainLightingShader, terrainPBRLightingShader, waterLightingShader, atmosphereLightingShader, moonLightingShader;
     GLuint planetVAO;
 
     GLuint Albedo, AO, Displacement, Normal, Roughness;
+    
 
     std::vector<const char*> AlbedoPaths, AOPaths, DisplacementPaths, NormalPaths, RoughnessPaths;
 

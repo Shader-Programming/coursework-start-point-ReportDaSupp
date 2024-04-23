@@ -73,8 +73,8 @@ void main() {
     vec3 p2 = gl_TessCoord.z * tes_in[2].position;
     vec3 pos = p0 + p1 + p2;
     
-    tes_position = (vec4(pos, 1.0)).xyz; // Apply model matrix here
-    gl_Position = vec4(pos, 1.0); // Apply transformation
+    tes_position = (vec4(pos, 1.0)).xyz;
+    gl_Position = vec4(pos, 1.0);
 }
 
 
@@ -144,7 +144,7 @@ void main() {
 
         FragPos = modelPosition;
         Normal = perturbedNormal;
-        UV3 = spherePos; // Placeholder for UVs
+        UV3 = spherePos;
 
         TBN = mat3(tangents[i], bitangents[i], normals[i]);
         gl_Position = projection * view * model * vec4(spherePos, 1.0);
@@ -193,7 +193,6 @@ struct TexData {
 };
 
 vec2 selectTriplanarUV(vec3 worldPos, vec3 normal) {
-    // Normalize the position to ensure it is properly scaled
     worldPos = normalize(worldPos);
 
     // Determine the maximum component of the normal vector
@@ -202,7 +201,6 @@ vec2 selectTriplanarUV(vec3 worldPos, vec3 normal) {
 
     vec2 uv;
 
-    // Check which component is the dominant one and set UV coordinates accordingly
     if (maxComponent == absNormal.x) {
         uv = worldPos.yz;  // X is dominant
     } else if (maxComponent == absNormal.y) {
@@ -267,7 +265,6 @@ BiomeWeights calculateBiomeWeights(float height, float temperature, float precip
         }
     }
 
-    // Normalize weights to ensure they sum to 1.0
     float totalWeight = weights.sand + weights.dirt + weights.forest + weights.grass + weights.rock + weights.snow;
     if (totalWeight > 0) {
         weights.sand /= totalWeight;
@@ -351,8 +348,8 @@ vec3 fresnelSchlick(float cosTheta, vec3 F0) {
 }
 
 vec3 calculatePBR(vec3 albedo, float metallic, vec3 normal, float roughness, vec3 lightPos, vec3 viewPos, float ao) {
-    vec3 F0 = mix(vec3(0.04), albedo, metallic);  // Reflectance at normal incidence
-    vec3 N = normalize(TBN * normal);  // Transform normal from tangent to world space
+    vec3 F0 = mix(vec3(0.04), albedo, metallic);
+    vec3 N = normalize(TBN * normal);
     vec3 V = normalize(viewPos - FragPos);
     vec3 L = normalize(lightPos - FragPos);
     vec3 H = normalize(V + L);
@@ -372,7 +369,7 @@ vec3 calculatePBR(vec3 albedo, float metallic, vec3 normal, float roughness, vec
     float NdotL = abs(max(dot(N, L), 0.0));
     vec3 diffuse = kD * albedo / 3.14159;
 
-    return (diffuse + specular) + NdotL * ao * albedo * 0.3;  // Apply ambient occlusion
+    return albedo * (diffuse + specular) + NdotL * ao;  // Apply ambient occlusion
 }
 
 void main() {

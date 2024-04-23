@@ -10,6 +10,12 @@ void Biomes::initializeBiomes() {
 void Biomes::update(float dt) {
     
     
+    if (g_guiData.isPBR && !isPBRLoaded)
+    {
+        isPBRLoaded = true;
+        earth->m_biomeRenderer->loadTexturesPBR();
+    }
+
     if (g_guiData.isMoving)
         timeElapsed += dt;
 

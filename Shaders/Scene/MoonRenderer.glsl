@@ -73,8 +73,8 @@ void main() {
     vec3 p2 = gl_TessCoord.z * tes_in[2].position;
     vec3 pos = p0 + p1 + p2;
     
-    tes_position = (vec4(pos, 1.0)).xyz; // Apply model matrix here
-    gl_Position = vec4(pos, 1.0); // Apply transformation
+    tes_position = (vec4(pos, 1.0)).xyz;
+    gl_Position = vec4(pos, 1.0);
 }
 
 
@@ -172,7 +172,6 @@ uniform vec3 lightColor = vec3(0.5, 0.5, 0.5);
 vec3 ambientColor = vec3(0.2, 0.2, 0.2);
 
 vec2 selectTriplanarUV(vec3 worldPos, vec3 normal) {
-    // Normalize the position to ensure it is properly scaled
     worldPos = normalize(worldPos);
 
     // Determine the maximum component of the normal vector
@@ -181,7 +180,6 @@ vec2 selectTriplanarUV(vec3 worldPos, vec3 normal) {
 
     vec2 uv;
 
-    // Check which component is the dominant one and set UV coordinates accordingly
     if (maxComponent == absNormal.x) {
         uv = worldPos.yz;  // X is dominant
     } else if (maxComponent == absNormal.y) {
@@ -190,7 +188,7 @@ vec2 selectTriplanarUV(vec3 worldPos, vec3 normal) {
         uv = worldPos.xy;  // Z is dominant
     }
 
-    // Scale and translate the UVs from [-1, 1] to [0, 1]
+    // Scale and translate the UVs from [-1, 1] to [0, 16]
     uv = uv * 0.5 + 0.5;
     uv = uv * 16;
 
