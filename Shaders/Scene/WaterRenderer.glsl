@@ -92,6 +92,7 @@ uniform mat4 projection;
 uniform mat4 view;
 uniform mat4 model;
 uniform bool sphere;
+uniform bool DuDv;
 uniform float elapsedTime;
 
 uniform samplerCube heightMap;
@@ -116,7 +117,9 @@ void main() {
     for (int i = 0; i < 3; i++) {
         vec3 normPosition = normalize(tes_position[i]);
         float wave = sin(normPosition.x * 20.0 + elapsedTime / 3) * 0.01;
-        float displacement = 0.47 + wave; //texture(DuDvMap, vec3(normPosition.x + elapsedTime, normPosition.y + elapsedTime, normPosition.z + elapsedTime)).r;
+        float displacement = 0.47 + wave; 
+        if (DuDv)
+            displacement = 0.42 +  0.1 * abs(texture(DuDvMap, vec3(normPosition.x + elapsedTime * 5, normPosition.y, normPosition.z + elapsedTime* 5)).r);
 
         float effectiveRadius = 0.93 + displacement * 0.15;
         vec3 spherePos = normPosition * effectiveRadius;

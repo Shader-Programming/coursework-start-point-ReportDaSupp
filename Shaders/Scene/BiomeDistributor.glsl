@@ -109,7 +109,7 @@ void main() {
 
     float temperatureNoise = calculateTemperature(direction, heightNoise);
     float precipitationNoise = calculatePrecipitation(heightNoise, direction, baseMoisture);
-    float DuDvNoise = perlinNoise(direction, 5.0, heightSeed);
+    float DuDvNoise = perlinNoise(direction, 32.0, heightSeed) * 2;
 
     imageStore(heightMap, xyz, vec4(abs(heightNoise), 0, 0, 1.0));
     imageStore(temperatureMap, xyz, vec4(abs(temperatureNoise), 0, 0, 1.0));

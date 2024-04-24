@@ -76,6 +76,7 @@ void BiomeRenderer::renderPlanet(const glm::mat4& viewMatrix, const glm::mat4& p
     glEnable(GL_DEPTH_TEST);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
+    glEnable(GL_CULL_FACE);
 
     shader->use();
     shader->setMat4("view", viewMatrix);
@@ -92,6 +93,7 @@ void BiomeRenderer::renderPlanet(const glm::mat4& viewMatrix, const glm::mat4& p
 
     glDepthMask(GL_TRUE);
     glDisable(GL_BLEND);
+    glDisable(GL_CULL_FACE);
 }
 
 void BiomeRenderer::renderWater(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix, glm::vec3 cameraPos, glm::mat4 model, float dt) {
@@ -109,6 +111,7 @@ void BiomeRenderer::renderWater(const glm::mat4& viewMatrix, const glm::mat4& pr
     waterLightingShader->setVec3("cameraPos", cameraPos);
     waterLightingShader->setFloat("elapsedTime", timeElapsed);
     waterLightingShader->setBool("sphere", g_guiData.isSphere);
+    waterLightingShader->setBool("DuDv", g_guiData.isDuDv);
 
     glBindVertexArray(planetVAO);
 
@@ -120,6 +123,7 @@ void BiomeRenderer::renderWater(const glm::mat4& viewMatrix, const glm::mat4& pr
 
     glDepthMask(GL_TRUE);
     glDisable(GL_BLEND);
+    glDisable(GL_CULL_FACE);
 }
 
 void BiomeRenderer::renderAtmosphere(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix, glm::vec3 cameraPos, glm::mat4 model, float dt) {
@@ -148,6 +152,7 @@ void BiomeRenderer::renderAtmosphere(const glm::mat4& viewMatrix, const glm::mat
 
     glDepthMask(GL_TRUE);
     glDisable(GL_BLEND);
+    glDisable(GL_CULL_FACE);
 }
 
 void BiomeRenderer::renderMoon(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix, glm::vec3 cameraPos, glm::mat4 model, float dt) {
@@ -157,6 +162,7 @@ void BiomeRenderer::renderMoon(const glm::mat4& viewMatrix, const glm::mat4& pro
     glEnable(GL_DEPTH_TEST);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
+    glEnable(GL_CULL_FACE);
 
     moonLightingShader->use();
     moonLightingShader->setMat4("view", viewMatrix);
@@ -173,6 +179,7 @@ void BiomeRenderer::renderMoon(const glm::mat4& viewMatrix, const glm::mat4& pro
 
     glDepthMask(GL_TRUE);
     glDisable(GL_BLEND);
+    glDisable(GL_CULL_FACE);
 }
 
 void BiomeRenderer::setupShaderWithMaps(GLuint heightMap, GLuint tempMap, GLuint precipMap, GLuint dudvMap, std::shared_ptr<Shader> shader) {

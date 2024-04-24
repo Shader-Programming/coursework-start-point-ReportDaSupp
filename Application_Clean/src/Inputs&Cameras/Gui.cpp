@@ -36,12 +36,19 @@ void Gui::drawGui()
 {
     float ms = 1000.0f / ImGui::GetIO().Framerate;
 
-    if (ImGui::Begin("Test"))
+    if (ImGui::Begin("Testing Parameters"))
     {
         ImGui::Checkbox("Wireframe", &g_guiData.isWireframe);
         ImGui::Checkbox("Sphere", &g_guiData.isSphere);
         ImGui::Checkbox("PBR", &g_guiData.isPBR);
         ImGui::Checkbox("Moving", &g_guiData.isMoving);
+        ImGui::Checkbox("DuDv", &g_guiData.isDuDv);
+
+        ImGui::SliderInt("Compute Subdivisions", &g_guiData.subdivLevel, 1, 32, "%i");
+        if (ImGui::Button("Update Compute Mesh"))
+        {
+            g_guiData.reCompMesh = true;
+        }
         ImGui::End();
     }
 

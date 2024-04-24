@@ -14,6 +14,8 @@ public:
     BiomeRenderer(GLuint vao, const char* tShaderPath, const char* tPBRShaderPath, const char* wShaderPath, const char* aShaderPath, const char* mShaderPath, int iCount);
     ~BiomeRenderer();
 
+    void updateVao(GLuint vao, int indexC) { planetVAO = vao; indexCount = indexC; };
+
     void renderPlanet(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix, glm::vec3 cameraPos, glm::mat4 model, float dt, std::shared_ptr<Shader> shader);
     std::shared_ptr<Shader> getPlanetShader() { return terrainLightingShader; };
     std::shared_ptr<Shader> getPBRPlanetShader() { return terrainPBRLightingShader; };

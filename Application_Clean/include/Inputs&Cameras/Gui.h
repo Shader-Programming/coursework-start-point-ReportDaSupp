@@ -16,6 +16,10 @@ struct guiVars {
 	bool isSphere = true;
 	bool isActive = false;
 	bool isMoving = true;
+	bool isDuDv = false;
+	int subdivLevel = 32;
+	bool reCompMesh;
+
 };
 
 extern guiVars g_guiData;

@@ -16,11 +16,12 @@ public:
     std::vector<GLuint> generateIndices();
     GLuint getTerrainVAO() const { return terrainVAO; }
     int getIndexCount() { return indexCount; };
+    void setSubdivisions(int sub) { subdivisions = sub; };
 
 private:
     std::shared_ptr<Shader> computeShader;
     GLuint terrainVAO, terrainVBO, terrainIBO;
     int indexCount;
-    int subdivisions = 16;
+    int subdivisions = 32;
     void initializeMesh();
 };

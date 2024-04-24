@@ -28,9 +28,7 @@ void TerrainGenerator::initializeMesh() {
 
     // Index buffer setup for subdivided cube (optional, if using indexed drawing)
     glGenBuffers(1, &terrainIBO);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, terrainIBO);
     std::vector<GLuint> indices = generateIndices();
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), indices.data(), GL_STATIC_DRAW);
 
     glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(glm::vec4), (void*)0);
     glEnableVertexAttribArray(0);
@@ -39,6 +37,7 @@ void TerrainGenerator::initializeMesh() {
 }
 
 std::vector<GLuint> TerrainGenerator::generateIndices() {
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, terrainIBO);
     std::vector<GLuint> indices;
     for (int face = 0; face < 6; ++face) {
         for (int i = 0; i < subdivisions; ++i) {
@@ -55,6 +54,7 @@ std::vector<GLuint> TerrainGenerator::generateIndices() {
         }
     }
     indexCount = indices.size();
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), indices.data(), GL_STATIC_DRAW);
     return indices;
 }
 

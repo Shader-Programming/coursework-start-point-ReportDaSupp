@@ -9,7 +9,14 @@ void Biomes::initializeBiomes() {
 
 void Biomes::update(float dt) {
     
-    
+    if (g_guiData.reCompMesh)
+    {
+        g_guiData.reCompMesh = false;
+        earth->m_terrainGenerator->setSubdivisions(g_guiData.subdivLevel);
+        earth->m_terrainGenerator->generateTerrainMesh();
+        earth->m_terrainGenerator->generateIndices();
+        earth->m_biomeRenderer->updateVao(earth->m_terrainGenerator->getTerrainVAO(), earth->m_terrainGenerator->getIndexCount());
+    }
     if (g_guiData.isPBR && !isPBRLoaded)
     {
         isPBRLoaded = true;
